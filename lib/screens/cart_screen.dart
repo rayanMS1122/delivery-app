@@ -28,6 +28,7 @@ class CartScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 20),
+                // Back Button and Title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -42,10 +43,11 @@ class CartScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Container(),
+                    const SizedBox(width: 40), // Placeholder for alignment
                   ],
                 ),
-                const SizedBox(height: 51),
+                const SizedBox(height: 20),
+                // Swipe Hint
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -56,34 +58,36 @@ class CartScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     const Text(
-                      'swipe on an item to delete',
+                      'Swipe on an item to delete',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         fontFamily: 'SF Pro Text',
+                        color: Colors.grey,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 23),
-                CartItemWidget(
-                  image: 'assets/Mask Group.png',
-                  title: 'Veggie tomato mix',
-                  price: 1900,
+                const SizedBox(height: 20),
+                // Cart Items
+                Column(
+                  children: [
+                    SwipeableCartItem(
+                      id: 'item1',
+                      image: 'assets/Mask Group.png',
+                      title: 'Veggie tomato mix',
+                      price: 1900,
+                    ),
+                    const SizedBox(height: 14),
+                    SwipeableCartItem(
+                      id: 'item2',
+                      image: 'assets/Mask Group.png',
+                      title: 'Fish with mix orange....',
+                      price: 1900,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 14),
-                CartItemWidget(
-                  image: 'assets/Mask Group.png',
-                  title: 'Fishwith mix orange....',
-                  price: 1900,
-                ),
-                const SizedBox(height: 17),
-                SwipeableCartItem(
-                  id: 'item1', // Unique identifier
-                  image: 'assets/Mask Group.png',
-                  title: 'Veggie tomato mix',
-                  price: 1900,
-                ),
-                const SizedBox(height: 270),
+                const SizedBox(height: 20),
+                // Proceed to Payment Button
                 Container(
                   width: double.infinity,
                   height: 60,
@@ -102,7 +106,9 @@ class CartScreen extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(30),
-                      onTap: () {},
+                      onTap: () {
+                        // Handle payment
+                      },
                       child: Center(
                         child: Text(
                           "Proceed to payment",

@@ -6,30 +6,33 @@ class NoInternetConnectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F8),
+      backgroundColor: const Color(0xFFF5F5F8),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(),
+            SizedBox(height: screenHeight * 0.1), // Adjusted spacing
             Column(
               children: [
                 Text(
                   'No internet Connection',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: screenWidth * 0.07, // Adjusted font size
                     fontWeight: FontWeight.w600,
                     fontFamily: 'SF Pro Text',
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 17),
+                SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                 Text(
                   'Your internet connection is currently\nnot available please check or try again.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: screenWidth * 0.04, // Adjusted font size
                     fontWeight: FontWeight.w400,
                     fontFamily: 'SF Pro Text',
                   ),
@@ -37,25 +40,39 @@ class NoInternetConnectionScreen extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(22.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add retry logic here
-                },
-                child: Text(
-                  'Try again',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'SF Pro Text',
-                  ),
+              padding: EdgeInsets.all(screenWidth * 0.05), // Adjusted padding
+              child: Container(
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: const Color(0xFFFA4A0C),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFA4A0C).withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Color(0xFFF6F6F9),
-                  backgroundColor: Color(0xFFFA4A0C),
-                  padding: EdgeInsets.symmetric(horizontal: 70, vertical: 25),
-                  shape: RoundedRectangleBorder(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
                     borderRadius: BorderRadius.circular(30),
+                    onTap: () {
+                      // Add navigation or action here#
+                    },
+                    child: Center(
+                      child: Text(
+                        "Try again",
+                        style: TextStyle(
+                          fontFamily: "SF-Pro-Text",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

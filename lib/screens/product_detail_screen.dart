@@ -6,25 +6,28 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Color(0xFFF6F6F9),
+      backgroundColor: const Color(0xFFF6F6F9),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(screenWidth * 0.05), // Adjusted padding
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
+                      icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () => Get.back(),
                       tooltip: 'Go back',
                     ),
                     IconButton(
-                      icon: Icon(Icons.favorite_border),
+                      icon: const Icon(Icons.favorite_border),
                       onPressed: () {},
                       tooltip: 'Add to favorites',
                     ),
@@ -32,11 +35,12 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.06), // Adjusted padding
                 child: Column(
                   children: [
                     Container(
-                      height: 300,
+                      height: screenHeight * 0.35, // Adjusted height
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -47,25 +51,29 @@ class ProductDetailScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         4,
                         (index) => index == 0
                             ? Container(
-                                width: 8,
-                                height: 8,
-                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                width: screenWidth * 0.02, // Adjusted size
+                                height: screenWidth * 0.02, // Adjusted size
+                                margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        screenWidth * 0.01), // Adjusted margin
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Color(0xFFFA4A0C),
+                                  color: const Color(0xFFFA4A0C),
                                 ),
                               )
                             : Container(
-                                width: 8,
-                                height: 8,
-                                margin: EdgeInsets.symmetric(horizontal: 4),
+                                width: screenWidth * 0.02, // Adjusted size
+                                height: screenWidth * 0.02, // Adjusted size
+                                margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        screenWidth * 0.01), // Adjusted margin
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.grey[400],
@@ -73,76 +81,76 @@ class ProductDetailScreen extends StatelessWidget {
                               ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                     Text(
                       'Veggie tomato mix',
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: screenWidth * 0.07, // Adjusted font size
                         fontWeight: FontWeight.w600,
                         fontFamily: 'SF Pro Rounded',
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                     Text(
                       'N1,900',
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: screenWidth * 0.06, // Adjusted font size
                         fontWeight: FontWeight.w700,
                         fontFamily: 'SF Pro Rounded',
-                        color: Color(0xFFFA4A0C),
+                        color: const Color(0xFFFA4A0C),
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: screenHeight * 0.04), // Adjusted spacing
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Delivery info',
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
                           fontFamily: 'SF Pro Rounded',
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.01), // Adjusted spacing
                     Text(
                       'Delivered between monday aug and thursday 20 from 8pm to 91:32 pm',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
                         fontFamily: 'SF Pro Text',
                         height: 1.4,
                       ),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: screenHeight * 0.03), // Adjusted spacing
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Return policy',
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
                           fontFamily: 'SF Pro Rounded',
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.01), // Adjusted spacing
                     Text(
                       'All our foods are double checked before leaving our stores so by any case you found a broken food please contact our hotline immediately.',
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
                         fontFamily: 'SF Pro Text',
                         height: 1.4,
                       ),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: screenHeight * 0.04), // Adjusted spacing
                     // Start Ordering Button
                     Container(
                       width: double.infinity,
-                      height: 60,
+                      height: screenHeight * 0.08, // Adjusted height
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: const Color(0xFFFA4A0C),
@@ -168,14 +176,15 @@ class ProductDetailScreen extends StatelessWidget {
                                 fontFamily: "SF-Pro-Text",
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18,
+                                fontSize:
+                                    screenWidth * 0.045, // Adjusted font size
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                   ],
                 ),
               ),

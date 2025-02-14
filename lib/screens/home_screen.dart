@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Obx(() {
           switch (_controller.selectedNavIndex.value) {
             case 0:
-              return _buildHomeScreen();
+              return _buildHomeScreen(context);
             case 1:
               return _buildFavoritesScreen();
             case 2:
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             case 3:
               return const HistoryScreen();
             default:
-              return _buildHomeScreen();
+              return _buildHomeScreen(context);
           }
         }),
         bottomNavigationBar: BottomNavigation(),
@@ -67,33 +67,42 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHomeScreen() {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFF2F2F2), Colors.white],
+  Widget _buildHomeScreen(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFF2F2F2), Colors.white],
+          ),
         ),
-      ),
-      constraints: const BoxConstraints(maxWidth: 480),
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(25, 47, 25, 47),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildAppBar(),
-          const SizedBox(height: 22),
-          _buildTitle(),
-          const SizedBox(height: 25),
-          _buildSearchBar(),
-          const SizedBox(height: 25),
-          CategoryTabs(),
-          const SizedBox(height: 10),
-          _buildSeeMoreText(),
-          const SizedBox(height: 15),
-          _buildFeaturedProducts(),
-        ],
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(
+          screenWidth * 0.05,
+          screenHeight * 0.05,
+          screenWidth * 0.05,
+          screenHeight * 0.05,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildAppBar(),
+            SizedBox(height: screenHeight * 0.02),
+            _buildTitle(),
+            SizedBox(height: screenHeight * 0.02),
+            _buildSearchBar(screenWidth),
+            SizedBox(height: screenHeight * 0.02),
+            CategoryTabs(),
+            SizedBox(height: screenHeight * 0.01),
+            _buildSeeMoreText(),
+            SizedBox(height: screenHeight * 0.01),
+            _buildFeaturedProducts(screenWidth),
+          ],
+        ),
       ),
     );
   }
@@ -142,9 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(double screenWidth) {
     return Container(
-      width: double.infinity,
+      width: screenWidth * 0.9,
       height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
@@ -193,28 +202,29 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildFeaturedProducts() {
+  Widget _buildFeaturedProducts(double screenWidth) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildFeaturedProductCard(
-              "Veggie\ntomato mix", "N1,900", "assets/Mask Group.png"),
-          _buildFeaturedProductCard(
-              "Spicy \nfish sauce", "N1,1900", "assets/Mask Group (1).png"),
+          _buildFeaturedProductCard("Veggie\ntomato mix", "N1,900",
+              "assets/Mask Group.png", screenWidth),
+          _buildFeaturedProductCard("Spicy \nfish sauce", "N1,1900",
+              "assets/Mask Group (1).png", screenWidth),
         ],
       ),
     );
   }
 
-  Widget _buildFeaturedProductCard(String title, String price, String image) {
+  Widget _buildFeaturedProductCard(
+      String title, String price, String image, double screenWidth) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Container(
-            width: 220,
+            width: screenWidth * 0.7,
             height: 215,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
@@ -265,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Positioned(
             top: -20,
-            left: 29,
+            left: MediaQuery.of(context).size.width * 0.15,
             child: Image.asset(image, width: 160, height: 160),
           ),
         ],

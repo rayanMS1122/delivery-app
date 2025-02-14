@@ -10,12 +10,15 @@ class CheckoutScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            constraints: const BoxConstraints(maxWidth: 400),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width *
+                  0.05, // 5% of screen width
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
+                // Back Button and Title
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -30,19 +33,20 @@ class CheckoutScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Container(),
+                    const SizedBox(width: 40), // Placeholder for alignment
                   ],
                 ),
                 const SizedBox(height: 32),
+                // Delivery Section Title
                 const Text(
                   'Delivery',
                   style: TextStyle(
                     fontSize: 34,
                     fontWeight: FontWeight.w600,
                   ),
-                  semanticsLabel: 'Delivery section',
                 ),
                 const SizedBox(height: 32),
+                // Address Details
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -66,6 +70,7 @@ class CheckoutScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
+                // Address Card
                 Container(
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
@@ -92,7 +97,7 @@ class CheckoutScreen extends StatelessWidget {
                       Divider(),
                       SizedBox(height: 8),
                       Text(
-                        'Km 5 refinery road oppsite re public road, effurun, delta state',
+                        'Km 5 refinery road opposite republic road, effurun, delta state',
                         style: TextStyle(fontSize: 15),
                       ),
                       Divider(),
@@ -105,8 +110,9 @@ class CheckoutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
+                // Delivery Method Section
                 const Text(
-                  'Delivery method.',
+                  'Delivery method',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -114,7 +120,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.all(33),
+                  padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -141,6 +147,7 @@ class CheckoutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
+                // Total Section
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -158,6 +165,7 @@ class CheckoutScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32),
+                // Proceed to Payment Button
                 Container(
                   width: double.infinity,
                   height: 60,
@@ -176,7 +184,9 @@ class CheckoutScreen extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(30),
-                      onTap: () {},
+                      onTap: () {
+                        // Handle payment
+                      },
                       child: Center(
                         child: Text(
                           "Proceed to payment",
