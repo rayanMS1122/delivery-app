@@ -9,19 +9,35 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: Container(
+          height: screenHeight,
           decoration: const BoxDecoration(
-            color: Color(0xFFFF460A), // Orange background
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFF460A),
+                Color(0xFFFF6B3A)
+              ], // Gradient background
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-          child: Column(
-            children: [
-              // Top Section with Icon and Title
-              _buildTopSection(context),
-              // Form Section
-              _buildFormSection(context),
-            ],
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Column(
+              children: [
+                // Top Section with Icon and Title
+                _buildTopSection(context),
+                // Form Section
+                _buildFormSection(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -29,28 +45,40 @@ class SignupScreen extends StatelessWidget {
   }
 
   Widget _buildTopSection(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal:
-            MediaQuery.of(context).size.width * 0.1, // 10% of screen width
+        horizontal: screenWidth * 0.1, // 10% of screen width
         vertical: 44,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Circle Icon
+          // Circle Icon with Neumorphic Effect
           Container(
-            width: 73,
-            height: 73,
-            decoration: const BoxDecoration(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(4, 4),
+                ),
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(-4, -4),
+                ),
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+            child: Center(
               child: Icon(
                 Icons.person_add_alt_1,
-                color: Color(0xFFFF4B3A),
+                color: const Color(0xFFFF460A), // Orange icon
                 size: 40,
               ),
             ),
@@ -60,11 +88,20 @@ class SignupScreen extends StatelessWidget {
           Text(
             "Create Account",
             style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width *
-                  0.1, // Responsive font size
+              fontSize: screenWidth * 0.09, // Responsive font size
               fontFamily: "San-Francisco-Pro-Fonts-master",
               color: Colors.white,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Subtitle Text
+          Text(
+            "Sign up to get started",
+            style: TextStyle(
+              fontSize: screenWidth * 0.04, // Responsive font size
+              fontFamily: "San-Francisco-Pro-Fonts-master",
+              color: Colors.white.withOpacity(0.8),
             ),
           ),
         ],
@@ -73,62 +110,67 @@ class SignupScreen extends StatelessWidget {
   }
 
   Widget _buildFormSection(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal:
-              MediaQuery.of(context).size.width * 0.1, // 10% of screen width
-        ),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            bottom:
-                MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.1, // 10% of screen width
+      ),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
-          child: Column(
-            children: [
-              // Full Name Field
-              CustomTextField(
-                controller: controller.nameController,
-                label: "Full Name",
-                icon: Icons.person,
-              ),
-              const SizedBox(height: 20),
-
-              // Email Field
-              CustomTextField(
-                controller: controller.emailController,
-                label: "Email",
-                icon: Icons.email,
-              ),
-              const SizedBox(height: 20),
-
-              // Password Field
-              CustomTextField(
-                controller: controller.passwordController,
-                label: "Password",
-                icon: Icons.lock,
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-
-              // Confirm Password Field
-              CustomTextField(
-                controller: controller.confirmPasswordController,
-                label: "Confirm Password",
-                icon: Icons.lock_outline,
-                obscureText: true,
-              ),
-              const SizedBox(height: 40),
-
-              // Sign Up Button
-              _buildSignUpButton(controller),
-              const SizedBox(height: 20),
-
-              // Login Text
-              _buildLoginText(),
-            ],
+        ],
+      ),
+      child: Column(
+        children: [
+          // Full Name Field
+          CustomTextField(
+            controller: controller.nameController,
+            label: "Full Name",
+            icon: Icons.person,
           ),
-        ),
+          const SizedBox(height: 20),
+
+          // Email Field
+          CustomTextField(
+            controller: controller.emailController,
+            label: "Email",
+            icon: Icons.email,
+          ),
+          const SizedBox(height: 20),
+
+          // Password Field
+          CustomTextField(
+            controller: controller.passwordController,
+            label: "Password",
+            icon: Icons.lock,
+            obscureText: true,
+          ),
+          const SizedBox(height: 20),
+
+          // Confirm Password Field
+          CustomTextField(
+            controller: controller.confirmPasswordController,
+            label: "Confirm Password",
+            icon: Icons.lock_outline,
+            obscureText: true,
+          ),
+          const SizedBox(height: 40),
+
+          // Sign Up Button
+          _buildSignUpButton(controller),
+          const SizedBox(height: 20),
+
+          // Login Text
+          _buildLoginText(),
+        ],
       ),
     );
   }
@@ -140,15 +182,17 @@ class SignupScreen extends StatelessWidget {
       child: ElevatedButton(
         onPressed: controller.signUp, // Call the signUp method
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color(0xFFFF460A), // Orange background
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
+          elevation: 5,
+          shadowColor: Colors.black.withOpacity(0.2),
         ),
-        child: Text(
+        child: const Text(
           'Sign Up',
           style: TextStyle(
-            color: Color(0xFFFF4B3A),
+            color: Colors.white,
             fontSize: 18,
             fontFamily: "San-Francisco-Pro-Fonts-master",
             fontWeight: FontWeight.bold,
@@ -167,7 +211,7 @@ class SignupScreen extends StatelessWidget {
             const TextSpan(
               text: "Already have an account? ",
               style: TextStyle(
-                color: Colors.white70,
+                color: Colors.black54,
                 fontFamily: "San-Francisco-Pro-Fonts-master",
               ),
             ),
@@ -177,7 +221,7 @@ class SignupScreen extends StatelessWidget {
                 ..onTap = () => Get.offAll(() => LoginScreen()),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xFFFF460A), // Orange text
                 fontFamily: "San-Francisco-Pro-Fonts-master",
               ),
             ),
@@ -210,16 +254,16 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       style: const TextStyle(
-        color: Color(0xFFFF4B3A),
+        color: Colors.black,
         fontFamily: "San-Francisco-Pro-Fonts-master",
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: Color(0xFFFF4B3A).withOpacity(0.7),
+          color: Colors.black.withOpacity(0.6),
           fontFamily: "San-Francisco-Pro-Fonts-master",
         ),
-        prefixIcon: Icon(icon, color: Color(0xFFFF4B3A)),
+        prefixIcon: Icon(icon, color: const Color(0xFFFF460A)), // Orange icon
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -229,6 +273,17 @@ class CustomTextField extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(
           vertical: 15,
           horizontal: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(
+            color: Color(0xFFFF460A), // Orange border
+            width: 2,
+          ),
         ),
       ),
       onChanged: onChanged,

@@ -88,7 +88,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.07, // Adjusted font size
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'SF Pro Rounded',
+                        fontFamily: ' Rounded',
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -98,7 +98,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.06, // Adjusted font size
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'SF Pro Rounded',
+                        fontFamily: ' Rounded',
                         color: const Color(0xFFFA4A0C),
                       ),
                       textAlign: TextAlign.center,
@@ -111,7 +111,7 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'SF Pro Rounded',
+                          fontFamily: ' Rounded',
                         ),
                       ),
                     ),
@@ -121,7 +121,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'SF Pro Text',
+                        fontFamily: ' Text',
                         height: 1.4,
                       ),
                     ),
@@ -133,7 +133,7 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'SF Pro Rounded',
+                          fontFamily: ' Rounded',
                         ),
                       ),
                     ),
@@ -143,7 +143,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'SF Pro Text',
+                        fontFamily: ' Text',
                         height: 1.4,
                       ),
                     ),

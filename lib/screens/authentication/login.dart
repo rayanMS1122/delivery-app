@@ -9,18 +9,26 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: screenHeight,
           decoration: const BoxDecoration(
-            color: Color(0xFFFF460A), // Orange background
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFF460A),
+                Color(0xFFFF6B3A)
+              ], // Gradient background
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context)
-                  .viewInsets
-                  .bottom, // Adjust for keyboard
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Column(
               children: [
@@ -37,42 +45,70 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildTopSection(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal:
-            MediaQuery.of(context).size.width * 0.1, // 10% of screen width
+        horizontal: screenWidth * 0.1, // 10% of screen width
         vertical: 44,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Circle Icon
-          Container(
-            width: 73,
-            height: 73,
-            decoration: const BoxDecoration(
+          // Animated Circle Icon with Neumorphic Effect
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(4, 4),
+                ),
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(-4, -4),
+                ),
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+            child: Center(
               child: Icon(
                 Icons.lock_outline,
-                color: Theme.of(context).primaryColor,
-                size: 40,
+                color: const Color(0xFFFF460A), // Orange icon
+                size: 50,
               ),
             ),
           ),
           const SizedBox(height: 20),
-          // Title Text
-          Text(
-            "Welcome Back!",
-            style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width *
-                  0.1, // Responsive font size
-              fontFamily: "SF Pro",
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          // Title Text with Fade Animation
+          FadeIn(
+            delay: 300,
+            child: Text(
+              "Welcome Back!",
+              style: TextStyle(
+                fontSize: screenWidth * 0.09, // Responsive font size
+                fontFamily: "",
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Subtitle Text with Fade Animation
+          FadeIn(
+            delay: 500,
+            child: Text(
+              "Sign in to continue",
+              style: TextStyle(
+                fontSize: screenWidth * 0.04, // Responsive font size
+                fontFamily: "",
+                color: Colors.white.withOpacity(0.8),
+              ),
             ),
           ),
         ],
@@ -81,14 +117,25 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildFormSection(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal:
-            MediaQuery.of(context).size.width * 0.1, // 10% of screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.1, // 10% of screen width
+      ),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Email Field
           CustomTextField(
@@ -109,21 +156,24 @@ class LoginScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // Error Message
+          // Error Message with Slide Animation
           Obx(() {
             if (controller.errorMessage.isNotEmpty) {
-              return AnimatedOpacity(
-                opacity: controller.errorMessage.isNotEmpty ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    controller.errorMessage.value,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontFamily: "SF Pro",
+              return SlideIn(
+                delay: 200,
+                child: AnimatedOpacity(
+                  opacity: controller.errorMessage.isNotEmpty ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      controller.errorMessage.value,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontFamily: "",
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               );
@@ -132,12 +182,18 @@ class LoginScreen extends StatelessWidget {
           }),
           const SizedBox(height: 20),
 
-          // Sign In Button
-          _buildSignInButton(controller),
+          // Sign In Button with Bounce Animation
+          BounceIn(
+            delay: 500,
+            child: _buildSignInButton(controller),
+          ),
           const SizedBox(height: 20),
 
-          // Register Text
-          _buildRegisterText(),
+          // Register Text with Fade Animation
+          FadeIn(
+            delay: 700,
+            child: _buildRegisterText(),
+          ),
         ],
       ),
     );
@@ -151,19 +207,21 @@ class LoginScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: controller.isLoading.value ? null : controller.login,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
+            backgroundColor: const Color(0xFFFF460A), // Orange background
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
+            elevation: 5,
+            shadowColor: Colors.black.withOpacity(0.2),
           ),
           child: controller.isLoading.value
-              ? const CircularProgressIndicator(color: Color(0xFFFF4B3A))
+              ? const CircularProgressIndicator(color: Colors.white)
               : const Text(
                   'Sign In',
                   style: TextStyle(
-                    color: Color(0xFFFF4B3A),
+                    color: Colors.white,
                     fontSize: 18,
-                    fontFamily: "SF Pro",
+                    fontFamily: "",
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -181,8 +239,8 @@ class LoginScreen extends StatelessWidget {
             const TextSpan(
               text: "Don't have an account? ",
               style: TextStyle(
-                color: Colors.white70,
-                fontFamily: "SF Pro",
+                color: Colors.black54,
+                fontFamily: "",
               ),
             ),
             TextSpan(
@@ -191,8 +249,8 @@ class LoginScreen extends StatelessWidget {
                 ..onTap = () => Get.to(() => SignupScreen()),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: "SF Pro",
+                color: Color(0xFFFF460A), // Orange text
+                fontFamily: "",
               ),
             ),
           ],
@@ -209,13 +267,6 @@ class CustomTextField extends StatelessWidget {
   final IconData icon;
   final bool obscureText;
   final Function(String)? onChanged;
-  final TextStyle? textStyle;
-  final TextStyle? labelStyle;
-  final Color iconColor;
-  final Color fillColor;
-  final double borderRadius;
-  final EdgeInsetsGeometry? contentPadding;
-  final InputBorder? border;
 
   const CustomTextField({
     required this.controller,
@@ -223,13 +274,6 @@ class CustomTextField extends StatelessWidget {
     required this.icon,
     this.obscureText = false,
     this.onChanged,
-    this.textStyle,
-    this.labelStyle,
-    this.iconColor = const Color(0xFFFF4B3A),
-    this.fillColor = Colors.white,
-    this.borderRadius = 15.0,
-    this.contentPadding,
-    this.border,
   });
 
   @override
@@ -237,33 +281,110 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
-      style: textStyle ??
-          const TextStyle(
-            color: Color.fromARGB(255, 0, 12, 143),
-            fontFamily: "SF Pro",
-          ),
+      style: const TextStyle(
+        color: Colors.black,
+        fontFamily: "",
+      ),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: labelStyle ??
-            TextStyle(
-              fontSize: 16,
-              color: iconColor,
-              fontFamily: "SF Pro",
-            ),
-        prefixIcon: Icon(icon, color: iconColor),
+        labelStyle: TextStyle(
+          color: Colors.black.withOpacity(0.6),
+          fontFamily: "",
+        ),
+        prefixIcon: Icon(icon, color: const Color(0xFFFF460A)), // Orange icon
         filled: true,
-        fillColor: fillColor,
-        border: border ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-        contentPadding: contentPadding ??
-            const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 20,
-            ),
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(
+            color: Color(0xFFFF460A), // Orange border
+            width: 2,
+          ),
+        ),
       ),
       onChanged: onChanged,
+    );
+  }
+}
+
+// Animation Widgets
+class FadeIn extends StatelessWidget {
+  final Widget child;
+  final int delay;
+
+  const FadeIn({required this.child, this.delay = 0});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: 500 + delay),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: child,
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+class SlideIn extends StatelessWidget {
+  final Widget child;
+  final int delay;
+
+  const SlideIn({required this.child, this.delay = 0});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      tween: Tween<Offset>(begin: const Offset(0, 20), end: Offset.zero),
+      duration: Duration(milliseconds: 500 + delay),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: value,
+          child: child,
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+class BounceIn extends StatelessWidget {
+  final Widget child;
+  final int delay;
+
+  const BounceIn({required this.child, this.delay = 0});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: 500 + delay),
+      curve: Curves.elasticOut,
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: value,
+          child: child,
+        );
+      },
+      child: child,
     );
   }
 }

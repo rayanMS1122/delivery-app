@@ -73,7 +73,7 @@ class ItemNotFoundScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: screenWidth * 0.04, // Adjusted font size
                   fontWeight: FontWeight.w400,
-                  fontFamily: 'SF Pro Text',
+                  // fontFamily: ' Text',
                 ),
                 textAlign: TextAlign.center,
               ),

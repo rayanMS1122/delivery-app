@@ -53,7 +53,7 @@ class CartScreen extends StatelessWidget {
                       'Swipe on an item to delete',
                       style: TextStyle(
                         fontSize: 12,
-                        fontFamily: 'SF Pro Text',
+                        // fontFamily: ' Text',
                         color: Colors.grey,
                       ),
                     ),
@@ -169,7 +169,7 @@ class CartItemWidget extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'SF Pro Text',
+                    // fontFamily: ' Text',
                   ),
                 ),
                 const SizedBox(height: 11),
@@ -182,7 +182,7 @@ class CartItemWidget extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFFA4A0C),
-                        fontFamily: 'SF Pro Text',
+                        // fontFamily: ' Text',
                       ),
                     ),
                     Container(
