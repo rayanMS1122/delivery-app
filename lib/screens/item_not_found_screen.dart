@@ -15,40 +15,69 @@ class ItemNotFoundScreen extends StatelessWidget {
           color: Color(0xFFF5F5F8),
         ),
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: screenHeight * 0.1), // Adjusted spacing
-                _buildSearchBar(context),
-                SizedBox(height: screenHeight * 0.2), // Adjusted spacing
-                Icon(
-                  Icons.search,
-                  size: screenWidth * 0.3, // Adjusted icon size
-                  color: Colors.black26,
+          child: Column(
+            children: [
+              // Custom AppBar
+              Padding(
+                padding: EdgeInsets.only(
+                  top: screenHeight * 0.05,
+                  left: screenWidth * 0.05,
+                  right: screenWidth * 0.05,
                 ),
-                SizedBox(height: screenHeight * 0.02), // Adjusted spacing
-                Text(
-                  'Item not found',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.07, // Adjusted font size
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'San-Francisco-Pro-Fonts-master',
-                  ),
-                  textAlign: TextAlign.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Image.asset(
+                        "assets/chevron-left.png",
+                        scale: 30,
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    Text(
+                      "Search",
+                      style: TextStyle(
+                        fontFamily: "SF-Pro-Text",
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenWidth * 0.06,
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Placeholder for alignment
+                  ],
                 ),
-                SizedBox(height: screenHeight * 0.02), // Adjusted spacing
-                Text(
-                  'Try searching the item with\na different keyword.',
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.04, // Adjusted font size
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'SF Pro Text',
-                  ),
-                  textAlign: TextAlign.center,
+              ),
+              SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+              _buildSearchBar(context),
+              SizedBox(height: screenHeight * 0.2), // Adjusted spacing
+              Icon(
+                Icons.search,
+                size: screenWidth * 0.3, // Adjusted icon size
+                color: Colors.black26,
+              ),
+              SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+              Text(
+                'Item not found',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.07, // Adjusted font size
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'San-Francisco-Pro-Fonts-master',
                 ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+              Text(
+                'Try searching the item with\na different keyword.',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.04, // Adjusted font size
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'SF Pro Text',
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -63,18 +92,6 @@ class ItemNotFoundScreen extends StatelessWidget {
       padding: EdgeInsets.only(left: screenWidth * 0.1), // Adjusted padding
       child: Row(
         children: [
-          // Back Icon
-          GestureDetector(
-            onTap: () {
-              // Handle back button press
-              Get.back();
-            },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              size: 24,
-              color: Colors.black,
-            ),
-          ),
           SizedBox(width: screenWidth * 0.04), // Adjusted spacing
           // Search TextField
           Container(
@@ -89,11 +106,11 @@ class ItemNotFoundScreen extends StatelessWidget {
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
-                ),
+                )
               ],
             ),
-            child: Center(
-              child: const TextField(
+            child: const Center(
+              child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   hintStyle: TextStyle(

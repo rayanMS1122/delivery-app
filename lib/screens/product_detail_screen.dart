@@ -16,6 +16,7 @@ class ProductDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Custom AppBar
               Padding(
                 padding: EdgeInsets.all(screenWidth * 0.05), // Adjusted padding
                 child: Row(

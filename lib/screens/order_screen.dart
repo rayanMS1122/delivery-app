@@ -1,5 +1,8 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -26,30 +29,11 @@ class OrderScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // App Bar with Back Button and Title
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Image.asset(
-                    "assets/chevron-left.png",
-                    scale: 30,
-                  ),
-                  onPressed: () {
-                    // Add navigation back action here
-                    Navigator.pop(context);
-                  },
-                ),
-                Text(
-                  "Orders",
-                  style: TextStyle(
-                    fontFamily: "SF-Pro-Text",
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: screenWidth * 0.06, // Adjusted font size
-                  ),
-                ),
-                const SizedBox(width: 48), // Placeholder for alignment
-              ],
+            CustomAppBar(
+              title: "Orders",
+              onBackPressed: () {
+                Get.back();
+              },
             ),
             SizedBox(height: screenHeight * 0.04), // Adjusted spacing
 

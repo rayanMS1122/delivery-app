@@ -1,3 +1,4 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,13 @@ class SearchScreen extends StatelessWidget {
         color: const Color(0xFFEEEEEE),
         child: Column(
           children: [
-            SizedBox(height: screenHeight * 0.08), // Adjusted spacing
+            SizedBox(height: screenHeight * 0.04), // Adjusted spacing
+            CustomAppBar(
+              title: "Search",
+              onBackPressed: () {
+                Get.back();
+              },
+            ),
             _buildSearchBar(context),
             SizedBox(height: screenHeight * 0.04), // Adjusted spacing
             Expanded(
@@ -34,18 +41,6 @@ class SearchScreen extends StatelessWidget {
       padding: EdgeInsets.only(left: screenWidth * 0.1), // Adjusted padding
       child: Row(
         children: [
-          // Back Icon
-          GestureDetector(
-            onTap: () {
-              // Handle back button press
-              Get.back();
-            },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              size: 24,
-              color: Colors.black,
-            ),
-          ),
           SizedBox(width: screenWidth * 0.04), // Adjusted spacing
           // Search TextField
           Container(

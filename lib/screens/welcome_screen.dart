@@ -127,17 +127,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-
-class NextScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Next Screen'),
-      ),
-      body: const Center(
-        child: Text('Welcome to the Next Screen!'),
-      ),
-    );
-  }
-}

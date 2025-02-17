@@ -1,3 +1,4 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,22 +30,11 @@ class MyOffersScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: screenHeight * 0.02), // Adjusted spacing
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () => Get.back(),
-                      ),
-                      const Text(
-                        'Cart',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 48), // Placeholder for alignment
-                    ],
+                  CustomAppBar(
+                    title: "Offers",
+                    onBackPressed: () {
+                      Get.back();
+                    },
                   ),
                   SizedBox(height: screenHeight * 0.05), // Adjusted spacing
                   Text(

@@ -1,3 +1,4 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,8 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F8),
       body: SafeArea(
@@ -27,24 +30,13 @@ class CartScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                 // Back Button and Title
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () => Get.back(),
-                    ),
-                    const Text(
-                      'Cart',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(width: 40), // Placeholder for alignment
-                  ],
+                CustomAppBar(
+                  title: "Cart",
+                  onBackPressed: () {
+                    Get.back();
+                  },
                 ),
                 const SizedBox(height: 20),
                 // Swipe Hint
