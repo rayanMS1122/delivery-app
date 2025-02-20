@@ -27,11 +27,22 @@ class ProductDetailScreen extends StatelessWidget {
                       onPressed: () => Get.back(),
                       tooltip: 'Go back',
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {},
-                      tooltip: 'Add to favorites',
-                    ),
+                    Obx(() {
+                      return IconButton(
+                        icon: Icon(
+                          controller.isFavorite.value
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: controller.isFavorite.value
+                              ? Colors.red
+                              : Colors.black,
+                        ),
+                        onPressed: () {
+                          controller.toggleFavorite();
+                        },
+                        tooltip: 'Add to favorites',
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -40,70 +51,82 @@ class ProductDetailScreen extends StatelessWidget {
                     horizontal: screenWidth * 0.06), // Adjusted padding
                 child: Column(
                   children: [
+                    // Product Image
                     Container(
                       height: screenHeight * 0.35, // Adjusted height
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
+                        boxShadow: [],
                       ),
-                      child: Image.asset(
-                        'assets/Mask Group.png',
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(child: Text('Image not available'));
-                        },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/Mask Group.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Center(
+                              child: Text(
+                                'Image not available',
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.04,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+                    // Image Indicators
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         4,
-                        (index) => index == 0
-                            ? Container(
-                                width: screenWidth * 0.02, // Adjusted size
-                                height: screenWidth * 0.02, // Adjusted size
-                                margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        screenWidth * 0.01), // Adjusted margin
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xFFFA4A0C),
-                                ),
-                              )
-                            : Container(
-                                width: screenWidth * 0.02, // Adjusted size
-                                height: screenWidth * 0.02, // Adjusted size
-                                margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        screenWidth * 0.01), // Adjusted margin
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.grey[400],
-                                ),
-                              ),
+                        (index) => Obx(() {
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            width: screenWidth * 0.02, // Adjusted size
+                            height: screenWidth * 0.02, // Adjusted size
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    screenWidth * 0.01), // Adjusted margin
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color:
+                                  controller.selectedImageIndex.value == index
+                                      ? const Color(0xFFFA4A0C)
+                                      : Colors.grey[400],
+                            ),
+                          );
+                        }),
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+                    // Product Name
                     Text(
                       'Veggie tomato mix',
                       style: TextStyle(
                         fontSize: screenWidth * 0.07, // Adjusted font size
                         fontWeight: FontWeight.w600,
-                        fontFamily: ' Rounded',
+                        fontFamily: 'Rounded',
                       ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: screenHeight * 0.02), // Adjusted spacing
+                    // Product Price
                     Text(
                       'N1,900',
                       style: TextStyle(
                         fontSize: screenWidth * 0.06, // Adjusted font size
                         fontWeight: FontWeight.w700,
-                        fontFamily: ' Rounded',
+                        fontFamily: 'Rounded',
                         color: const Color(0xFFFA4A0C),
                       ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: screenHeight * 0.04), // Adjusted spacing
+                    // Delivery Info
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -111,21 +134,22 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: ' Rounded',
+                          fontFamily: 'Rounded',
                         ),
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01), // Adjusted spacing
                     Text(
-                      'Delivered between monday aug and thursday 20 from 8pm to 91:32 pm',
+                      'Delivered between Monday Aug and Thursday 20 from 8pm to 9:32 pm',
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: ' Text',
+                        fontFamily: 'Text',
                         height: 1.4,
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.03), // Adjusted spacing
+                    // Return Policy
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -133,7 +157,7 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: ' Rounded',
+                          fontFamily: 'Rounded',
                         ),
                       ),
                     ),
@@ -143,7 +167,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: ' Text',
+                        fontFamily: 'Text',
                         height: 1.4,
                       ),
                     ),
@@ -154,12 +178,16 @@ class ProductDetailScreen extends StatelessWidget {
                       height: screenHeight * 0.08, // Adjusted height
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: const Color(0xFFFA4A0C),
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFFA4A0C), Color(0xFFFF6B3A)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFFA4A0C).withOpacity(0.3),
+                            color: Color(0xFFFA4A0C).withOpacity(0.3),
                             blurRadius: 10,
-                            offset: const Offset(0, 5),
+                            offset: Offset(0, 5),
                           ),
                         ],
                       ),
@@ -198,8 +226,25 @@ class ProductDetailScreen extends StatelessWidget {
 }
 
 class ProductController extends GetxController {
+  // Observable for selected image index
+  var selectedImageIndex = 0.obs;
+
+  // Observable for favorite status
+  var isFavorite = false.obs;
+
+  // Method to toggle favorite status
+  void toggleFavorite() {
+    isFavorite.value = !isFavorite.value;
+  }
+
+  // Method to add product to cart
   void addToCart() {
-    // Implement add to cart functionality
-    Get.snackbar('Success', 'Item added to cart');
+    Get.snackbar(
+      'Success',
+      'Item added to cart',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
   }
 }

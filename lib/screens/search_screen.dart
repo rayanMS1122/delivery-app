@@ -1,9 +1,13 @@
+import 'package:delivery_app/controllers/search_controller.dart';
 import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  SearchScreen({Key? key}) : super(key: key);
+
+  // Initialize the controller
+  final SearchsController searchController = Get.put(SearchsController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +62,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: const TextField(
+            child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search...',
                 hintStyle: TextStyle(
@@ -72,6 +76,10 @@ class SearchScreen extends StatelessWidget {
                 fontSize: 14,
                 color: Colors.black,
               ),
+              onChanged: (value) {
+                // Update search query and results
+                searchController.updateSearchResults(value);
+              },
             ),
           ),
         ],
@@ -91,59 +99,59 @@ class SearchScreen extends StatelessWidget {
           Center(
             child: Padding(
               padding: EdgeInsets.all(screenWidth * 0.05), // Adjusted padding
-              child: Text(
-                "Found 6 results",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: screenWidth * 0.07, // Adjusted font size
-                  fontFamily: "San-Francisco-Pro-Fonts-master",
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Obx(() => Text(
+                    "Found ${searchController.searchResults.length} results",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: screenWidth * 0.07, // Adjusted font size
+                      fontFamily: "San-Francisco-Pro-Fonts-master",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
             ),
           ),
           SizedBox(height: screenHeight * 0.03), // Adjusted spacing
           Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: screenWidth * 0.02), // Adjusted padding
-                    child: ListView.builder(
-                      itemCount: 6,
-                      itemBuilder: (context, index) {
-                        return _buildFeaturedProductCard(
-                          "Veggie\ntomato mix",
-                          "N1,900",
-                          "assets/Mask Group.png",
-                          screenWidth,
-                          screenHeight,
-                        );
-                      },
+            child: Obx(() => Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: screenWidth * 0.02), // Adjusted padding
+                        child: ListView.builder(
+                          itemCount: searchController.searchResults.length,
+                          itemBuilder: (context, index) {
+                            return _buildFeaturedProductCard(
+                              searchController.searchResults[index],
+                              "N1,900",
+                              "assets/Mask Group.png",
+                              screenWidth,
+                              screenHeight,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: screenWidth * 0.02), // Adjusted padding
-                    child: ListView.builder(
-                      itemCount: 6,
-                      itemBuilder: (context, index) {
-                        return _buildFeaturedProductCard(
-                          "Veggie\ntomato mix",
-                          "N1,900",
-                          "assets/Mask Group.png",
-                          screenWidth,
-                          screenHeight,
-                        );
-                      },
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: screenWidth * 0.02), // Adjusted padding
+                        child: ListView.builder(
+                          itemCount: searchController.searchResults.length,
+                          itemBuilder: (context, index) {
+                            return _buildFeaturedProductCard(
+                              searchController.searchResults[index],
+                              "N1,900",
+                              "assets/Mask Group.png",
+                              screenWidth,
+                              screenHeight,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            ),
+                  ],
+                )),
           ),
         ],
       ),

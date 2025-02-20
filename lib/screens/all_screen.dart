@@ -35,28 +35,26 @@ class AllScreen extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   children: [
+                    _buildScreenTile(
+                        context, 'Welcome Screen', const WelcomeScreen()),
                     _buildScreenTile(context, 'Login Screen', LoginScreen()),
                     _buildScreenTile(context, 'Signup Screen', SignupScreen()),
                     _buildScreenTile(
-                        context, 'History Screen', const HistoryScreen()),
+                        context, 'History Screen', HistoryScreen()),
                     _buildScreenTile(
                         context, 'Home Screen', const HomeScreen()),
                     _buildScreenTile(context, 'No Internet Screen',
-                        const NoInternetConnectionScreen()),
+                        NoInternetConnectionScreen()),
+                    _buildScreenTile(context, 'Order Screen', OrderScreen()),
+                    _buildScreenTile(context, 'Search Screen', SearchScreen()),
                     _buildScreenTile(
-                        context, 'Order Screen', const OrderScreen()),
+                        context, 'Item Not Found Screen', ItemNotFoundScreen()),
                     _buildScreenTile(
-                        context, 'Welcome Screen', const WelcomeScreen()),
-                    _buildScreenTile(
-                        context, 'Search Screen', const SearchScreen()),
-                    _buildScreenTile(context, 'Item Not Found Screen',
-                        const ItemNotFoundScreen()),
-                    _buildScreenTile(
-                        context, 'Profile screen', const ProfileScreen()),
+                        context, 'Profile screen', ProfileScreen()),
                     _buildScreenTile(context, 'Product Detail Screen',
                         ProductDetailScreen()),
                     _buildScreenTile(
-                        context, 'Checkout Screen', const CheckoutScreen()),
+                        context, 'Checkout Screen', CheckoutScreen()),
                     _buildScreenTile(context, 'Cart Screen', CartScreen()),
                     _buildScreenTile(
                         context, 'Offers Screen', MyOffersScreen()),

@@ -1,9 +1,10 @@
+import 'package:delivery_app/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:delivery_app/widgets/delivery_options_widget.dart'; // Ensure correct import
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final ProfileController controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,8 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: screenHeight * 0.04), // Adjusted spacing
+
+              // Information Section
               Text(
                 "Information",
                 style: TextStyle(
@@ -114,6 +117,8 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: screenHeight * 0.04), // Adjusted spacing
+
+              // Payment Method Section
               Text(
                 "Payment Method",
                 style: TextStyle(
@@ -141,137 +146,48 @@ class ProfileScreen extends StatelessWidget {
                   horizontal: screenWidth * 0.05, // Adjusted padding
                   vertical: screenHeight * 0.02, // Adjusted padding
                 ),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.02), // Adjusted spacing
-                            Container(
-                              width: screenWidth * 0.12, // Adjusted size
-                              height: screenWidth * 0.12, // Adjusted size
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Image.asset(
-                                'assets/bi_credit-card-2-front-fill.png',
-                                width: screenWidth * 0.08, // Adjusted size
-                                height: screenWidth * 0.08, // Adjusted size
-                              ),
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.03), // Adjusted spacing
-                            Text(
-                              "Card",
-                              style: TextStyle(
-                                fontFamily: "SF-Pro-Text",
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    screenWidth * 0.045, // Adjusted font size
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                            height: screenHeight * 0.03,
-                            indent: screenWidth * 0.1), // Adjusted spacing
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.02), // Adjusted spacing
-                            Container(
-                              width: screenWidth * 0.12, // Adjusted size
-                              height: screenWidth * 0.12, // Adjusted size
-                              decoration: BoxDecoration(
-                                color: Colors.pink,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Image.asset(
-                                'assets/dashicons_bank.png',
-                                width: screenWidth * 0.08, // Adjusted size
-                                height: screenWidth * 0.08, // Adjusted size
-                              ),
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.03), // Adjusted spacing
-                            Text(
-                              "Bank account",
-                              style: TextStyle(
-                                fontFamily: "SF-Pro-Text",
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    screenWidth * 0.045, // Adjusted font size
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                            height: screenHeight * 0.03,
-                            indent: screenWidth * 0.1), // Adjusted spacing
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.02), // Adjusted spacing
-                            Container(
-                              width: screenWidth * 0.12, // Adjusted size
-                              height: screenWidth * 0.12, // Adjusted size
-                              decoration: BoxDecoration(
-                                color: Colors.blue[900],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Image.asset(
-                                'assets/cib_paypal.png',
-                                width: screenWidth * 0.08, // Adjusted size
-                                height: screenWidth * 0.08, // Adjusted size
-                                scale: 44,
-                              ),
-                            ),
-                            SizedBox(
-                                width: screenWidth * 0.03), // Adjusted spacing
-                            Text(
-                              "Paypal",
-                              style: TextStyle(
-                                fontFamily: "SF-Pro-Text",
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    screenWidth * 0.045, // Adjusted font size
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                            height: screenHeight * 0.03,
-                            indent: screenWidth * 0.1), // Adjusted spacing
-                      ],
-                    ),
-                  ],
-                ),
+                child: Obx(() {
+                  return Column(
+                    children: [
+                      _buildPaymentMethod(
+                        context,
+                        "Card",
+                        'assets/bi_credit-card-2-front-fill.png',
+                        Colors.orange,
+                        controller.isCardSelected.value,
+                        (value) {
+                          controller.toggleCardSelection(value);
+                        },
+                      ),
+                      Divider(
+                          height: screenHeight * 0.03,
+                          indent: screenWidth * 0.1),
+                      _buildPaymentMethod(
+                        context,
+                        "Bank account",
+                        'assets/dashicons_bank.png',
+                        Colors.pink,
+                        controller.isBankSelected.value,
+                        (value) {
+                          controller.toggleBankSelection(value);
+                        },
+                      ),
+                      Divider(
+                          height: screenHeight * 0.03,
+                          indent: screenWidth * 0.1),
+                      _buildPaymentMethod(
+                        context,
+                        "Paypal",
+                        'assets/cib_paypal.png',
+                        Colors.blue[900]!,
+                        controller.isPaypalSelected.value,
+                        (value) {
+                          controller.togglePaypalSelection(value);
+                        },
+                      ),
+                    ],
+                  );
+                }),
               ),
               SizedBox(height: screenHeight * 0.04), // Adjusted spacing
 
@@ -281,7 +197,11 @@ class ProfileScreen extends StatelessWidget {
                 height: screenHeight * 0.08, // Adjusted height
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: const Color(0xFFFA4A0C),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFFA4A0C), Color(0xFFFF6B3A)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xFFFA4A0C).withOpacity(0.3),
@@ -295,19 +215,15 @@ class ProfileScreen extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(30),
                     onTap: () {
-                      // Add navigation or action here
+                      // Show delivery options dialog
                       showDialog(
                         context: context,
                         builder: (context) {
                           return Dialog(
-                            backgroundColor:
-                                Colors.transparent, // Transparent background
-                            insetPadding:
-                                const EdgeInsets.all(20), // Add padding
+                            backgroundColor: Colors.transparent,
+                            insetPadding: const EdgeInsets.all(20),
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      300), // Set max width for the dialog
+                              constraints: BoxConstraints(maxWidth: 300),
                               child: DeliveryOptionsWidget(),
                             ),
                           );
@@ -330,6 +246,78 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  // Helper method to build payment method row with custom InkWell design
+  Widget _buildPaymentMethod(
+    BuildContext context,
+    String title,
+    String iconPath,
+    Color iconColor,
+    bool isSelected,
+    Function(bool) onChanged,
+  ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return InkWell(
+      onTap: () {
+        onChanged(!isSelected); // Toggle selection
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.5),
+        child: Row(
+          children: [
+            Container(
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? const Color(0xFFFA4A0C) : Colors.grey,
+                  width: 1,
+                ),
+              ),
+              child: isSelected
+                  ? Center(
+                      child: Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFFA4A0C),
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 16),
+            Container(
+              width: screenWidth * 0.12, // Adjusted size
+              height: screenWidth * 0.12, // Adjusted size
+              decoration: BoxDecoration(
+                color: iconColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Image.asset(
+                iconPath,
+                width: screenWidth * 0.08, // Adjusted size
+                height: screenWidth * 0.08, // Adjusted size
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: "SF-Pro-Text",
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: screenWidth * 0.045, // Adjusted font size
+              ),
+            ),
+          ],
         ),
       ),
     );

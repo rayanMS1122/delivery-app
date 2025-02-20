@@ -1,4 +1,4 @@
-import 'package:delivery_app/controllers/auth_controller.dart';
+import 'package:delivery_app/controllers/signup_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

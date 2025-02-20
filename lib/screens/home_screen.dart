@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Initialize the HomeController
   final HomeController _controller = Get.put(HomeController());
   final _advancedDrawerController = AdvancedDrawerController();
 
@@ -34,12 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
             case 2:
               return ProfileScreen();
             case 3:
-              return const HistoryScreen();
+              return HistoryScreen();
             default:
               return _buildHomeScreen(context);
           }
         }),
-        bottomNavigationBar: BottomNavigation(),
+        bottomNavigationBar:
+            BottomNavigation(), // Use BottomNavigation without onTabChange
       ),
       drawer: DrawerWidget(onSignOut: () {}),
       backdrop: Container(
@@ -118,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
         GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const OrderScreen()),
+            MaterialPageRoute(builder: (context) => OrderScreen()),
           ),
           child: Image.asset("assets/shopping-cart.png", scale: 25),
         ),
@@ -142,7 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
           "Delicious\nfood for you",
           style: TextStyle(
             fontSize: 34,
-            fontFamily: "San-Francisco-Pro-Fonts-master",
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -172,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: InputDecoration(
             hintText: "Search",
             hintStyle: TextStyle(
-              fontFamily: "San-Francisco-Pro-Fonts-master",
               color: Colors.black54,
             ),
             border: InputBorder.none,
@@ -192,7 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             "see more",
             style: TextStyle(
-              fontFamily: "SF-Pro-Italic.ttf",
               color: Color(0xFFFF4A3A),
               fontWeight: FontWeight.bold,
             ),
@@ -245,12 +244,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: 0,
                   top: 95,
                   right: 0,
-                  left: 50,
+                  left: MediaQuery.of(context).size.width * 0.20,
                   child: Text(
                     title,
                     style: const TextStyle(
                       fontSize: 22,
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
                       color: Colors.black,
                     ),
                   ),
@@ -259,13 +257,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: 0,
                   top: 180,
                   right: 0,
-                  left: 80,
+                  left: MediaQuery.of(context).size.width * 0.27,
                   child: Text(
                     price,
                     style: const TextStyle(
                       fontSize: 17,
                       color: Color(0xFFFF4A3A),
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
                       fontWeight: FontWeight.bold,
                     ),
                   ),

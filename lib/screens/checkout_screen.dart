@@ -1,14 +1,20 @@
+import 'package:delivery_app/controllers/cart_controller.dart';
+import 'package:delivery_app/controllers/checkout_controller.dart';
 import 'package:delivery_app/widgets/custom_appbar.dart';
+import 'package:delivery_app/widgets/delivery_method_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({Key? key}) : super(key: key);
+  final CheckoutController checkoutController = Get.put(CheckoutController());
+  final CartController cartController =
+      Get.find(); // Use the existing CartController
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,7 +56,40 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Open a dialog or new screen to update address
+                        Get.defaultDialog(
+                          title: 'Update Address',
+                          content: Column(
+                            children: [
+                              const SizedBox(height: 32),
+                              TextField(
+                                decoration: InputDecoration(labelText: 'Name'),
+                                onChanged: (value) =>
+                                    checkoutController.name.value = value,
+                              ),
+                              TextField(
+                                decoration:
+                                    InputDecoration(labelText: 'Address'),
+                                onChanged: (value) =>
+                                    checkoutController.address.value = value,
+                              ),
+                              TextField(
+                                decoration: InputDecoration(labelText: 'Phone'),
+                                onChanged: (value) =>
+                                    checkoutController.phone.value = value,
+                              ),
+                            ],
+                          ),
+                          confirm: TextButton(
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              'Save',
+                              style: TextStyle(color: const Color(0xFFFA4A0C)),
+                            ),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'change',
                         style: TextStyle(
@@ -63,44 +102,46 @@ class CheckoutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 // Address Card
-                Container(
-                  padding: const EdgeInsets.all(25),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
-                        blurRadius: 40,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Marvis Kparobo',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
+                Obx(() {
+                  return Container(
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.03),
+                          blurRadius: 40,
+                          offset: const Offset(0, 10),
                         ),
-                      ),
-                      Divider(),
-                      SizedBox(height: 8),
-                      Text(
-                        'Km 5 refinery road opposite republic road, effurun, delta state',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      Divider(),
-                      SizedBox(height: 8),
-                      Text(
-                        '+234 9011039271',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          checkoutController.name.value,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const Divider(),
+                        const SizedBox(height: 8),
+                        Text(
+                          checkoutController.address.value,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        const Divider(),
+                        const SizedBox(height: 8),
+                        Text(
+                          checkoutController.phone.value,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
                 const SizedBox(height: 32),
                 // Delivery Method Section
                 const Text(
@@ -124,38 +165,50 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Column(
-                    children: [
-                      DeliveryMethodTile(
-                        title: 'Door delivery',
-                        isSelected: true,
-                      ),
-                      Divider(),
-                      DeliveryMethodTile(
-                        title: 'Pick up',
-                        isSelected: false,
-                      ),
-                    ],
-                  ),
+                  child: Obx(() {
+                    return Column(
+                      children: [
+                        DeliveryMethodTile(
+                          title: 'Door delivery',
+                          isSelected:
+                              checkoutController.selectedDeliveryMethod.value ==
+                                  'Door delivery',
+                          onTap: () => checkoutController
+                              .updateDeliveryMethod('Door delivery'),
+                        ),
+                        const Divider(),
+                        DeliveryMethodTile(
+                          title: 'Pick up',
+                          isSelected:
+                              checkoutController.selectedDeliveryMethod.value ==
+                                  'Pick up',
+                          onTap: () => checkoutController
+                              .updateDeliveryMethod('Pick up'),
+                        ),
+                      ],
+                    );
+                  }),
                 ),
                 const SizedBox(height: 32),
                 // Total Section
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Total',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    Text(
-                      '23,000',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+                Obx(() {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Total',
+                        style: TextStyle(fontSize: 17),
                       ),
-                    ),
-                  ],
-                ),
+                      Text(
+                        '${cartController.totalPrice}',
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
                 const SizedBox(height: 32),
                 // Proceed to Payment Button
                 Container(
@@ -178,12 +231,16 @@ class CheckoutScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                       onTap: () {
                         // Handle payment
+                        Get.snackbar(
+                          'Payment',
+                          'Proceeding to payment...',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                       },
                       child: Center(
                         child: Text(
                           "Proceed to payment",
                           style: TextStyle(
-                            fontFamily: "SF-Pro-Text",
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
@@ -198,56 +255,6 @@ class CheckoutScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class DeliveryMethodTile extends StatelessWidget {
-  final String title;
-  final bool isSelected;
-
-  const DeliveryMethodTile({
-    Key? key,
-    required this.title,
-    required this.isSelected,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.5),
-      child: Row(
-        children: [
-          Container(
-            width: 15,
-            height: 15,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected ? const Color(0xFFFA4A0C) : Colors.grey,
-                width: 1,
-              ),
-            ),
-            child: isSelected
-                ? Center(
-                    child: Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFFA4A0C),
-                      ),
-                    ),
-                  )
-                : null,
-          ),
-          const SizedBox(width: 16),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 17),
-          ),
-        ],
       ),
     );
   }

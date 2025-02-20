@@ -1,4 +1,4 @@
-import 'package:delivery_app/controllers/auth_controller.dart';
+import 'package:delivery_app/controllers/login_controller.dart';
 import 'package:delivery_app/screens/authentication/register.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -215,7 +215,9 @@ class LoginScreen extends StatelessWidget {
             shadowColor: Colors.black.withOpacity(0.2),
           ),
           child: controller.isLoading.value
-              ? const CircularProgressIndicator(color: Colors.white)
+              ? const CircularProgressIndicator(
+                  color: const Color(0xFFFA4A0C),
+                )
               : const Text(
                   'Sign In',
                   style: TextStyle(

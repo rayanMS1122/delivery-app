@@ -2,7 +2,9 @@ import 'package:delivery_app/screens/authentication/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// Controller for Welcome Screen
 class WelcomeController extends GetxController {
+  // Method to navigate to the LoginScreen
   void navigateToNextScreen() {
     Get.to(() => LoginScreen()); // Contextless navigation using Get.to()
   }

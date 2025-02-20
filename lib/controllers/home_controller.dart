@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   // Observable for selected category index
   var selectedCategoryIndex = 0.obs;
-
-  // Observable for selected bottom navigation index
   var selectedNavIndex = 0.obs;
+
+  // Method to update the selected navigation index
+  void updateSelectedNavIndex(int index) {
+    selectedNavIndex.value = index;
+  }
 
   // Reactive list of categories (private)
   final RxList<String> _categories =
