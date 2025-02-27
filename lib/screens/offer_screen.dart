@@ -44,7 +44,6 @@ class MyOffersScreen extends StatelessWidget {
                       fontSize: screenWidth * 0.08, // Adjusted font size
                       fontWeight: FontWeight.w500,
                       letterSpacing: -1.7,
-                      fontFamily: 'Poppins',
                     ),
                     semanticsLabel: 'My offers',
                   ),

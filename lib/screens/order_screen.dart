@@ -87,7 +87,6 @@ class OrderScreen extends StatelessWidget {
                     child: Text(
                       "Start Ordering",
                       style: TextStyle(
-                        fontFamily: "SF-Pro-Text",
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: screenWidth * 0.045, // Adjusted font size
@@ -117,7 +116,6 @@ class OrderScreen extends StatelessWidget {
         Text(
           "No orders yet",
           style: TextStyle(
-            fontFamily: "SF-Pro-Text",
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: screenWidth * 0.07, // Adjusted font size
@@ -128,7 +126,6 @@ class OrderScreen extends StatelessWidget {
           "Hit the orange button below\nto create your first order",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: "SF-Pro-Text",
             color: Colors.grey,
             fontWeight: FontWeight.w500,
             fontSize: screenWidth * 0.04, // Adjusted font size
@@ -176,7 +173,6 @@ class OrderScreen extends StatelessWidget {
             title: Text(
               order.title,
               style: TextStyle(
-                fontFamily: "SF-Pro-Text",
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -184,7 +180,6 @@ class OrderScreen extends StatelessWidget {
             subtitle: Text(
               order.description,
               style: TextStyle(
-                fontFamily: "SF-Pro-Text",
                 color: Colors.grey,
                 fontSize: 14,
               ),
@@ -200,7 +195,6 @@ class OrderScreen extends StatelessWidget {
               child: Text(
                 order.status,
                 style: TextStyle(
-                  fontFamily: "SF-Pro-Text",
                   color: order.status == "Delivered"
                       ? Colors.green
                       : Colors.orange,

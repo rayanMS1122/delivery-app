@@ -1,3 +1,4 @@
+import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -109,7 +110,6 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.07, // Adjusted font size
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Rounded',
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -120,7 +120,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.06, // Adjusted font size
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'Rounded',
+
                         color: const Color(0xFFFA4A0C),
                       ),
                       textAlign: TextAlign.center,
@@ -134,7 +134,6 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Rounded',
                         ),
                       ),
                     ),
@@ -144,7 +143,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'Text',
+
                         height: 1.4,
                       ),
                     ),
@@ -157,7 +156,6 @@ class ProductDetailScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: screenWidth * 0.045, // Adjusted font size
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Rounded',
                         ),
                       ),
                     ),
@@ -167,7 +165,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenWidth * 0.04, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        fontFamily: 'Text',
+
                         height: 1.4,
                       ),
                     ),
@@ -202,7 +200,6 @@ class ProductDetailScreen extends StatelessWidget {
                             child: Text(
                               "Start Ordering",
                               style: TextStyle(
-                                fontFamily: "SF-Pro-Text",
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize:
@@ -221,30 +218,6 @@ class ProductDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ProductController extends GetxController {
-  // Observable for selected image index
-  var selectedImageIndex = 0.obs;
-
-  // Observable for favorite status
-  var isFavorite = false.obs;
-
-  // Method to toggle favorite status
-  void toggleFavorite() {
-    isFavorite.value = !isFavorite.value;
-  }
-
-  // Method to add product to cart
-  void addToCart() {
-    Get.snackbar(
-      'Success',
-      'Item added to cart',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
     );
   }
 }

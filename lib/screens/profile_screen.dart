@@ -31,7 +31,6 @@ class ProfileScreen extends StatelessWidget {
                   Text(
                     "Profile",
                     style: TextStyle(
-                      fontFamily: "SF-Pro-Text",
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: screenWidth * 0.06, // Adjusted font size
@@ -45,7 +44,6 @@ class ProfileScreen extends StatelessWidget {
               Text(
                 "Information",
                 style: TextStyle(
-                  fontFamily: "SF-Pro-Text",
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.055, // Adjusted font size
@@ -83,7 +81,6 @@ class ProfileScreen extends StatelessWidget {
                         Text(
                           "Marvis lghedosa",
                           style: TextStyle(
-                            fontFamily: "SF-Pro-Text",
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: screenWidth * 0.05, // Adjusted font size
@@ -94,7 +91,6 @@ class ProfileScreen extends StatelessWidget {
                         Text(
                           "Marvislghedosa@gmail.com",
                           style: TextStyle(
-                            fontFamily: "SF-Pro-Text",
                             color: Colors.black54,
                             fontWeight: FontWeight.bold,
                             fontSize: screenWidth * 0.04, // Adjusted font size
@@ -105,7 +101,6 @@ class ProfileScreen extends StatelessWidget {
                         Text(
                           "No 15 uti street off ovie \npalace road \neffurun delta state",
                           style: TextStyle(
-                            fontFamily: "SF-Pro-Text",
                             color: Colors.black54,
                             fontWeight: FontWeight.bold,
                             fontSize: screenWidth * 0.04, // Adjusted font size
@@ -122,7 +117,6 @@ class ProfileScreen extends StatelessWidget {
               Text(
                 "Payment Method",
                 style: TextStyle(
-                  fontFamily: "SF-Pro-Text",
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.055, // Adjusted font size
@@ -234,7 +228,6 @@ class ProfileScreen extends StatelessWidget {
                       child: Text(
                         "Update",
                         style: TextStyle(
-                          fontFamily: "SF-Pro-Text",
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                           fontSize: screenWidth * 0.045, // Adjusted font size
@@ -311,7 +304,6 @@ class ProfileScreen extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                fontFamily: "SF-Pro-Text",
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: screenWidth * 0.045, // Adjusted font size

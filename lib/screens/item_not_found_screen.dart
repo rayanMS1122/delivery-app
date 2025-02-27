@@ -40,7 +40,6 @@ class ItemNotFoundScreen extends StatelessWidget {
                     Text(
                       "Search",
                       style: TextStyle(
-                        fontFamily: "SF-Pro-Text",
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: screenWidth * 0.06,
@@ -132,7 +131,6 @@ class ItemNotFoundScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: screenWidth * 0.07, // Adjusted font size
             fontWeight: FontWeight.w600,
-            fontFamily: 'San-Francisco-Pro-Fonts-master',
           ),
           textAlign: TextAlign.center,
         ),

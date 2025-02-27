@@ -89,7 +89,7 @@ class SignupScreen extends StatelessWidget {
             "Create Account",
             style: TextStyle(
               fontSize: screenWidth * 0.09, // Responsive font size
-              fontFamily: "San-Francisco-Pro-Fonts-master",
+
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -100,7 +100,7 @@ class SignupScreen extends StatelessWidget {
             "Sign up to get started",
             style: TextStyle(
               fontSize: screenWidth * 0.04, // Responsive font size
-              fontFamily: "San-Francisco-Pro-Fonts-master",
+
               color: Colors.white.withOpacity(0.8),
             ),
           ),
@@ -194,7 +194,6 @@ class SignupScreen extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
-            fontFamily: "San-Francisco-Pro-Fonts-master",
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -212,7 +211,6 @@ class SignupScreen extends StatelessWidget {
               text: "Already have an account? ",
               style: TextStyle(
                 color: Colors.black54,
-                fontFamily: "San-Francisco-Pro-Fonts-master",
               ),
             ),
             TextSpan(
@@ -222,7 +220,6 @@ class SignupScreen extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xFFFF460A), // Orange text
-                fontFamily: "San-Francisco-Pro-Fonts-master",
               ),
             ),
           ],
@@ -255,13 +252,11 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       style: const TextStyle(
         color: Colors.black,
-        fontFamily: "San-Francisco-Pro-Fonts-master",
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
           color: Colors.black.withOpacity(0.6),
-          fontFamily: "San-Francisco-Pro-Fonts-master",
         ),
         prefixIcon: Icon(icon, color: const Color(0xFFFF460A)), // Orange icon
         filled: true,

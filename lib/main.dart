@@ -1,16 +1,8 @@
 import 'package:delivery_app/controllers/cart_controller.dart'; // Import the CartController
+import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:delivery_app/screens/all_screen.dart';
-import 'package:delivery_app/screens/cart_screen.dart';
-import 'package:delivery_app/screens/checkout_screen.dart';
-import 'package:delivery_app/screens/history_screen.dart';
 import 'package:delivery_app/screens/home_screen.dart';
-import 'package:delivery_app/screens/item_not_found_screen.dart';
-import 'package:delivery_app/screens/no_internet_screen.dart';
-import 'package:delivery_app/screens/order_screen.dart';
-import 'package:delivery_app/screens/product_detail_screen.dart';
-import 'package:delivery_app/screens/profile_screen.dart';
-import 'package:delivery_app/screens/search_screen.dart';
-import 'package:delivery_app/screens/welcome_screen.dart';
+import 'package:delivery_app/screens/home_screen_with_node_js.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart'; // For GetX
@@ -38,7 +30,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme, // Apply the custom theme
-          home: const AllScreen(), // Set the initial screen
+          home: const HomeScreen(), // Set the initial screen
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
           builder: (context, child) {

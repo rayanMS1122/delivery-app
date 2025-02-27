@@ -22,17 +22,18 @@ class DrawerWidget extends StatelessWidget {
             children: [
               SizedBox(
                   height: screenHeight * 0.2), // Adjust spacing dynamically
-              _buildDrawerItem("Profile", "assets/user.png"),
-              _buildDrawerItem("Orders", "assets/orders.png"),
+              _buildDrawerItem("Profile", "assets/user.png", context),
+              _buildDrawerItem("Orders", "assets/orders.png", context),
+              _buildDrawerItem("Offer and Promo",
+                  "assets/ic_outline-local-offer.png", context),
+              _buildDrawerItem("Privacy Policy",
+                  "assets/ic_outline-sticky-note-2.png", context),
               _buildDrawerItem(
-                  "Offer and Promo", "assets/ic_outline-local-offer.png"),
-              _buildDrawerItem(
-                  "Privacy Policy", "assets/ic_outline-sticky-note-2.png"),
-              _buildDrawerItem("Security", "assets/whh_securityalt.png"),
+                  "Security", "assets/whh_securityalt.png", context),
               const Spacer(),
               Padding(
                 padding: EdgeInsets.only(
-                  bottom: screenHeight * 0.05, // Adjust padding dynamically
+                  bottom: screenHeight * 0.04, // Adjust padding dynamically
                   left: screenWidth * 0.1, // Adjust padding dynamically
                 ),
                 child: MaterialButton(
@@ -46,7 +47,6 @@ class DrawerWidget extends StatelessWidget {
                           fontSize: screenWidth *
                               0.05, // Adjust font size dynamically
                           fontWeight: FontWeight.w600,
-                          fontFamily: "SF-Pro-Italic.ttf",
                         ),
                       ),
                       SizedBox(
@@ -64,7 +64,9 @@ class DrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem(String title, String iconPath) {
+  Widget _buildDrawerItem(String title, String iconPath, BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return MaterialButton(
       onPressed: () {},
       child: Padding(
@@ -79,8 +81,8 @@ class DrawerWidget extends StatelessWidget {
                   title,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 22,
-                    fontFamily: "San-Francisco-Pro-Fonts-master",
+                    fontSize:
+                        screenWidth * 0.055, // Adjust font size dynamically
                   ),
                 ),
               ],

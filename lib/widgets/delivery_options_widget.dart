@@ -34,7 +34,6 @@ class DeliveryOptionsWidget extends StatelessWidget {
                     Text(
                       'Delivery to Mainland',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
@@ -50,7 +49,6 @@ class DeliveryOptionsWidget extends StatelessWidget {
                     Text(
                       'Delivery to island',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
@@ -67,7 +65,6 @@ class DeliveryOptionsWidget extends StatelessWidget {
                           child: Text(
                             'Cancel',
                             style: TextStyle(
-                              fontFamily: 'Poppins',
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
@@ -91,7 +88,6 @@ class DeliveryOptionsWidget extends StatelessWidget {
                           child: Text(
                             'Proceed',
                             style: TextStyle(
-                              fontFamily: 'Poppins',
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,

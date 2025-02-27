@@ -50,7 +50,6 @@ class WelcomeScreen extends StatelessWidget {
                     "Food for Everyone",
                     style: TextStyle(
                       fontSize: 50,
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
                       color: Colors.white,
                     ),
                   ),
@@ -112,7 +111,6 @@ class WelcomeScreen extends StatelessWidget {
                             style: TextStyle(
                               color: Color(0xFFFF4B3A),
                               fontSize: 18,
-                              fontFamily: "San-Francisco-Pro-Fonts-master",
                               fontWeight: FontWeight.bold,
                             ),
                           ),

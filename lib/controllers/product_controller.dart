@@ -1,8 +1,29 @@
+import 'package:delivery_app/screens/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProductController extends GetxController {
-  // List of featured products
+  // Observable for selected image index
+  var selectedImageIndex = 0.obs;
+
+  // Observable for favorite status
+  var isFavorite = false.obs;
+
+  // Method to toggle favorite status
+  void toggleFavorite() {
+    isFavorite.value = !isFavorite.value;
+  }
+
+  // Method to add product to cart
+  void addToCart() {
+    Get.snackbar(
+      'Success',
+      'Item added to cart',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+  }
 
   final RxList<FeaturedProduct> featuredProducts = <FeaturedProduct>[].obs;
   @override
@@ -14,19 +35,19 @@ class ProductController extends GetxController {
 
   void onProductTap(FeaturedProduct product) {
     // Navigate to a product detail screen or show a dialog
-    Get.toNamed('/product-detail', arguments: product);
+    Get.to(ProductDetailScreen(), arguments: product);
   }
 
   void loadFeaturedProducts() {
     // Example data
     featuredProducts.addAll([
       FeaturedProduct(
-        title: "Veggie\ntomato mix",
+        name: "Veggie\ntomato mix",
         price: "N1,900",
         image: "assets/Mask Group.png",
       ),
       FeaturedProduct(
-        title: "Spicy \nfish sauce",
+        name: "Spicy \nfish sauce",
         price: "N1,1900",
         image: "assets/Mask Group (1).png",
       ),
@@ -35,12 +56,12 @@ class ProductController extends GetxController {
 }
 
 class FeaturedProduct {
-  final String title;
+  final String name;
   final String price;
   final String image;
 
   FeaturedProduct({
-    required this.title,
+    required this.name,
     required this.price,
     required this.image,
   });

@@ -92,7 +92,7 @@ class LoginScreen extends StatelessWidget {
               "Welcome Back!",
               style: TextStyle(
                 fontSize: screenWidth * 0.09, // Responsive font size
-                fontFamily: "",
+
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -106,7 +106,7 @@ class LoginScreen extends StatelessWidget {
               "Sign in to continue",
               style: TextStyle(
                 fontSize: screenWidth * 0.04, // Responsive font size
-                fontFamily: "",
+
                 color: Colors.white.withOpacity(0.8),
               ),
             ),
@@ -170,7 +170,6 @@ class LoginScreen extends StatelessWidget {
                       controller.errorMessage.value,
                       style: const TextStyle(
                         color: Colors.red,
-                        fontFamily: "",
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -223,7 +222,6 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
-                    fontFamily: "",
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -242,7 +240,6 @@ class LoginScreen extends StatelessWidget {
               text: "Don't have an account? ",
               style: TextStyle(
                 color: Colors.black54,
-                fontFamily: "",
               ),
             ),
             TextSpan(
@@ -252,7 +249,6 @@ class LoginScreen extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Color(0xFFFF460A), // Orange text
-                fontFamily: "",
               ),
             ),
           ],
@@ -285,13 +281,11 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       style: const TextStyle(
         color: Colors.black,
-        fontFamily: "",
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
           color: Colors.black.withOpacity(0.6),
-          fontFamily: "",
         ),
         prefixIcon: Icon(icon, color: const Color(0xFFFF460A)), // Orange icon
         filled: true,

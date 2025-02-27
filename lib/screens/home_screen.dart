@@ -1,6 +1,9 @@
+import 'package:delivery_app/api/api.dart';
 import 'package:delivery_app/controllers/home_controller.dart';
+import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:delivery_app/screens/profile_screen.dart';
 import 'package:delivery_app/widgets/bottom_navigation.dart';
+import 'package:delivery_app/widgets/build_featured_products.dart';
 import 'package:delivery_app/widgets/category_tabs.dart';
 import 'package:delivery_app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
   // Initialize the HomeController
   final HomeController _controller = Get.put(HomeController());
   final _advancedDrawerController = AdvancedDrawerController();
+  final ProductController _productController =
+      Get.put(ProductController()); // Get the ProductController
+  List<BuildFeaturedProductCard> products = [];
+  Future fetchData() async {
+    final data = Api.getProduct();
+    products = await data;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchData();
+    print(fetchData());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return _buildHomeScreen(context);
           }
         }),
-        bottomNavigationBar:
-            BottomNavigation(), // Use BottomNavigation without onTabChange
+        bottomNavigationBar: BottomNavigation(),
       ),
       drawer: DrawerWidget(onSignOut: () {}),
       backdrop: Container(
@@ -56,13 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
       rtlOpening: false,
       disabledGestures: false,
       openScale: 0.6,
-      childDecoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(35)),
+      childDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(35),
         boxShadow: [
           BoxShadow(
-            offset: Offset(-15, 50),
-            spreadRadius: 15,
-            color: Colors.black12,
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 20,
+            spreadRadius: 5,
+            offset: const Offset(-15, 0),
           ),
         ],
       ),
@@ -122,7 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(builder: (context) => OrderScreen()),
           ),
-          child: Image.asset("assets/shopping-cart.png", scale: 25),
+          child: Image.asset(
+            "assets/shopping-cart.png",
+            scale: 25,
+            color: Colors.black,
+          ),
         ),
       ],
     );
@@ -205,77 +228,79 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: [
-          _buildFeaturedProductCard("Veggie\ntomato mix", "N1,900",
-              "assets/Mask Group.png", screenWidth),
-          _buildFeaturedProductCard("Spicy \nfish sauce", "N1,1900",
-              "assets/Mask Group (1).png", screenWidth),
-        ],
+        children: products,
       ),
     );
   }
 
   Widget _buildFeaturedProductCard(
       String title, String price, String image, double screenWidth) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: screenWidth * 0.7,
-            height: 215,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              gradient: LinearGradient(
-                colors: [Colors.white, Colors.white.withOpacity(0.9)],
+    return GestureDetector(
+      onTap: () {
+        final product =
+            FeaturedProduct(name: title, price: price, image: image);
+        _productController.onProductTap(product);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              width: screenWidth * 0.7,
+              height: 215,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  colors: [Colors.white, Colors.white.withOpacity(0.9)],
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(57, 57, 57, 0.1),
+                    blurRadius: 60,
+                    offset: Offset(0, 30),
+                  ),
+                ],
               ),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(57, 57, 57, 0.1),
-                  blurRadius: 60,
-                  offset: Offset(0, 30),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  bottom: 0,
-                  top: 95,
-                  right: 0,
-                  left: MediaQuery.of(context).size.width * 0.20,
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    top: 95,
+                    right: 0,
+                    left: MediaQuery.of(context).size.width * 0.20,
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  top: 180,
-                  right: 0,
-                  left: MediaQuery.of(context).size.width * 0.27,
-                  child: Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: Color(0xFFFF4A3A),
-                      fontWeight: FontWeight.bold,
+                  Positioned(
+                    bottom: 0,
+                    top: 180,
+                    right: 0,
+                    left: MediaQuery.of(context).size.width * 0.27,
+                    child: Text(
+                      price,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        color: Color(0xFFFF4A3A),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            top: -20,
-            left: MediaQuery.of(context).size.width * 0.15,
-            child: Image.asset(image, width: 160, height: 160),
-          ),
-        ],
+            Positioned(
+              top: -20,
+              left: MediaQuery.of(context).size.width * 0.15,
+              child: Image.asset(image, width: 160, height: 160),
+            ),
+          ],
+        ),
       ),
     );
   }

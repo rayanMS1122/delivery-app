@@ -27,7 +27,6 @@ class NoInternetConnectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: screenWidth * 0.07, // Adjusted font size
                       fontWeight: FontWeight.w600,
-                      fontFamily: ' Text',
                     ),
                     textAlign: TextAlign.center,
                   );
@@ -42,7 +41,6 @@ class NoInternetConnectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: screenWidth * 0.04, // Adjusted font size
                       fontWeight: FontWeight.w400,
-                      fontFamily: ' Text',
                     ),
                   );
                 }),
@@ -81,7 +79,6 @@ class NoInternetConnectionScreen extends StatelessWidget {
                               child: Text(
                                 "Try again",
                                 style: TextStyle(
-                                  fontFamily: "SF-Pro-Text",
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,

@@ -104,7 +104,7 @@ class SearchScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: screenWidth * 0.07, // Adjusted font size
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
+
                       fontWeight: FontWeight.bold,
                     ),
                   )),
@@ -201,7 +201,6 @@ class SearchScreen extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontSize: screenWidth * 0.05, // Adjusted font size
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
                       color: Colors.black,
                     ),
                   ),
@@ -216,7 +215,7 @@ class SearchScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: screenWidth * 0.04, // Adjusted font size
                       color: const Color(0xFFFF4A3A),
-                      fontFamily: "San-Francisco-Pro-Fonts-master",
+
                       fontWeight: FontWeight.bold,
                     ),
                   ),

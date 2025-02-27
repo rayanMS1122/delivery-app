@@ -81,7 +81,6 @@ class AllScreen extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            fontFamily: "San-Francisco-Pro-Fonts-master",
           ),
         ),
         trailing: Container(
