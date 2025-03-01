@@ -50,7 +50,11 @@ class BuildFeaturedProductCard extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Image.network(image!, width: 160, height: 160),
+                  Image.network(
+                    image!,
+                    width: 160,
+                    height: 160,
+                  ),
                   Text(
                     name!,
                     style: const TextStyle(

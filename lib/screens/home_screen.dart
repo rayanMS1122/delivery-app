@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ProductController _productController =
       Get.put(ProductController()); // Get the ProductController
   List<BuildFeaturedProductCard> products = [];
+
   Future fetchData() async {
     final data = Api.getProduct();
     products = await data;
@@ -35,9 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     fetchData();
-    print(fetchData());
   }
 
   @override
@@ -89,46 +88,50 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeScreen(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        final screenHeight = constraints.maxHeight;
 
-    return SingleChildScrollView(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFF2F2F2), Colors.white],
+        return SingleChildScrollView(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFF2F2F2), Colors.white],
+              ),
+            ),
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(
+              screenWidth * 0.05,
+              screenHeight * 0.05,
+              screenWidth * 0.05,
+              screenHeight * 0.05,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildAppBar(screenWidth),
+                SizedBox(height: screenHeight * 0.02),
+                _buildTitle(),
+                SizedBox(height: screenHeight * 0.02),
+                _buildSearchBar(screenWidth),
+                SizedBox(height: screenHeight * 0.02),
+                CategoryTabs(),
+                SizedBox(height: screenHeight * 0.01),
+                _buildSeeMoreText(),
+                SizedBox(height: screenHeight * 0.01),
+                _buildFeaturedProducts(screenWidth),
+              ],
+            ),
           ),
-        ),
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(
-          screenWidth * 0.05,
-          screenHeight * 0.05,
-          screenWidth * 0.05,
-          screenHeight * 0.05,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildAppBar(),
-            SizedBox(height: screenHeight * 0.02),
-            _buildTitle(),
-            SizedBox(height: screenHeight * 0.02),
-            _buildSearchBar(screenWidth),
-            SizedBox(height: screenHeight * 0.02),
-            CategoryTabs(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildSeeMoreText(),
-            SizedBox(height: screenHeight * 0.01),
-            _buildFeaturedProducts(screenWidth),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(double screenWidth) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -227,9 +230,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFeaturedProducts(double screenWidth) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children: products,
-      ),
+      child: StreamBuilder<BuildFeaturedProductCard>(
+          stream: null,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return CircularProgressIndicator();
+            } else {
+              if (products.isEmpty) {
+                return Container(
+                  child: Text("No data"),
+                );
+              } else {
+                return Row(
+                  children: products,
+                );
+              }
+            }
+          }),
     );
   }
 

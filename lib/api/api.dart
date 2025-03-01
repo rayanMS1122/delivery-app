@@ -36,8 +36,9 @@ class Api {
         url,
       );
       if (res.statusCode == 200) {
-        final response = await http
-            .get(Uri.parse("http://192.168.2.209:2000/api/get_product"));
+        // final response = await http
+        //     .get(Uri.parse("http://192.168.2.209:2000/api/get_product"));
+        final response = await http.get(Uri.parse("${baseUrl}get_product"));
         final List<dynamic> data = json.decode(response.body);
 
         products = data
@@ -58,12 +59,20 @@ class Api {
 
   // update method
   static updateProduct(id, body) async {
-    var url = Uri.parse("${baseUrl}update/$id");
-    final res = await http.put(url, body: body);
-    if (res.statusCode == 200) {
-      print(jsonDecode(res.body));
-    } else {
-      print("Falied to update data");
+    try {
+      var url = Uri.parse("${baseUrl}update/$id");
+      final res = await http.put(
+        headers: {"Content-Type": "flutter/products"},
+        url,
+        body: body,
+      );
+      if (res.statusCode == 200) {
+        print("Updated Successfully: ${jsonDecode(res.body)}");
+      } else {
+        print("Failed to update data. Status Code: ${res.statusCode}");
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

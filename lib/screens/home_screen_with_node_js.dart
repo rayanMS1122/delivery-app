@@ -126,7 +126,35 @@ class _HomeScreenWithNodeJsState extends State<HomeScreenWithNodeJs> {
               products = await data;
               setState(() {});
             },
-            child: Icon(Icons.add),
+            child: Icon(Icons.get_app),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                Api.addProduct({
+                  "pname": "apple",
+                  "pprice": "5€",
+                  "pdes": "nice apple",
+                  "pimage":
+                      "https://sobota.app/wp-content/uploads/2022/04/sobota-app-food.png"
+                });
+
+                setState(() {});
+              },
+              child: Icon(Icons.get_app),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                await Api.deleteProduct("67c0b7b920c3e096468e5e9e");
+
+                setState(() {});
+              },
+              child: Icon(Icons.get_app),
+            ),
           ),
         ],
       ),
