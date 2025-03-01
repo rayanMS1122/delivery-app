@@ -76,6 +76,6 @@ app.delete("/api/delete/:id", async (req, res) => {
 });
 
 // Start the server
-app.listen(2000, "0.0.0.0", () => {
+app.listen(3000, "0.0.0.0", () => {
     console.log("Server running on port 2000");
 });
