@@ -2,6 +2,8 @@ import cors from "cors";
 import express, { json, urlencoded } from "express";
 import mongoose from "mongoose";
 import Product from "./product.js"; // Import the Product model
+import orders from "./orders.js";
+import carts from "./carts.js";
 
 const app = express();
 const uri = "mongodb+srv://raean1122:raean1122@cluster0.uzrek.mongodb.net/flutter";
@@ -36,15 +38,53 @@ app.post("/api/add_product", async (req, res) => {
 
 // GET: Retrieve all products
 app.get("/api/get_product", async (req, res) => {
+    
     try {
         let data = await Product.find();
 
         res.status(200).json(data);
+        console.log(res);
+
     } catch (e) {
         console.log(e.message);
         res.status(500).json(e.message);
     }
 });
+
+// GET: Retrieve all orders
+app.get("/api/get_orders", async (req, res) => {
+    
+    try {
+        let data = await orders.find();
+
+        res.status(200).json(data);
+         
+
+    } catch (e) {
+        console.log(e.message);
+        res.status(500).json(e.message);
+    }
+});
+
+
+// GET: Retrieve all orders
+app.get("/api/get_carts", async (req, res) => {
+    
+    try {
+        let data = await carts.find();
+
+        res.status(200).json(data);
+         
+
+    } catch (e) {
+        console.log(e.message);
+        res.status(500).json(e.message);
+    }
+});
+ 
+ 
+
+ 
 
 app.patch("/api/update/:id", async (req, res) => {
     let id = req.params.id;

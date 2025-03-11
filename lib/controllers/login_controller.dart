@@ -1,3 +1,4 @@
+import 'package:delivery_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +32,7 @@ class LoginController extends GetxController {
     if (emailController.text == "user@example.com" &&
         passwordController.text == "password") {
       // Navigate to the home screen or perform other actions
-      Get.offAllNamed('/home');
+      Get.to(HomeScreen());
     } else {
       errorMessage.value = 'Invalid email or password';
     }

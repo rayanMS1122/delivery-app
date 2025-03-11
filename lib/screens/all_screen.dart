@@ -4,7 +4,6 @@ import 'package:delivery_app/screens/authentication/register.dart';
 import 'package:delivery_app/screens/checkout_screen.dart';
 import 'package:delivery_app/screens/history_screen.dart';
 import 'package:delivery_app/screens/home_screen.dart';
-import 'package:delivery_app/screens/item_not_found_screen.dart';
 import 'package:delivery_app/screens/no_internet_screen.dart';
 import 'package:delivery_app/screens/offer_screen.dart';
 import 'package:delivery_app/screens/order_screen.dart';
@@ -46,9 +45,8 @@ class AllScreen extends StatelessWidget {
                     _buildScreenTile(context, 'No Internet Screen',
                         NoInternetConnectionScreen()),
                     _buildScreenTile(context, 'Order Screen', OrderScreen()),
-                    _buildScreenTile(context, 'Search Screen', SearchScreen()),
                     _buildScreenTile(
-                        context, 'Item Not Found Screen', ItemNotFoundScreen()),
+                        context, 'Search Screen', AdvancedSearchScreen()),
                     _buildScreenTile(
                         context, 'Profile screen', ProfileScreen()),
                     _buildScreenTile(context, 'Product Detail Screen',

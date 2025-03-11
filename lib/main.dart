@@ -2,7 +2,6 @@ import 'package:delivery_app/controllers/cart_controller.dart'; // Import the Ca
 import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:delivery_app/screens/all_screen.dart';
 import 'package:delivery_app/screens/home_screen.dart';
-import 'package:delivery_app/screens/home_screen_with_node_js.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart'; // For GetX

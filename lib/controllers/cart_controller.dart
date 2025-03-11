@@ -1,17 +1,14 @@
+import 'dart:convert';
+
+import 'package:delivery_app/api/api.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:collection/collection.dart'; // For firstWhereOrNull
+import 'package:http/http.dart' as http;
 
 class CartController extends GetxController {
   // List of cart items
-  var cartItems = <CartItem>[
-    CartItem(
-      id: "1",
-      image: "assets/Mask Group.png",
-      title: "Veggie tomato mix",
-      price: 222,
-      amount: 5,
-    )
-  ].obs;
+  var cartItems = <CartItem>[].obs;
 
   // Add item to cart
   void addItem(CartItem item) {
@@ -19,7 +16,7 @@ class CartController extends GetxController {
   }
 
   // Remove item from cart
-  void removeItem(String id) {
+  void removeItem(id) {
     cartItems.removeWhere((item) => item.id == id);
   }
 
@@ -51,20 +48,41 @@ class CartController extends GetxController {
   int get totalPrice {
     return cartItems.fold(0, (sum, item) => sum + (item.price * item.amount));
   }
+
+  calculateSubtotal() {
+    var total = 0;
+    cartItems.forEach(
+      (index) {
+        total += index.price;
+      },
+    );
+
+    return total;
+  }
 }
 
 class CartItem {
   final String id;
   final String image;
-  final String title;
+  final String name;
   final int price;
   int amount; // Make amount mutable
 
   CartItem({
     required this.id,
     required this.image,
-    required this.title,
+    required this.name,
     required this.price,
     required this.amount,
   });
+
+  factory CartItem.fromJson(Map<String, dynamic> parsedJson) {
+    return CartItem(
+      price: int.tryParse(parsedJson['pprice'].toString()) ?? 0,
+      name: parsedJson['pname'].toString(),
+      image: parsedJson['pimage'].toString(),
+      amount: 1,
+      id: parsedJson['_id'],
+    );
+  }
 }

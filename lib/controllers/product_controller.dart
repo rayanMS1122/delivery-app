@@ -26,6 +26,9 @@ class ProductController extends GetxController {
   }
 
   final RxList<FeaturedProduct> featuredProducts = <FeaturedProduct>[].obs;
+
+  var quantity = 5.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -53,6 +56,20 @@ class ProductController extends GetxController {
       ),
     ]);
   }
+
+  void decreaseQuantity() {
+    quantity--;
+  }
+
+  void increaseQuantity() {
+    quantity++;
+  }
+
+  void nextImage() {}
+
+  void previousImage() {}
+
+  void changeImage(int index) {}
 }
 
 class FeaturedProduct {

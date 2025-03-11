@@ -37,6 +37,8 @@ class MyOffersController extends GetxController {
 
     isLoading.value = false; // Hide loading indicator
   }
+
+  void refreshOffers() {}
 }
 
 class Offer {

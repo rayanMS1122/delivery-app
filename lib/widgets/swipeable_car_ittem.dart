@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class SwipeableCartItem extends StatelessWidget {
   final String id;
   final String image;
-  final String title;
+  final String name;
   final int price;
   final int amount;
   final VoidCallback onDismissed;
@@ -13,10 +13,11 @@ class SwipeableCartItem extends StatelessWidget {
     Key? key,
     required this.id,
     required this.image,
-    required this.title,
+    required this.name,
     required this.price,
     required this.amount,
     required this.onDismissed,
+    required bool isTablet,
   }) : super(key: key);
 
   @override
@@ -35,7 +36,7 @@ class SwipeableCartItem extends StatelessWidget {
       },
       child: CartItemWidget(
         image: image,
-        title: title,
+        name: name,
         price: price,
         id: id,
       ),

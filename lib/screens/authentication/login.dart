@@ -12,253 +12,312 @@ class LoginScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    // Main brand color
+    const Color mainColor = Color(0xFFFA4A0C);
+
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: screenHeight,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFFFF460A),
-                Color(0xFFFF6B3A)
-              ], // Gradient background
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              children: [
-                // Top Section with Icon and Title
-                _buildTopSection(context),
-                // Form Section
-                _buildFormSection(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopSection(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.1, // 10% of screen width
-        vertical: 44,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Animated Circle Icon with Neumorphic Effect
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 10,
-                  offset: const Offset(4, 4),
-                ),
-                BoxShadow(
-                  color: Colors.white.withOpacity(0.5),
-                  blurRadius: 10,
-                  offset: const Offset(-4, -4),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Icon(
-                Icons.lock_outline,
-                color: const Color(0xFFFF460A), // Orange icon
-                size: 50,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Title Text with Fade Animation
-          FadeIn(
-            delay: 300,
-            child: Text(
-              "Welcome Back!",
-              style: TextStyle(
-                fontSize: screenWidth * 0.09, // Responsive font size
-
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          // Subtitle Text with Fade Animation
-          FadeIn(
-            delay: 500,
-            child: Text(
-              "Sign in to continue",
-              style: TextStyle(
-                fontSize: screenWidth * 0.04, // Responsive font size
-
-                color: Colors.white.withOpacity(0.8),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFormSection(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.1, // 10% of screen width
-      ),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+      body: Container(
+        height: screenHeight,
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Email Field
-          CustomTextField(
-            controller: controller.emailController,
-            label: "Email",
-            icon: Icons.email,
-            onChanged: (_) => controller.clearError(),
-          ),
-          const SizedBox(height: 20),
-
-          // Password Field
-          CustomTextField(
-            controller: controller.passwordController,
-            label: "Password",
-            icon: Icons.lock,
-            obscureText: true,
-            onChanged: (_) => controller.clearError(),
-          ),
-          const SizedBox(height: 20),
-
-          // Error Message with Slide Animation
-          Obx(() {
-            if (controller.errorMessage.isNotEmpty) {
-              return SlideIn(
-                delay: 200,
-                child: AnimatedOpacity(
-                  opacity: controller.errorMessage.isNotEmpty ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 300),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      controller.errorMessage.value,
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                      textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              // Top curved section with brand color
+              Container(
+                width: screenWidth,
+                padding: const EdgeInsets.only(top: 60, bottom: 40),
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: mainColor.withOpacity(0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
                     ),
-                  ),
+                  ],
                 ),
-              );
-            }
-            return const SizedBox.shrink();
-          }),
-          const SizedBox(height: 20),
+                child: Column(
+                  children: [
+                    // Back button
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => Get.back(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
 
-          // Sign In Button with Bounce Animation
-          BounceIn(
-            delay: 500,
-            child: _buildSignInButton(controller),
-          ),
-          const SizedBox(height: 20),
+                    // Circle logo
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.lock_outline,
+                          color: mainColor,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
 
-          // Register Text with Fade Animation
-          FadeIn(
-            delay: 700,
-            child: _buildRegisterText(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignInButton(LoginController controller) {
-    return Obx(() {
-      return SizedBox(
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          onPressed: controller.isLoading.value ? null : controller.login,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFF460A), // Orange background
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            elevation: 5,
-            shadowColor: Colors.black.withOpacity(0.2),
-          ),
-          child: controller.isLoading.value
-              ? const CircularProgressIndicator(
-                  color: const Color(0xFFFA4A0C),
-                )
-              : const Text(
-                  'Sign In',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    // Welcome text
+                    const Text(
+                      "Welcome Back",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Sign in to continue",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                    ),
+                  ],
                 ),
-        ),
-      );
-    });
-  }
+              ),
 
-  Widget _buildRegisterText() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Text.rich(
-        TextSpan(
-          children: [
-            const TextSpan(
-              text: "Don't have an account? ",
-              style: TextStyle(
-                color: Colors.black54,
+              const SizedBox(height: 40),
+
+              // Form container with fields
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Section title
+                    const Padding(
+                      padding: EdgeInsets.only(left: 15, bottom: 10),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+
+                    // Email field
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: CustomTextField(
+                        controller: controller.emailController,
+                        label: "Email",
+                        icon: Icons.email,
+                        onChanged: (_) => controller.clearError(),
+                      ),
+                    ),
+
+                    // Password field
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: CustomTextField(
+                        controller: controller.passwordController,
+                        label: "Password",
+                        icon: Icons.lock,
+                        obscureText: true,
+                        onChanged: (_) => controller.clearError(),
+                      ),
+                    ),
+
+                    // Forgot password link
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          // Handle forgot password
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            color: mainColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Error message
+                    Obx(() {
+                      if (controller.errorMessage.isNotEmpty) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 15),
+                          margin: const EdgeInsets.only(bottom: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.red.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  controller.errorMessage.value,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }),
+
+                    // Sign in button
+                    Obx(() {
+                      return Container(
+                        width: double.infinity,
+                        height: 55,
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: mainColor.withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: controller.isLoading.value
+                              ? null
+                              : controller.login,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: controller.isLoading.value
+                              ? const SizedBox(
+                                  width: 25,
+                                  height: 25,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 3,
+                                  ),
+                                )
+                              : const Text(
+                                  'Sign In',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      );
+                    }),
+
+                    // Register link
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "Don't have an account? ",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Create',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => Get.to(() => SignupScreen()),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: mainColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            TextSpan(
-              text: 'Create',
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => Get.to(() => SignupScreen()),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFF460A), // Orange text
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// Reusable Custom TextField Widget
+// Improved Custom TextField Widget
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -280,22 +339,25 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       style: const TextStyle(
-        color: Colors.black,
+        color: Colors.black87,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          color: Colors.black.withOpacity(0.6),
+          color: Colors.black54,
+          fontSize: 16,
         ),
-        prefixIcon: Icon(icon, color: const Color(0xFFFF460A)), // Orange icon
-        filled: true,
-        fillColor: Colors.white,
+        prefixIcon: Icon(
+          icon,
+          color: const Color(0xFFFA4A0C),
+          size: 22,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 15,
+          vertical: 18,
           horizontal: 20,
         ),
         enabledBorder: OutlineInputBorder(
@@ -305,82 +367,14 @@ class CustomTextField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: const BorderSide(
-            color: Color(0xFFFF460A), // Orange border
-            width: 2,
+            color: Color(0xFFFA4A0C),
+            width: 1.5,
           ),
         ),
+        filled: true,
+        fillColor: Colors.white,
       ),
       onChanged: onChanged,
-    );
-  }
-}
-
-// Animation Widgets
-class FadeIn extends StatelessWidget {
-  final Widget child;
-  final int delay;
-
-  const FadeIn({required this.child, this.delay = 0});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(milliseconds: 500 + delay),
-      curve: Curves.easeInOut,
-      builder: (context, value, child) {
-        return Opacity(
-          opacity: value,
-          child: child,
-        );
-      },
-      child: child,
-    );
-  }
-}
-
-class SlideIn extends StatelessWidget {
-  final Widget child;
-  final int delay;
-
-  const SlideIn({required this.child, this.delay = 0});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      tween: Tween<Offset>(begin: const Offset(0, 20), end: Offset.zero),
-      duration: Duration(milliseconds: 500 + delay),
-      curve: Curves.easeInOut,
-      builder: (context, value, child) {
-        return Transform.translate(
-          offset: value,
-          child: child,
-        );
-      },
-      child: child,
-    );
-  }
-}
-
-class BounceIn extends StatelessWidget {
-  final Widget child;
-  final int delay;
-
-  const BounceIn({required this.child, this.delay = 0});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(milliseconds: 500 + delay),
-      curve: Curves.elasticOut,
-      builder: (context, value, child) {
-        return Transform.scale(
-          scale: value,
-          child: child,
-        );
-      },
-      child: child,
     );
   }
 }

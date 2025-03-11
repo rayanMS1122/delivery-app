@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 
 class CartItemWidget extends StatelessWidget {
   final String image;
-  final String title;
+  final String name;
   final int price;
   final String id; // Unique identifier for the item
 
   CartItemWidget({
     Key? key,
     required this.image,
-    required this.title,
+    required this.name,
     required this.price,
     required this.id,
   }) : super(key: key);
@@ -36,10 +36,11 @@ class CartItemWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
+          Image.network(
             image,
             width: 69,
             height: 69,
+            scale: 1,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -47,7 +48,7 @@ class CartItemWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  name,
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -58,7 +59,7 @@ class CartItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '#$price',
+                      '$price',
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,

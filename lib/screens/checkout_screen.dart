@@ -29,6 +29,8 @@ class CheckoutScreen extends StatelessWidget {
                 SizedBox(height: screenHeight * 0.02), // Adjusted spacing
                 // Back Button and Title
                 CustomAppBar(
+                  iconSize: 0,
+                  titleStyle: TextStyle(),
                   title: "Checkout",
                   onBackPressed: () {
                     Get.back();

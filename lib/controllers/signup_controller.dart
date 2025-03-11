@@ -1,4 +1,5 @@
 import 'package:delivery_app/screens/authentication/login.dart';
+import 'package:delivery_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +21,7 @@ class SignupController extends GetxController {
         passwordController.text.isEmpty ||
         confirmPasswordController.text.isEmpty) {
       errorMessage.value = 'Please fill in all fields';
+
       return;
     }
 
@@ -42,6 +44,7 @@ class SignupController extends GetxController {
     }
 
     isLoading.value = false;
+    Get.offAll(() => HomeScreen());
   }
 
   @override
