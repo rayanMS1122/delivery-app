@@ -11,9 +11,9 @@ import 'package:http/http.dart' as http;
 
 class Api {
   // main main main main main main main
-  // static const baseUrl = "https://delivery-app-wd4t.onrender.com/api/";
+  static const baseUrl = "https://delivery-app-wd4t.onrender.com/api/";
 
-  static const baseUrl = "http://localhost:2000/api/";
+  // static const baseUrl = "http://localhost:2000/api/"; for local use
 
   static addProduct(Map pdata) async {
     var url = Uri.parse("${baseUrl}add_product");
