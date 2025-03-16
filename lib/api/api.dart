@@ -6,14 +6,19 @@ import 'package:delivery_app/models/order.dart';
 import 'package:delivery_app/models/product.dart';
 import 'package:delivery_app/widgets/build_featured_products.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
   // main main main main main main main
   static const baseUrl = "https://delivery-app-wd4t.onrender.com/api/";
+  static const baseAuth = "https://delivery-app-wd4t.onrender.com/auth/";
 
-  // static const baseUrl = "http://localhost:2000/api/"; for local use
+  // static const baseUrl = "http://localhost:3000/api/"; // for local use
+  // static const baseAuth = "http://localhost:3000/auth/"; // for local use
+  // http://localhost:3000/auth/register
 
   static addProduct(Map pdata) async {
     var url = Uri.parse("${baseUrl}add_product");
@@ -138,6 +143,118 @@ class Api {
       print(jsonDecode(res.body));
     } else {
       print("Failed to delete");
+    }
+  }
+
+  static createUser(String email, String password, String name, page) async {
+    var url = Uri.parse("${baseAuth}register");
+    final res = await http.post(url, body: {
+      "email": email,
+      "password": password,
+      "name": name,
+    });
+    if (res.statusCode == 201) {
+      print(jsonDecode(res.body));
+      Get.to(page);
+    } else {
+      print("Failed to Create User. status: ${res.statusCode}");
+    }
+  }
+
+  static Future<void> loginUser(
+      String email, String password, Widget page) async {
+    var url = Uri.parse(
+        "${baseAuth}login"); // Ensure this points to the correct endpoint
+    try {
+      final res = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }),
+      );
+
+      if (res.statusCode == 200) {
+        // Parse the response body
+        var responseBody = jsonDecode(res.body);
+
+        // Extract the token and user data
+        String token = responseBody['token'];
+        var userData = responseBody['user'];
+
+        // Print success message
+        print("Login successful: $token");
+
+        // Store the token and user data securely (e.g., using shared_preferences)
+        await _storeUserData(token, userData);
+
+        // Navigate to the desired page
+        Get.off(page);
+      } else if (res.statusCode == 401) {
+        print("Invalid credentials");
+      } else {
+        print(
+            "Failed to Login. Status: ${res.statusCode}, Response: ${res.body}");
+      }
+    } catch (e) {
+      print("Error logging in: $e");
+    }
+  }
+
+// Helper function to store token and user data
+  static Future<void> _storeUserData(String token, dynamic userData) async {
+    // Use shared_preferences or another secure storage mechanism
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    await prefs.setString('user', jsonEncode(userData));
+  }
+
+  static Future<Map<String, dynamic>?> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userJson = prefs.getString('user');
+
+    if (userJson != null) {
+      return jsonDecode(userJson);
+    }
+    return null;
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  static Future<void> fetchUserProfile() async {
+    // Retrieve the token from storage
+    String? token = await getToken();
+
+    if (token == null) {
+      print("No token found. Please log in.");
+      return;
+    }
+
+    var url = Uri.parse("${baseAuth}profile"); // Profile endpoint
+    try {
+      final res = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (res.statusCode == 200) {
+        var responseBody = jsonDecode(res.body);
+        print("User profile: $responseBody");
+      } else {
+        print(
+            "Failed to fetch profile. Status: ${res.statusCode}, Response: ${res.body}");
+      }
+    } catch (e) {
+      print("Error fetching profile: $e");
     }
   }
 }
