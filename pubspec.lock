@@ -302,6 +302,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+<<<<<<< HEAD
   flutter_credit_card:
     dependency: "direct main"
     description:
@@ -310,6 +311,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+=======
+>>>>>>> be322ecdd73e434fd0ba0e68755df2b4a3e1c243
   flutter_lints:
     dependency: "direct dev"
     description:
