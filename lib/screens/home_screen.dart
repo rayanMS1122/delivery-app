@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
-                    size.height * 0.059,
+                    size.height * 0.08,
                     horizontalPadding,
                     0,
                   ),

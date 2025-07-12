@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme, // Apply the custom theme
-          home: const WelcomeScreen(), // Set the initial screen
+          home: const AllScreen(), // Set the initial screen
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
           builder: (context, child) {
