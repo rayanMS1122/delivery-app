@@ -1,5 +1,6 @@
 import 'package:delivery_app/controllers/home_controller.dart';
 import 'package:delivery_app/controllers/product_controller.dart';
+import 'package:delivery_app/models/featured_product.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
 import 'package:delivery_app/widgets/bottom_navigation.dart';
 import 'package:delivery_app/widgets/category_tabs.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'history_screen.dart';
 import 'order_screen.dart';
 import 'favorites_screen.dart';
@@ -27,8 +27,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final _advancedDrawerController = AdvancedDrawerController();
-  final ProductController _productController = Get.put(ProductController());
-  final HomeController _homeController = Get.put(HomeController());
+  final ProductController _productController = Get.find<ProductController>();
+  final HomeController _homeController = Get.find<HomeController>();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   bool _isLoading = true;
@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
         curve: Curves.easeIn,
       ),
     );
-    // Simulate data loading
+    // Simulate initial loading
     Future.delayed(Duration(seconds: 2), () {
       setState(() => _isLoading = false);
       _animationController.forward();
@@ -59,21 +59,18 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  // Get responsive size based on screen size
   double getResponsiveSize(BuildContext context, double percentage) {
     return MediaQuery.of(context).size.width * percentage;
   }
 
-  // Get responsive height based on screen size
   double getResponsiveHeight(BuildContext context, double percentage) {
     return MediaQuery.of(context).size.height * percentage;
   }
 
-  // Get responsive font size based on screen width
   double getResponsiveFontSize(BuildContext context, double baseSize) {
     final width = MediaQuery.of(context).size.width;
-    final baseFactor = width / 375; // 375 is base width (iPhone X)
-    final scaleFactor = baseFactor.clamp(0.8, 1.2); // Limit scaling range
+    final baseFactor = width / 375;
+    final scaleFactor = baseFactor.clamp(0.8, 1.2);
     return baseSize * scaleFactor;
   }
 
@@ -108,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
               width: getResponsiveSize(context, 0.15),
               child: FittedBox(
                 child: FloatingActionButton(
-                  onPressed: () => Get.to(OrderScreen()),
+                  onPressed: () => Get.to(() => OrderScreen()),
                   backgroundColor: const Color(0xFFFF460A),
                   child: const Icon(Icons.shopping_cart_outlined,
                       color: Colors.white),
@@ -326,7 +323,9 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/all');
+          },
           child: Text(
             "See all",
             overflow: TextOverflow.ellipsis,
@@ -360,6 +359,9 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       child: TextField(
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+            vertical: size.height * 0.02,
+          ),
           hintText: "Search for food...",
           hintStyle: GoogleFonts.poppins(
             color: Colors.black54,
@@ -382,9 +384,6 @@ class _HomeScreenState extends State<HomeScreen>
               color: const Color(0xFFFF460A),
               size: size.width * 0.05,
             ),
-          ),
-          contentPadding: EdgeInsets.symmetric(
-            vertical: size.height * 0.02,
           ),
         ),
       ),
@@ -420,8 +419,8 @@ class _HomeScreenState extends State<HomeScreen>
             TextButton(
               onPressed: () {
                 setState(() => _isLoading = true);
+                _productController.loadFeaturedProducts();
                 Future.delayed(Duration(seconds: 2), () {
-                  _productController.loadFeaturedProducts();
                   setState(() => _isLoading = false);
                 });
               },
@@ -483,9 +482,7 @@ class _HomeScreenState extends State<HomeScreen>
         );
       },
       child: GestureDetector(
-        onTap: () {
-          _productController.onProductTap(product);
-        },
+        onTap: () => _productController.onProductTap(product),
         child: Container(
           margin: EdgeInsets.only(
               right: size.width * 0.05, bottom: size.height * 0.015),
@@ -504,22 +501,29 @@ class _HomeScreenState extends State<HomeScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product image
               Padding(
                 padding: EdgeInsets.all(size.width * 0.03),
                 child: Column(
                   children: [
-                    Image.asset(
-                      product.image,
+                    Image(
+                      image: product.image.isNotEmpty &&
+                              Uri.tryParse(product.image)?.hasAbsolutePath ==
+                                  true
+                          ? NetworkImage(product.image)
+                          : AssetImage('assets/Mask Group.png')
+                              as ImageProvider,
                       height: size.height * 0.13,
                       width: double.infinity,
                       fit: BoxFit.scaleDown,
+                      errorBuilder: (context, error, stackTrace) {
+                        print('Product image load error: $error');
+                        return Image.asset('assets/Mask Group.png',
+                            height: size.height * 0.13, fit: BoxFit.scaleDown);
+                      },
                     ),
                   ],
                 ),
               ),
-
-              // Product details
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
                 child: Column(
@@ -536,7 +540,7 @@ class _HomeScreenState extends State<HomeScreen>
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "Delicious item", // Static description for simplicity
+                      product.description,
                       style: GoogleFonts.poppins(
                         fontSize: getResponsiveFontSize(context, 12),
                         color: Colors.black54,
@@ -549,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          product.price,
+                          '\$${product.price.toStringAsFixed(2)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                             fontSize: getResponsiveFontSize(context, 18),
@@ -558,7 +562,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                         GestureDetector(
-                          onTap: _productController.addToCart,
+                          onTap: () => _productController.addToCart(product),
                           child: Container(
                             padding: EdgeInsets.all(size.width * 0.015),
                             decoration: BoxDecoration(
@@ -695,8 +699,8 @@ class _HomeScreenState extends State<HomeScreen>
             TextButton(
               onPressed: () {
                 setState(() => _isLoading = true);
+                _productController.loadFeaturedProducts();
                 Future.delayed(Duration(seconds: 2), () {
-                  _productController.loadFeaturedProducts();
                   setState(() => _isLoading = false);
                 });
               },
@@ -744,11 +748,21 @@ class _HomeScreenState extends State<HomeScreen>
                     padding: EdgeInsets.all(size.width * 0.02),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(size.width * 0.03),
-                      child: Image.asset(
-                        product.image,
+                      child: Image(
+                        image: product.image.isNotEmpty &&
+                                Uri.tryParse(product.image)?.hasAbsolutePath ==
+                                    true
+                            ? NetworkImage(product.image)
+                            : AssetImage('assets/Mask Group.png')
+                                as ImageProvider,
                         height: size.width * 0.2,
                         width: size.width * 0.2,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          print('Popular product image load error: $error');
+                          return Image.asset('assets/Mask Group.png',
+                              height: size.width * 0.2, fit: BoxFit.cover);
+                        },
                       ),
                     ),
                   ),
@@ -768,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ),
                           Text(
-                            "Delicious item • 0.8 mi",
+                            "${product.description} • ${product.city ?? '0.8 mi'}",
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.poppins(
                               fontSize: getResponsiveFontSize(context, 12),
@@ -785,7 +799,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                               SizedBox(width: size.width * 0.01),
                               Text(
-                                "4.8",
+                                product.averageRating.toStringAsFixed(1),
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(
                                   fontSize: getResponsiveFontSize(context, 12),
@@ -794,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                               SizedBox(width: size.width * 0.02),
                               Text(
-                                "• ${product.price}",
+                                "• \$${product.price.toStringAsFixed(2)}",
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(
                                   fontSize: getResponsiveFontSize(context, 12),
@@ -807,6 +821,15 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                     ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      product.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: product.isFavorite ? Colors.red : null,
+                    ),
+                    onPressed: () => _productController.toggleFavorite(product),
                   ),
                 ],
               ),
@@ -880,16 +903,4 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-}
-
-class FeaturedProduct {
-  final String name;
-  final String price;
-  final String image;
-
-  FeaturedProduct({
-    required this.name,
-    required this.price,
-    required this.image,
-  });
 }

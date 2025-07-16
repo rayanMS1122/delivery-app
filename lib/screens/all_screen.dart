@@ -2,6 +2,7 @@ import 'package:delivery_app/screens/cart_screen.dart';
 import 'package:delivery_app/screens/authentication/login.dart';
 import 'package:delivery_app/screens/authentication/register.dart';
 import 'package:delivery_app/screens/checkout_screen.dart';
+import 'package:delivery_app/screens/favorites_screen.dart';
 import 'package:delivery_app/screens/history_screen.dart';
 import 'package:delivery_app/screens/home_screen.dart';
 import 'package:delivery_app/screens/no_internet_screen.dart';
@@ -63,6 +64,8 @@ class AllScreen extends StatelessWidget {
                         context, 'Payment Screen', PaymentScreen()),
                     _buildScreenTile(context, 'Password Change Screen',
                         PasswordChangeScreen()),
+                    _buildScreenTile(
+                        context, 'Favorites Screen', FavoritesScreen()),
                   ],
                 ),
               ),

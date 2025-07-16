@@ -1,4 +1,5 @@
 import 'package:delivery_app/controllers/product_controller.dart';
+import 'package:delivery_app/models/featured_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  final ProductController controller = Get.put(ProductController());
+  final ProductController controller = Get.find();
+  final FeaturedProduct product = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +17,13 @@ class ProductDetailScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
+    controller.isFavorite.value = product.isFavorite;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: _buildAppBar(context),
       body: Stack(
         children: [
-          // Background gradient
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -33,26 +36,17 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Background decorative elements
           _buildBackgroundDecoration(screenWidth, screenHeight),
-
-          // Main content
           SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Hero Image & Gallery Section
                 _buildProductImageSection(context, screenHeight, screenWidth),
-
-                // Product Info Section
                 _buildProductInfoSection(context),
               ],
             ),
           ),
-
-          // Bottom Add to Cart Bar
           _buildBottomBar(context),
         ],
       ),
@@ -66,8 +60,7 @@ class ProductDetailScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: Padding(
-        padding:
-            EdgeInsets.only(left: screenWidth * 0.04), // 4% of screen width
+        padding: EdgeInsets.only(left: screenWidth * 0.04),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.9),
@@ -81,8 +74,7 @@ class ProductDetailScreen extends StatelessWidget {
             ],
           ),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded,
-                size: screenWidth * 0.05), // 5% of screen width
+            icon: Icon(Icons.arrow_back_ios_rounded, size: screenWidth * 0.05),
             color: Color(0xFF3D3D3D),
             onPressed: () => Get.back(),
           ),
@@ -90,8 +82,7 @@ class ProductDetailScreen extends StatelessWidget {
       ),
       actions: [
         Padding(
-          padding:
-              EdgeInsets.only(right: screenWidth * 0.04), // 4% of screen width
+          padding: EdgeInsets.only(right: screenWidth * 0.04),
           child: Row(
             children: [
               Container(
@@ -107,13 +98,12 @@ class ProductDetailScreen extends StatelessWidget {
                   ],
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.share_rounded,
-                      size: screenWidth * 0.05), // 5% of screen width
+                  icon: Icon(Icons.share_rounded, size: screenWidth * 0.05),
                   color: Color(0xFF3D3D3D),
                   onPressed: () {
                     Get.snackbar(
                       "Share",
-                      "Sharing product with friends",
+                      "Sharing ${product.name} with friends",
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.black87,
                       colorText: Colors.white,
@@ -121,7 +111,7 @@ class ProductDetailScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(width: screenWidth * 0.03), // 3% of screen width
+              SizedBox(width: screenWidth * 0.03),
               Obx(() {
                 return Container(
                   decoration: BoxDecoration(
@@ -137,16 +127,15 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   child: IconButton(
                     icon: Icon(
-                        controller.isFavorite.value
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size: screenWidth * 0.05), // 5% of screen width
-                    color: controller.isFavorite.value
-                        ? Colors.red
-                        : Color(0xFF3D3D3D),
+                      product.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      size: screenWidth * 0.05,
+                    ),
+                    color: product.isFavorite ? Colors.red : Color(0xFF3D3D3D),
                     onPressed: () {
-                      controller.toggleFavorite();
-                      if (controller.isFavorite.value) {
+                      controller.toggleFavorite(product);
+                      if (product.isFavorite) {
                         _showFavoriteAnimation(context);
                       }
                     },
@@ -164,11 +153,11 @@ class ProductDetailScreen extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-          top: -screenHeight * 0.1, // 10% of screen height
-          right: -screenWidth * 0.1, // 10% of screen width
+          top: -screenHeight * 0.1,
+          right: -screenWidth * 0.1,
           child: Container(
-            height: screenHeight * 0.25, // 25% of screen height
-            width: screenWidth * 0.5, // 50% of screen width
+            height: screenHeight * 0.25,
+            width: screenWidth * 0.5,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFFA4A0C).withOpacity(0.08),
@@ -176,11 +165,11 @@ class ProductDetailScreen extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: screenHeight * 0.15, // 15% of screen height
-          left: -screenWidth * 0.2, // 20% of screen width
+          bottom: screenHeight * 0.15,
+          left: -screenWidth * 0.2,
           child: Container(
-            height: screenHeight * 0.3, // 30% of screen height
-            width: screenWidth * 0.6, // 60% of screen width
+            height: screenHeight * 0.3,
+            width: screenWidth * 0.6,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFF3D5CFF).withOpacity(0.05),
@@ -188,11 +177,11 @@ class ProductDetailScreen extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: screenHeight * 0.3, // 30% of screen height
-          right: -screenWidth * 0.1, // 10% of screen width
+          top: screenHeight * 0.3,
+          right: -screenWidth * 0.1,
           child: Container(
-            height: screenHeight * 0.15, // 15% of screen height
-            width: screenWidth * 0.3, // 30% of screen width
+            height: screenHeight * 0.15,
+            width: screenWidth * 0.3,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFF3D5CFF).withOpacity(0.07),
@@ -206,54 +195,72 @@ class ProductDetailScreen extends StatelessWidget {
   Widget _buildProductImageSection(
       BuildContext context, double screenHeight, double screenWidth) {
     return Container(
-      height: screenHeight * 0.45, // 45% of screen height
+      height: screenHeight * 0.45,
       width: double.infinity,
       child: Stack(
         children: [
-          // Product image with parallax effect
           Obx(() {
             return AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
               child: Container(
                 key: ValueKey<int>(controller.selectedImageIndex.value),
-                height: screenHeight * 0.45, // 45% of screen height
+                height: screenHeight * 0.45,
                 width: double.infinity,
                 child: Hero(
-                  tag: 'product-image',
+                  tag: 'product-image-${product.id}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                          screenWidth * 0.08), // 8% of screen width
-                      bottomRight: Radius.circular(
-                          screenWidth * 0.08), // 8% of screen width
+                      bottomLeft: Radius.circular(screenWidth * 0.08),
+                      bottomRight: Radius.circular(screenWidth * 0.08),
                     ),
-                    child: Image.asset(
-                      'assets/Mask Group.png',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Icon(
-                            Icons.image_not_supported,
-                            size: screenWidth * 0.15, // 15% of screen width
-                            color: Colors.grey[400],
+                    child: product.images.isNotEmpty
+                        ? PageView.builder(
+                            itemCount: product.images.length,
+                            onPageChanged: (index) =>
+                                controller.changeImage(index, product.images),
+                            itemBuilder: (context, index) {
+                              final image = product.images[index];
+                              return Image(
+                                image: image.isNotEmpty &&
+                                        Uri.tryParse(image)?.hasAbsolutePath ==
+                                            true
+                                    ? NetworkImage(image)
+                                    : AssetImage('assets/placeholder.png')
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Product image load error: $error');
+                                  return Image.asset('assets/placeholder.png',
+                                      fit: BoxFit.cover);
+                                },
+                              );
+                            },
+                          )
+                        : Image(
+                            image: product.image.isNotEmpty &&
+                                    Uri.tryParse(product.image)
+                                            ?.hasAbsolutePath ==
+                                        true
+                                ? NetworkImage(product.image)
+                                : AssetImage('assets/placeholder.png')
+                                    as ImageProvider,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Product image load error: $error');
+                              return Image.asset('assets/placeholder.png',
+                                  fit: BoxFit.cover);
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ),
               ),
             );
           }),
-
-          // Gradient overlay
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomLeft:
-                    Radius.circular(screenWidth * 0.08), // 8% of screen width
-                bottomRight:
-                    Radius.circular(screenWidth * 0.08), // 8% of screen width
+                bottomLeft: Radius.circular(screenWidth * 0.08),
+                bottomRight: Radius.circular(screenWidth * 0.08),
               ),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -266,10 +273,8 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Image gallery indicator
           Positioned(
-            bottom: screenHeight * 0.02, // 2% of screen height
+            bottom: screenHeight * 0.02,
             left: 0,
             right: 0,
             child: Column(
@@ -277,21 +282,21 @@ class ProductDetailScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
-                    4,
+                    product.images.isNotEmpty ? product.images.length : 1,
                     (index) => GestureDetector(
-                      onTap: () => controller.changeImage(index),
+                      onTap: () =>
+                          controller.changeImage(index, product.images),
                       child: Obx(() {
                         return AnimatedContainer(
                           duration: Duration(milliseconds: 250),
                           width: controller.selectedImageIndex.value == index
-                              ? screenWidth * 0.03 // 3% of screen width
-                              : screenWidth * 0.02, // 2% of screen width
+                              ? screenWidth * 0.03
+                              : screenWidth * 0.02,
                           height: controller.selectedImageIndex.value == index
-                              ? screenWidth * 0.03 // 3% of screen width
-                              : screenWidth * 0.02, // 2% of screen width
+                              ? screenWidth * 0.03
+                              : screenWidth * 0.02,
                           margin: EdgeInsets.symmetric(
-                              horizontal:
-                                  screenWidth * 0.01), // 1% of screen width
+                              horizontal: screenWidth * 0.01),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: controller.selectedImageIndex.value == index
@@ -313,19 +318,19 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01), // 1% of screen height
+                SizedBox(height: screenHeight * 0.01),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildImageNavButton(
                       icon: Icons.arrow_back_ios_rounded,
-                      onTap: () => controller.previousImage(),
+                      onTap: () => controller.previousImage(product.images),
                       screenWidth: screenWidth,
                     ),
-                    SizedBox(width: screenWidth * 0.05), // 5% of screen width
+                    SizedBox(width: screenWidth * 0.05),
                     _buildImageNavButton(
                       icon: Icons.arrow_forward_ios_rounded,
-                      onTap: () => controller.nextImage(),
+                      onTap: () => controller.nextImage(product.images),
                       screenWidth: screenWidth,
                     ),
                   ],
@@ -333,20 +338,17 @@ class ProductDetailScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          // Category tag
           Positioned(
-            top: screenHeight * 0.12, // 12% of screen height
-            left: screenWidth * 0.05, // 5% of screen width
+            top: screenHeight * 0.12,
+            left: screenWidth * 0.05,
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04, // 4% of screen width
-                vertical: screenHeight * 0.01, // 1% of screen height
+                horizontal: screenWidth * 0.04,
+                vertical: screenHeight * 0.01,
               ),
               decoration: BoxDecoration(
                 color: Color(0xFFFA4A0C),
-                borderRadius: BorderRadius.circular(
-                    screenWidth * 0.06), // 6% of screen width
+                borderRadius: BorderRadius.circular(screenWidth * 0.06),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
@@ -356,12 +358,12 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
               child: Text(
-                'Vegetarian',
+                product.category ?? 'Vegetarian',
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
-                  fontSize: screenWidth * 0.035, // 3.5% of screen width
+                  fontSize: screenWidth * 0.035,
                 ),
               ),
             ),
@@ -379,8 +381,8 @@ class ProductDetailScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: screenWidth * 0.08, // 8% of screen width
-        height: screenWidth * 0.08, // 8% of screen width
+        width: screenWidth * 0.08,
+        height: screenWidth * 0.08,
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.9),
           shape: BoxShape.circle,
@@ -395,7 +397,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: Icon(
           icon,
           color: Color(0xFF3D3D3D),
-          size: screenWidth * 0.04, // 4% of screen width
+          size: screenWidth * 0.04,
         ),
       ),
     );
@@ -404,14 +406,13 @@ class ProductDetailScreen extends StatelessWidget {
   Widget _buildProductInfoSection(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final textScaleFactor = MediaQuery.of(context).size.height * .0012;
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
     return Container(
       padding: EdgeInsets.fromLTRB(24, 24, 24, 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Product title and price row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -421,8 +422,8 @@ class ProductDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Veggie tomato mix',
-                      overflow: TextOverflow.ellipsis, // Adds "..." at the end
+                      product.name,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                         fontSize: 28 * textScaleFactor,
                         fontWeight: FontWeight.w700,
@@ -436,7 +437,7 @@ class ProductDetailScreen extends StatelessWidget {
                         Row(
                           children: [
                             RatingBar.builder(
-                              initialRating: 4.5,
+                              initialRating: product.averageRating,
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
@@ -451,9 +452,8 @@ class ProductDetailScreen extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '4.5',
-                          overflow:
-                              TextOverflow.ellipsis, // Adds "..." at the end
+                          product.averageRating.toStringAsFixed(1),
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                             fontSize: 14 * textScaleFactor,
                             fontWeight: FontWeight.w600,
@@ -462,9 +462,8 @@ class ProductDetailScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          '(204 reviews)',
-                          overflow:
-                              TextOverflow.ellipsis, // Adds "..." at the end
+                          '(${product.ratingCount} reviews)',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.poppins(
                             fontSize: 12 * textScaleFactor,
                             fontWeight: FontWeight.w400,
@@ -493,8 +492,8 @@ class ProductDetailScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'N1,900',
-                      overflow: TextOverflow.ellipsis, // Adds "..." at the end
+                      'N${product.price.toStringAsFixed(2)}',
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                         fontSize: 22 * textScaleFactor,
                         fontWeight: FontWeight.w700,
@@ -516,8 +515,6 @@ class ProductDetailScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 24),
-
-          // Product details
           Container(
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -539,8 +536,10 @@ class ProductDetailScreen extends StatelessWidget {
                   icon: Icons.info_outline,
                   title: "Product Details",
                   child: Text(
-                    'Our veggie tomato mix is the perfect blend of fresh tomatoes, bell peppers, onions, and select herbs. Low in calories, high in nutrients, this is ideal for health-conscious food lovers.',
-                    overflow: TextOverflow.ellipsis,
+                    product.description.isNotEmpty
+                        ? product.description
+                        : 'Our ${product.name.toLowerCase()} is the perfect blend of fresh ingredients and select herbs. Low in calories, high in nutrients, this is ideal for health-conscious food lovers.',
+                    overflow: TextOverflow.fade,
                     style: GoogleFonts.poppins(
                       fontSize: 14 * textScaleFactor,
                       height: 1.5,
@@ -557,7 +556,8 @@ class ProductDetailScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Delivered between Monday Aug and Thursday 20 from 8pm to 9:32 pm',
+                          product.deliveryInfo ??
+                              'Delivered between Monday Aug and Thursday 20 from 8pm to 9:32 pm',
                           style: GoogleFonts.poppins(
                             fontSize: 14 * textScaleFactor,
                             height: 1.5,
@@ -587,7 +587,8 @@ class ProductDetailScreen extends StatelessWidget {
                   icon: Icons.refresh,
                   title: "Return Policy",
                   child: Text(
-                    'All our foods are double checked before leaving our stores so by any case you found a broken food please contact our hotline immediately.',
+                    product.returnPolicy ??
+                        'All our foods are double checked before leaving our stores so by any case you found a broken food please contact our hotline immediately.',
                     style: GoogleFonts.poppins(
                       fontSize: 14 * textScaleFactor,
                       height: 1.5,
@@ -599,12 +600,8 @@ class ProductDetailScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24),
-
-          // Nutritional information
           _buildNutritionalInfo(context),
           SizedBox(height: 24),
-
-          // Recommended products
           _buildRecommendedSection(context),
         ],
       ),
@@ -640,7 +637,7 @@ class ProductDetailScreen extends StatelessWidget {
             Text(
               title,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 16 * textScaleFactor,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF3D3D3D),
@@ -692,12 +689,11 @@ class ProductDetailScreen extends StatelessWidget {
                 "Nutritional Information",
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
-                  fontSize: MediaQuery.of(context).size.width *
-                      0.045, // 4.5% of screen width
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF3D3D3D),
                 ),
-              )
+              ),
             ],
           ),
           SizedBox(height: 16),
@@ -705,12 +701,23 @@ class ProductDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildNutritionItem(context,
-                  label: "Calories", value: "120", unit: "kcal"),
+                  label: "Calories",
+                  value:
+                      product.nutritionalInfo?['calories']?.toString() ?? "120",
+                  unit: "kcal"),
               _buildNutritionItem(context,
-                  label: "Protein", value: "3.5", unit: "g"),
+                  label: "Protein",
+                  value:
+                      product.nutritionalInfo?['protein']?.toString() ?? "3.5",
+                  unit: "g"),
               _buildNutritionItem(context,
-                  label: "Carbs", value: "12", unit: "g"),
-              _buildNutritionItem(context, label: "Fat", value: "2", unit: "g"),
+                  label: "Carbs",
+                  value: product.nutritionalInfo?['carbs']?.toString() ?? "12",
+                  unit: "g"),
+              _buildNutritionItem(context,
+                  label: "Fat",
+                  value: product.nutritionalInfo?['fat']?.toString() ?? "2",
+                  unit: "g"),
             ],
           ),
         ],
@@ -724,19 +731,16 @@ class ProductDetailScreen extends StatelessWidget {
     required String value,
     required String unit,
   }) {
-    // Get the screen width to make the widget responsive
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      // Use percentage-based padding
       padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.02, // 2% of screen width
-        vertical: screenWidth * 0.03, // 3% of screen width
+        horizontal: screenWidth * 0.02,
+        vertical: screenWidth * 0.03,
       ),
       decoration: BoxDecoration(
         color: Colors.grey[100],
-        borderRadius:
-            BorderRadius.circular(screenWidth * 0.03), // 3% of screen width
+        borderRadius: BorderRadius.circular(screenWidth * 0.03),
       ),
       child: Column(
         children: [
@@ -744,12 +748,12 @@ class ProductDetailScreen extends StatelessWidget {
             label,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
-              fontSize: screenWidth * 0.035, // 3.5% of screen width
+              fontSize: screenWidth * 0.035,
               fontWeight: FontWeight.w500,
               color: Colors.grey[600],
             ),
           ),
-          SizedBox(height: screenWidth * 0.01), // 1% of screen width
+          SizedBox(height: screenWidth * 0.01),
           RichText(
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
@@ -757,7 +761,7 @@ class ProductDetailScreen extends StatelessWidget {
                 TextSpan(
                   text: value,
                   style: GoogleFonts.poppins(
-                    fontSize: screenWidth * 0.045, // 4.5% of screen width
+                    fontSize: screenWidth * 0.045,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF3D3D3D),
                   ),
@@ -765,7 +769,7 @@ class ProductDetailScreen extends StatelessWidget {
                 TextSpan(
                   text: unit,
                   style: GoogleFonts.poppins(
-                    fontSize: screenWidth * 0.03, // 3% of screen width
+                    fontSize: screenWidth * 0.03,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[600],
                   ),
@@ -816,68 +820,82 @@ class ProductDetailScreen extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           child: Row(
             children: List.generate(
-              3,
-              (index) => Container(
-                width: screenWidth * 0.4,
-                margin: EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
+              controller.featuredProducts.length,
+              (index) {
+                final recommendedProduct = controller.featuredProducts[index];
+                return GestureDetector(
+                  onTap: () => controller.onProductTap(recommendedProduct),
+                  child: Container(
+                    width: screenWidth * 0.4,
+                    margin: EdgeInsets.only(right: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16),
-                      ),
-                      child: Image.asset(
-                        'assets/Mask Group.png',
-                        height: 120,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            index == 0
-                                ? "Veggie pasta"
-                                : index == 1
-                                    ? "Garden salad"
-                                    : "Fruit mix",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14 * textScaleFactor,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF3D3D3D),
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            "N${1200 + (index * 300)}",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14 * textScaleFactor,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFFFA4A0C),
-                            ),
+                          child: Image(
+                            image: recommendedProduct.image.isNotEmpty &&
+                                    Uri.tryParse(recommendedProduct.image)
+                                            ?.hasAbsolutePath ==
+                                        true
+                                ? NetworkImage(recommendedProduct.image)
+                                : AssetImage('assets/placeholder.png')
+                                    as ImageProvider,
+                            height: 120,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print(
+                                  'Recommended product image load error: $error');
+                              return Image.asset('assets/placeholder.png',
+                                  height: 120, fit: BoxFit.cover);
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                recommendedProduct.name,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14 * textScaleFactor,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF3D3D3D),
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'N${recommendedProduct.price.toStringAsFixed(2)}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14 * textScaleFactor,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFFFA4A0C),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -951,7 +969,7 @@ class ProductDetailScreen extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  controller.addToCart();
+                  controller.addToCart(product);
                   _showAddToCartAnimation(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -1013,7 +1031,6 @@ class ProductDetailScreen extends StatelessWidget {
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
-    // Declare as late
     late OverlayEntry entry;
 
     entry = OverlayEntry(
@@ -1033,7 +1050,7 @@ class ProductDetailScreen extends StatelessWidget {
                 repeat: false,
                 onLoaded: (composition) {
                   Future.delayed(composition.duration, () {
-                    entry.remove(); // Safe to use now
+                    entry.remove();
                   });
                 },
               ),
@@ -1049,7 +1066,7 @@ class ProductDetailScreen extends StatelessWidget {
   void _showAddToCartAnimation(BuildContext context) {
     Get.snackbar(
       "Added to Cart",
-      "Veggie tomato mix has been added to your cart",
+      "${product.name} has been added to your cart",
       snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.green,
       colorText: Colors.white,

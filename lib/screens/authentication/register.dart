@@ -9,10 +9,7 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use MediaQuery to get screen dimensions
     final size = MediaQuery.of(context).size;
-
-    // Create responsive values based on device size
     final responsiveValues = ResponsiveValues(size);
 
     return Scaffold(
@@ -39,16 +36,9 @@ class SignupScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  // App Bar with Back Button
                   _buildAppBar(context, responsiveValues),
-
-                  // Top Section with Logo and Title
                   _buildTopSection(context, responsiveValues),
-
-                  // Form Section
                   _buildFormSection(context, responsiveValues),
-
-                  // Bottom Section with Login Link
                   _buildBottomSection(responsiveValues),
                 ],
               ),
@@ -97,7 +87,6 @@ class SignupScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Logo with Neumorphic Effect
           Hero(
             tag: 'logo',
             child: Container(
@@ -129,8 +118,6 @@ class SignupScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: rv.spacing),
-
-          // Title Text with Animation
           Text(
             "Create Account",
             style: TextStyle(
@@ -141,8 +128,6 @@ class SignupScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: rv.smallSpacing),
-
-          // Subtitle Text
           Text(
             "Sign up to get started with delivery",
             style: TextStyle(
@@ -177,6 +162,19 @@ class SignupScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Error Message Display
+          Obx(() => controller.errorMessage.isNotEmpty
+              ? Padding(
+                  padding: EdgeInsets.only(bottom: rv.spacing),
+                  child: Text(
+                    controller.errorMessage.value,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: rv.normalFontSize,
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink()),
           Text(
             "Personal Information",
             style: TextStyle(
@@ -186,8 +184,6 @@ class SignupScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: rv.spacing),
-
-          // Full Name Field
           CustomTextField(
             controller: controller.nameController,
             label: "Full Name",
@@ -195,8 +191,6 @@ class SignupScreen extends StatelessWidget {
             responsiveValues: rv,
           ),
           SizedBox(height: rv.fieldSpacing),
-
-          // Email Field
           CustomTextField(
             controller: controller.emailController,
             label: "Email Address",
@@ -205,8 +199,116 @@ class SignupScreen extends StatelessWidget {
             responsiveValues: rv,
           ),
           SizedBox(height: rv.fieldSpacing),
-
-          // Password Field
+          CustomTextField(
+            controller: controller.phoneController,
+            label: "Phone Number",
+            icon: Icons.phone,
+            keyboardType: TextInputType.phone,
+            responsiveValues: rv,
+          ),
+          SizedBox(height: rv.largeSpacing),
+          Text(
+            "Address Information",
+            style: TextStyle(
+              fontSize: rv.sectionTitleFontSize,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          SizedBox(height: rv.spacing),
+          AddressTextField(
+            controller: controller.streetController,
+            label: "Street Address",
+            icon: Icons.location_on,
+            responsiveValues: rv,
+            addressFieldType: AddressFieldType.street,
+          ),
+          SizedBox(height: rv.fieldSpacing),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: AddressTextField(
+                  controller: controller.cityController,
+                  label: "City",
+                  icon: Icons.location_city,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.city,
+                ),
+              ),
+              SizedBox(width: rv.fieldSpacing),
+              Expanded(
+                flex: 1,
+                child: AddressTextField(
+                  controller: controller.stateController,
+                  label: "State",
+                  icon: Icons.map,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.state,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: rv.fieldSpacing),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: AddressTextField(
+                  controller: controller.postalCodeController,
+                  label: "Postal Code",
+                  icon: Icons.local_post_office,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.postalCode,
+                ),
+              ),
+              SizedBox(width: rv.fieldSpacing),
+              Expanded(
+                flex: 2,
+                child: AddressTextField(
+                  controller: controller.countryController,
+                  label: "Country",
+                  icon: Icons.flag,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.country,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: rv.fieldSpacing),
+          Row(
+            children: [
+              Expanded(
+                child: AddressTextField(
+                  controller: controller.latitudeController,
+                  label: "Latitude",
+                  icon: Icons.gps_fixed,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.latitude,
+                ),
+              ),
+              SizedBox(width: rv.fieldSpacing),
+              Expanded(
+                child: AddressTextField(
+                  controller: controller.longitudeController,
+                  label: "Longitude",
+                  icon: Icons.gps_not_fixed,
+                  responsiveValues: rv,
+                  addressFieldType: AddressFieldType.longitude,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: rv.largeSpacing),
+          Text(
+            "Security Information",
+            style: TextStyle(
+              fontSize: rv.sectionTitleFontSize,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          SizedBox(height: rv.spacing),
           CustomTextField(
             controller: controller.passwordController,
             label: "Password",
@@ -215,8 +317,6 @@ class SignupScreen extends StatelessWidget {
             responsiveValues: rv,
           ),
           SizedBox(height: rv.fieldSpacing),
-
-          // Confirm Password Field
           CustomTextField(
             controller: controller.confirmPasswordController,
             label: "Confirm Password",
@@ -225,8 +325,6 @@ class SignupScreen extends StatelessWidget {
             responsiveValues: rv,
           ),
           SizedBox(height: rv.largeSpacing),
-
-          // Sign Up Button
           _buildSignUpButton(controller, rv),
         ],
       ),
@@ -234,43 +332,46 @@ class SignupScreen extends StatelessWidget {
   }
 
   Widget _buildSignUpButton(SignupController controller, ResponsiveValues rv) {
-    return Container(
-      width: double.infinity,
-      height: rv.buttonHeight,
-      child: ElevatedButton(
-        onPressed: () {
-          if (controller.passwordController.text !=
-              controller.confirmPasswordController.text) {
-            print('Passwords do not match');
-            return;
-          } else {
-            controller.signUp(
-                controller.emailController.text,
-                controller.confirmPasswordController.text,
-                controller.nameController.text);
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFFF460A),
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(rv.buttonBorderRadius),
+    return Obx(() => Container(
+          width: double.infinity,
+          height: rv.buttonHeight,
+          child: ElevatedButton(
+            onPressed: controller.isLoading.value
+                ? null
+                : () {
+                    controller
+                        .signUp(); // Updated to match new controller method
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF460A),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(rv.buttonBorderRadius),
+              ),
+              elevation: 5,
+              shadowColor: const Color(0xFFFF460A).withOpacity(0.3),
+              padding: EdgeInsets.symmetric(vertical: rv.smallPadding),
+            ),
+            child: controller.isLoading.value
+                ? SizedBox(
+                    height: rv.buttonHeight * 0.5,
+                    width: rv.buttonHeight * 0.5,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    'Create Account',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: rv.buttonFontSize,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
           ),
-          elevation: 5,
-          shadowColor: const Color(0xFFFF460A).withOpacity(0.3),
-          padding: EdgeInsets.symmetric(vertical: rv.smallPadding),
-        ),
-        child: Text(
-          'Create Account',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: rv.buttonFontSize,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildBottomSection(ResponsiveValues rv) {
@@ -308,21 +409,19 @@ class SignupScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: rv.spacing),
-
-          // Social Login Buttons
+          // Social Login Buttons (Disabled as placeholder)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildSocialButton(Icons.g_mobiledata_rounded, rv),
+              _buildSocialButton(Icons.g_mobiledata_rounded, rv,
+                  disabled: true),
               SizedBox(width: rv.spacing),
-              _buildSocialButton(Icons.facebook, rv),
+              _buildSocialButton(Icons.facebook, rv, disabled: true),
               SizedBox(width: rv.spacing),
-              _buildSocialButton(Icons.apple, rv),
+              _buildSocialButton(Icons.apple, rv, disabled: true),
             ],
           ),
           SizedBox(height: rv.spacing),
-
-          // Login Text
           Text.rich(
             TextSpan(
               children: [
@@ -336,7 +435,7 @@ class SignupScreen extends StatelessWidget {
                 TextSpan(
                   text: 'Login',
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () => Get.offAll(() => LoginScreen()),
+                    ..onTap = () => Get.to(() => LoginScreen()),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -353,24 +452,201 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialButton(IconData icon, ResponsiveValues rv) {
-    return Container(
-      padding: EdgeInsets.all(rv.smallPadding),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(rv.borderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+  Widget _buildSocialButton(IconData icon, ResponsiveValues rv,
+      {bool disabled = false}) {
+    return Opacity(
+      opacity: disabled ? 0.5 : 1.0,
+      child: Container(
+        padding: EdgeInsets.all(rv.smallPadding),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(rv.borderRadius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: IconButton(
+          icon: Icon(
+            icon,
+            color: const Color(0xFFFF460A),
+            size: rv.iconSize,
           ),
-        ],
+          onPressed: disabled
+              ? null
+              : () {
+                  // TODO: Implement social login functionality
+                  print('Social login: ${icon.toString()}');
+                },
+        ),
       ),
-      child: Icon(
-        icon,
-        color: const Color(0xFFFF460A),
-        size: rv.iconSize,
+    );
+  }
+}
+
+// Enum for different address field types
+enum AddressFieldType {
+  street,
+  city,
+  state,
+  postalCode,
+  country,
+  latitude,
+  longitude
+}
+
+// Specialized Address TextField Widget
+class AddressTextField extends StatefulWidget {
+  final TextEditingController controller;
+  final String label;
+  final IconData icon;
+  final ResponsiveValues responsiveValues;
+  final AddressFieldType addressFieldType;
+  final Function(String)? onChanged;
+
+  const AddressTextField({
+    Key? key,
+    required this.controller,
+    required this.label,
+    required this.icon,
+    required this.responsiveValues,
+    required this.addressFieldType,
+    this.onChanged,
+  }) : super(key: key);
+
+  @override
+  State<AddressTextField> createState() => _AddressTextFieldState();
+}
+
+class _AddressTextFieldState extends State<AddressTextField> {
+  bool _isFocused = false;
+
+  TextInputType _getKeyboardType() {
+    switch (widget.addressFieldType) {
+      case AddressFieldType.postalCode:
+        return TextInputType.number;
+      case AddressFieldType.latitude:
+      case AddressFieldType.longitude:
+        return const TextInputType.numberWithOptions(
+            decimal: true, signed: true);
+      default:
+        return TextInputType.streetAddress;
+    }
+  }
+
+  TextCapitalization _getTextCapitalization() {
+    switch (widget.addressFieldType) {
+      case AddressFieldType.street:
+      case AddressFieldType.city:
+      case AddressFieldType.state:
+      case AddressFieldType.country:
+        return TextCapitalization.words;
+      default:
+        return TextCapitalization.none;
+    }
+  }
+
+  String? _getHintText() {
+    switch (widget.addressFieldType) {
+      case AddressFieldType.street:
+        return "123 Main Street";
+      case AddressFieldType.city:
+        return "New York";
+      case AddressFieldType.state:
+        return "NY";
+      case AddressFieldType.postalCode:
+        return "10001";
+      case AddressFieldType.country:
+        return "United States";
+      case AddressFieldType.latitude:
+        return "40.7128";
+      case AddressFieldType.longitude:
+        return "-74.0060";
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final rv = widget.responsiveValues;
+
+    return Focus(
+      onFocusChange: (hasFocus) {
+        setState(() {
+          _isFocused = hasFocus;
+        });
+      },
+      child: Container(
+        height: rv.inputHeight,
+        decoration: BoxDecoration(
+          color: _isFocused ? Colors.white : Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(rv.borderRadius),
+          border: Border.all(
+            color: _isFocused
+                ? const Color(0xFFFF460A).withOpacity(0.3)
+                : Colors.transparent,
+            width: 1,
+          ),
+          boxShadow: _isFocused
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFFFF460A).withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [],
+        ),
+        child: TextField(
+          controller: widget.controller,
+          keyboardType: _getKeyboardType(),
+          textCapitalization: _getTextCapitalization(),
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: rv.normalFontSize,
+          ),
+          decoration: InputDecoration(
+            labelText: widget.label,
+            hintText: _getHintText(),
+            labelStyle: TextStyle(
+              color: _isFocused ? const Color(0xFFFF460A) : Colors.black54,
+              fontSize: rv.normalFontSize,
+            ),
+            hintStyle: TextStyle(
+              color: Colors.black38,
+              fontSize: rv.normalFontSize * 0.9,
+            ),
+            prefixIcon: Icon(
+              widget.icon,
+              color: _isFocused ? const Color(0xFFFF460A) : Colors.black54,
+              size: rv.iconSize,
+            ),
+            suffixIcon: widget.addressFieldType == AddressFieldType.street
+                ? IconButton(
+                    icon: Icon(
+                      Icons.my_location,
+                      color: Colors.black54,
+                      size: rv.iconSize * 0.8,
+                    ),
+                    onPressed: null, // Disabled until implemented
+                    tooltip: 'Location detection not available',
+                  )
+                : null,
+            filled: true,
+            fillColor: Colors.transparent,
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: rv.smallPadding,
+              horizontal: rv.padding,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+          ),
+          onChanged: widget.onChanged,
+        ),
       ),
     );
   }
@@ -381,7 +657,6 @@ class ResponsiveValues {
   double screenWidth = 0;
   double screenHeight = 0;
 
-  // Fixed sizes to maintain consistency across devices
   late final double horizontalPadding;
   late final double verticalPadding;
   late final double padding;
@@ -417,35 +692,34 @@ class ResponsiveValues {
 
     // Apply minimum and maximum constraints to prevent extreme scaling
     double constrainedScale(double value) {
-      return value.clamp(0.8, 1.3) * scaleFactor;
+      return (value * scaleFactor).clamp(value * 0.8, value * 1.3);
     }
 
-    // Set all responsive values
-    horizontalPadding = 24 * constrainedScale(1.0);
-    verticalPadding = 20 * constrainedScale(1.0);
-    padding = 20 * constrainedScale(1.0);
-    smallPadding = 12 * constrainedScale(1.0);
+    horizontalPadding = constrainedScale(24);
+    verticalPadding = constrainedScale(20);
+    padding = constrainedScale(20);
+    smallPadding = constrainedScale(12);
 
-    spacing = 20 * constrainedScale(1.0);
-    smallSpacing = 8 * constrainedScale(1.0);
-    fieldSpacing = 16 * constrainedScale(1.0);
-    largeSpacing = 30 * constrainedScale(1.0);
+    spacing = constrainedScale(20);
+    smallSpacing = constrainedScale(8);
+    fieldSpacing = constrainedScale(16);
+    largeSpacing = constrainedScale(30);
 
-    logoSize = 80 * constrainedScale(1.0);
-    iconSize = 24 * constrainedScale(1.0);
+    logoSize = constrainedScale(80);
+    iconSize = constrainedScale(24);
 
-    borderRadius = 12 * constrainedScale(1.0);
-    cardBorderRadius = 20 * constrainedScale(1.0);
-    buttonBorderRadius = 30 * constrainedScale(1.0);
+    borderRadius = constrainedScale(12);
+    cardBorderRadius = constrainedScale(20);
+    buttonBorderRadius = constrainedScale(30);
 
-    titleFontSize = 28 * constrainedScale(1.0);
-    subtitleFontSize = 16 * constrainedScale(1.0);
-    sectionTitleFontSize = 18 * constrainedScale(1.0);
-    normalFontSize = 14 * constrainedScale(1.0);
-    buttonFontSize = 16 * constrainedScale(1.0);
+    titleFontSize = constrainedScale(28);
+    subtitleFontSize = constrainedScale(16);
+    sectionTitleFontSize = constrainedScale(18);
+    normalFontSize = constrainedScale(14);
+    buttonFontSize = constrainedScale(16);
 
-    buttonHeight = 56 * constrainedScale(1.0);
-    inputHeight = 56 * constrainedScale(1.0);
+    buttonHeight = constrainedScale(56);
+    inputHeight = constrainedScale(56);
   }
 }
 
@@ -460,6 +734,7 @@ class CustomTextField extends StatefulWidget {
   final ResponsiveValues responsiveValues;
 
   const CustomTextField({
+    Key? key,
     required this.controller,
     required this.label,
     required this.icon,
@@ -467,7 +742,7 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.onChanged,
     this.keyboardType,
-  });
+  }) : super(key: key);
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -476,6 +751,12 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   bool _isFocused = false;
   bool _isObscured = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscured = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {

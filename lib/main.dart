@@ -1,8 +1,11 @@
 import 'package:delivery_app/controllers/cart_controller.dart'; // Import the CartController
 import 'package:delivery_app/controllers/home_controller.dart';
 import 'package:delivery_app/controllers/product_controller.dart';
+import 'package:delivery_app/controllers/profile_controller.dart';
 import 'package:delivery_app/screens/all_screen.dart';
+import 'package:delivery_app/screens/authentication/login.dart';
 import 'package:delivery_app/screens/home_screen.dart';
+import 'package:delivery_app/screens/product_detail_screen.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +14,8 @@ import 'package:get/get.dart'; // For GetX
 void main() {
   Get.put(CartController());
   Get.put(HomeController());
-
+  Get.put(ProfileController());
+  Get.put(ProductController());
   runApp(const MyApp());
 }
 
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme, // Apply the custom theme
-          home: const AllScreen(), // Set the initial screen
+          home: LoginScreen(), // Set the initial screen
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
           builder: (context, child) {
