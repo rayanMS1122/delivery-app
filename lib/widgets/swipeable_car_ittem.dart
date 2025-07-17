@@ -5,7 +5,7 @@ class SwipeableCartItem extends StatelessWidget {
   final String id;
   final String image;
   final String name;
-  final int price;
+  final double price;
   final int amount;
   final VoidCallback onDismissed;
 

@@ -1,3 +1,4 @@
+import 'package:delivery_app/models/featured_product.dart';
 import 'package:delivery_app/screens/cart_screen.dart';
 import 'package:delivery_app/screens/authentication/login.dart';
 import 'package:delivery_app/screens/authentication/register.dart';
@@ -53,8 +54,25 @@ class AllScreen extends StatelessWidget {
                         context, 'Search Screen', AdvancedSearchScreen()),
                     _buildScreenTile(context, 'Editable Profile Screen',
                         EditableProfileScreen()),
-                    _buildScreenTile(context, 'Product Detail Screen',
-                        ProductDetailScreen()),
+                    _buildScreenTile(
+                        context,
+                        'Product Detail Screen',
+                        ProductDetailScreen(
+                          product: FeaturedProduct(
+                            category: "",
+                            averageRating: 88,
+                            description: "",
+                            id: "",
+                            image: "",
+                            name: "",
+                            preparationTime: 2,
+                            price: 2,
+                            ratingCount: 2,
+                            city: "",
+                            deliveryInfo: "",
+                            images: [],
+                          ),
+                        )),
                     _buildScreenTile(
                         context, 'Checkout Screen', CheckoutScreen()),
                     _buildScreenTile(context, 'Cart Screen', CartScreen()),

@@ -9,7 +9,9 @@ import 'package:lottie/lottie.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductController controller = Get.find();
-  final FeaturedProduct product = Get.arguments;
+  final FeaturedProduct product; // Declare as a constructor parameter
+
+  ProductDetailScreen({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1031,7 +1033,11 @@ class ProductDetailScreen extends StatelessWidget {
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
-    late OverlayEntry entry;
+    OverlayEntry entry = OverlayEntry(
+      builder: (context) {
+        return Container();
+      },
+    );
 
     entry = OverlayEntry(
       builder: (context) => Positioned(

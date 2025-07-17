@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   final errorMessage = ''.obs;
   final isLoading = false.obs;
   var token = ''.obs;
-  late ProfileController profileController;
+  ProfileController profileController = Get.find();
 
   @override
   void onInit() {
@@ -46,7 +46,8 @@ class LoginController extends GetxController {
     isLoading.value = true;
     clearError();
 
-    final url = Uri.parse('${AppConstants.baseUserUrl}/login');
+    final url = Uri.parse('${AppConstants.baseUrl}/api/users/login');
+
     final body = jsonEncode({
       "email": emailController.text.trim().toLowerCase(),
       "password": passwordController.text,

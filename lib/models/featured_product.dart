@@ -10,12 +10,11 @@ class FeaturedProduct {
   final int ratingCount;
   final String? restaurantId;
   final String? city;
-  bool isFavorite; // Client-side state, not from API
-  final List<String>
-      images; // Optional, not in API but kept for UI compatibility
-  final String? deliveryInfo; // Optional, not in API
-  final String? returnPolicy; // Optional, not in API
-  final Map<String, String>? nutritionalInfo; // Optional, not in API
+  bool isFavorite;
+  final List<String> images;
+  final String? deliveryInfo;
+  final String? returnPolicy;
+  final Map<String, String>? nutritionalInfo;
 
   FeaturedProduct({
     required this.id,
@@ -35,4 +34,50 @@ class FeaturedProduct {
     this.returnPolicy,
     this.nutritionalInfo,
   });
+
+  /// 🟩 FROM JSON
+  factory FeaturedProduct.fromJson(Map<String, dynamic> json) {
+    return FeaturedProduct(
+      id: json['id'] ?? json['_id'] ?? '',
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      category: json['category'] ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      image: json['image'] ?? '',
+      preparationTime: json['preparationTime'] ?? 0,
+      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
+      ratingCount: json['ratingCount'] ?? 0,
+      restaurantId: json['restaurantId'],
+      city: json['city'],
+      isFavorite: json['isFavorite'] ?? false,
+      images: List<String>.from(json['images'] ?? []),
+      deliveryInfo: json['deliveryInfo'],
+      returnPolicy: json['returnPolicy'],
+      nutritionalInfo: (json['nutritionalInfo'] as Map?)?.map(
+        (key, value) => MapEntry(key.toString(), value.toString()),
+      ),
+    );
+  }
+
+  /// 🟦 TO JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'category': category,
+      'price': price,
+      'image': image,
+      'preparationTime': preparationTime,
+      'averageRating': averageRating,
+      'ratingCount': ratingCount,
+      'restaurantId': restaurantId,
+      'city': city,
+      'isFavorite': isFavorite,
+      'images': images,
+      'deliveryInfo': deliveryInfo,
+      'returnPolicy': returnPolicy,
+      'nutritionalInfo': nutritionalInfo,
+    };
+  }
 }

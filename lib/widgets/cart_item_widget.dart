@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class CartItemWidget extends StatelessWidget {
   final String image;
   final String name;
-  final int price;
+  final double price;
   final String id; // Unique identifier for the item
 
   CartItemWidget({

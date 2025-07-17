@@ -1,5 +1,8 @@
+import 'package:delivery_app/controllers/favorites_controller.dart';
+import 'package:delivery_app/models/featured_product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -10,43 +13,12 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState extends State<FavoritesScreen>
     with SingleTickerProviderStateMixin {
-  // Mock data for favorite items
-  final List<Map<String, dynamic>> favoritesData = [
-    {
-      'name': 'Spicy Chicken Burger',
-      'restaurant': 'Burger Express',
-      'price': 12.99,
-      'rating': 4.8,
-      'image': 'assets/images/burger.png',
-      'category': 'Fast Food',
-    },
-    {
-      'name': 'Margherita Pizza',
-      'restaurant': 'Pizza Heaven',
-      'price': 14.50,
-      'rating': 4.5,
-      'image': 'assets/images/pizza.png',
-      'category': 'Italian',
-    },
-    {
-      'name': 'Fresh Veggie Salad',
-      'restaurant': 'Green Basket',
-      'price': 9.99,
-      'rating': 4.6,
-      'image': 'assets/images/salad.png',
-      'category': 'Healthy',
-    },
-    {
-      'name': 'Chocolate Milkshake',
-      'restaurant': 'Sweet Treats',
-      'price': 7.50,
-      'rating': 4.7,
-      'image': 'assets/images/milkshake.png',
-      'category': 'Dessert',
-    },
-  ];
-
-  // Categories for filtering
+  final FavoritesController favoritesController =
+      Get.put<FavoritesController>(FavoritesController());
+  final TextEditingController searchController = TextEditingController();
+  final RxString searchQuery = ''.obs;
+  final RxBool isSearching = false.obs;
+  final RxBool isFilterVisible = false.obs;
   final List<String> categories = [
     'All',
     'Fast Food',
@@ -55,14 +27,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
     'Dessert'
   ];
   String selectedCategory = 'All';
-
-  // Controller for search functionality
-  final TextEditingController searchController = TextEditingController();
-  final RxString searchQuery = ''.obs;
-  final RxBool isSearching = false.obs;
-  final RxBool isFilterVisible = false.obs;
-
-  // Animation controller for filter panel
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -73,7 +37,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
       searchQuery.value = searchController.text;
     });
 
-    // Initialize animation controller
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -92,7 +55,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
     super.dispose();
   }
 
-  // Toggle filter visibility
   void toggleFilter() {
     isFilterVisible.value = !isFilterVisible.value;
     if (isFilterVisible.value) {
@@ -106,24 +68,16 @@ class _FavoritesScreenState extends State<FavoritesScreen>
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    // Main brand color
     const Color mainColor = Color(0xFFFA4A0C);
-
-    // Background color
     final backgroundColor = Colors.grey.shade50;
-
-    // Responsive paddings
     final horizontalPadding = screenWidth * 0.05;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Stack(
         children: [
-          // Main Content
           Column(
             children: [
-              // Top curved section with brand color
               Container(
                 width: screenWidth,
                 padding: EdgeInsets.only(
@@ -146,20 +100,12 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                 ),
                 child: Column(
                   children: [
-                    // App bar with back button, title and filter icon
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: horizontalPadding),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // IconButton(
-                          //   icon: const Icon(
-                          //     Icons.arrow_back_ios,
-                          //     color: Colors.white,
-                          //   ),
-                          //   onPressed: () => Get.back(),
-                          // ),
                           Container(),
                           const Text(
                             "My Favorites",
@@ -181,10 +127,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 25),
-
-                    // Search bar with shadow effect
                     Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -204,9 +147,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         controller: searchController,
                         onChanged: (value) =>
                             isSearching.value = value.isNotEmpty,
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
+                        style: const TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           hintText: "Search your favorites...",
                           hintStyle: TextStyle(
@@ -249,8 +190,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                   ],
                 ),
               ),
-
-              // Stats bar
               Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 15,
@@ -269,14 +208,14 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "${favoritesData.length} items saved",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
+                    Obx(() => Text(
+                          "${favoritesController.favoriteItems.length} items saved",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey.shade700,
+                          ),
+                        )),
                     Row(
                       children: [
                         Icon(
@@ -298,18 +237,41 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                   ],
                 ),
               ),
-
-              // Main content
               Expanded(
                 child: Obx(() {
-                  final filteredItems = favoritesData.where((item) {
+                  if (favoritesController.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (favoritesController.errorMessage.isNotEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 60,
+                            color: Colors.grey.shade400,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            favoritesController.errorMessage.value,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  final filteredItems =
+                      favoritesController.favoriteItems.where((item) {
                     bool matchesSearch = searchQuery.isEmpty ||
-                        item['name']
-                            .toString()
+                        item.name
                             .toLowerCase()
                             .contains(searchQuery.value.toLowerCase());
                     bool matchesCategory = selectedCategory == 'All' ||
-                        item['category'] == selectedCategory;
+                        item.category == selectedCategory;
                     return matchesSearch && matchesCategory;
                   }).toList();
 
@@ -359,7 +321,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(height: 25),
                           ElevatedButton(
                             onPressed: () {
-                              // Navigate to menu
+                              Get.toNamed('/home'); // Adjust route as needed
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: mainColor,
@@ -387,7 +349,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
 
                   return Column(
                     children: [
-                      // Category chips if there are results
                       SizedBox(
                         height: 60,
                         child: ListView.builder(
@@ -437,44 +398,18 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           },
                         ),
                       ),
-
-                      // Food items
                       Expanded(
                         child: ListView.builder(
                           padding: EdgeInsets.symmetric(
-                            horizontal: horizontalPadding,
-                            vertical: 10,
-                          ),
+                              horizontal: horizontalPadding, vertical: 10),
                           itemCount: filteredItems.length,
                           itemBuilder: (context, index) {
                             final item = filteredItems[index];
                             return RedesignedFavoriteItemCard(
                               item: item,
-                              onRemove: () {
-                                setState(() {
-                                  favoritesData.removeWhere((element) =>
-                                      element['name'] == item['name']);
-                                });
-                              },
-                              onAdd: () {
-                                // Add to cart functionality
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text("${item['name']} added to cart"),
-                                    backgroundColor: mainColor,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    margin: EdgeInsets.only(
-                                      bottom: 70,
-                                      left: 15,
-                                      right: 15,
-                                    ),
-                                  ),
-                                );
-                              },
+                              onRemove: () =>
+                                  favoritesController.removeFavorite(item.id),
+                              onAdd: () => favoritesController.addToCart(item),
                             );
                           },
                         ),
@@ -485,8 +420,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
               ),
             ],
           ),
-
-          // Filter drawer - animated
           Positioned(
             top: MediaQuery.of(context).padding.top + 80,
             right: 0,
@@ -565,7 +498,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               max: 30,
                               labels: const RangeLabels('', ''),
                               onChanged: (values) {
-                                // Update price range
+                                // Implement price range filtering if needed
                               },
                             ),
                           ),
@@ -627,36 +560,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
           ),
         ],
       ),
-
-      // Custom bottom navigation cart button
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      // floatingActionButton: Container(
-      //   height: 55,
-      //   margin: const EdgeInsets.symmetric(horizontal: 20),
-      //   child: ElevatedButton.icon(
-      //     onPressed: () {
-      //       // Navigate to cart
-      //     },
-      //     style: ElevatedButton.styleFrom(
-      //       backgroundColor: mainColor,
-      //       foregroundColor: Colors.white,
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.circular(30),
-      //       ),
-      //       elevation: 5,
-      //       shadowColor: mainColor.withOpacity(0.5),
-      //       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-      //     ),
-      //     icon: const Icon(Icons.shopping_bag_outlined),
-      //     label: const Text(
-      //       "View Cart",
-      //       style: TextStyle(
-      //         fontWeight: FontWeight.bold,
-      //         fontSize: 16,
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -687,7 +590,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
 }
 
 class RedesignedFavoriteItemCard extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final FeaturedProduct item;
   final VoidCallback onRemove;
   final VoidCallback onAdd;
 
@@ -700,7 +603,6 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Main brand color
     const Color mainColor = Color(0xFFFA4A0C);
 
     return Container(
@@ -722,26 +624,34 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              // Navigate to item details
+              Get.toNamed('/product-detail',
+                  arguments: item); // Adjust route as needed
             },
             child: Column(
               children: [
-                // Food Image Section
                 Stack(
                   children: [
-                    // Food image placeholder
                     Container(
                       width: double.infinity,
                       height: 140,
                       color: Colors.grey.shade100,
-                      child: Icon(
-                        Icons.restaurant,
-                        size: 60,
-                        color: mainColor.withOpacity(0.3),
-                      ),
+                      child: item.image.isNotEmpty
+                          ? Image.network(
+                              item.image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                Icons.restaurant,
+                                size: 60,
+                                color: mainColor.withOpacity(0.3),
+                              ),
+                            )
+                          : Icon(
+                              Icons.restaurant,
+                              size: 60,
+                              color: mainColor.withOpacity(0.3),
+                            ),
                     ),
-
-                    // Category badge
                     Positioned(
                       top: 15,
                       left: 15,
@@ -753,7 +663,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          item['category'],
+                          item.category,
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -762,8 +672,6 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Favorite button
                     Positioned(
                       top: 10,
                       right: 10,
@@ -795,8 +703,6 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                // Food details
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -807,7 +713,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              item['name'],
+                              item.name,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -816,8 +722,6 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-
-                          // Rating
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
@@ -834,7 +738,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  item['rating'].toString(),
+                                  item.averageRating.toString(),
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
@@ -847,8 +751,6 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 5),
-
-                      // Restaurant name
                       Row(
                         children: [
                           Icon(
@@ -858,7 +760,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            item['restaurant'],
+                            item.restaurantId.toString(),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey.shade600,
@@ -866,24 +768,18 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 12),
-
-                      // Price and add to cart button
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Price
                           Text(
-                            "\$${item['price'].toStringAsFixed(2)}",
+                            "\$${item.price.toStringAsFixed(2)}",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: mainColor,
                             ),
                           ),
-
-                          // Add to cart button
                           ElevatedButton.icon(
                             onPressed: onAdd,
                             style: ElevatedButton.styleFrom(

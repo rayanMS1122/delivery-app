@@ -19,7 +19,22 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Do not call loadFeaturedProducts here to avoid snackbar during build
+    // Load products only if token is available
+    if (profileController.token.value.isNotEmpty) {
+      loadFeaturedProducts();
+    } else {
+      // Optionally, redirect to login or show a message
+      errorMessage.value = 'Please log in to view products';
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.snackbar(
+          "Authentication Required",
+          errorMessage.value,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      });
+    }
   }
 
   Future<void> loadFeaturedProducts() async {
@@ -70,12 +85,12 @@ class ProductController extends GetxController {
                 0.0,
             ratingCount: item['ratingCount']?.toInt() ?? 0,
             restaurantId: item['restaurantId']?.toString(),
-            city: item['city'],
+            city: item['city'] ?? '',
             isFavorite: false,
-            images: [],
-            deliveryInfo: null,
-            returnPolicy: null,
-            nutritionalInfo: null,
+            images: List<String>.from(item['images'] ?? []),
+            deliveryInfo: item['deliveryInfo'],
+            returnPolicy: item['returnPolicy'],
+            nutritionalInfo: item['nutritionalInfo'],
           );
         }).toList());
       } else {
@@ -113,7 +128,7 @@ class ProductController extends GetxController {
 
   void onProductTap(FeaturedProduct product) {
     if (product.id.isNotEmpty) {
-      Get.('/product-detail', arguments: product);
+      Get.to(() => ProductDetailScreen(product: product));
     } else {
       Get.snackbar(
         'Error',

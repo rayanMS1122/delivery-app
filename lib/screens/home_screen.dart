@@ -323,9 +323,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         TextButton(
-          onPressed: () {
-            Get.toNamed('/all');
-          },
+          onPressed: () {},
           child: Text(
             "See all",
             overflow: TextOverflow.ellipsis,
