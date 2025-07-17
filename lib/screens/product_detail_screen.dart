@@ -9,7 +9,7 @@ import 'package:lottie/lottie.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductController controller = Get.find();
-  final FeaturedProduct product; // Declare as a constructor parameter
+  final FeaturedProduct product;
 
   ProductDetailScreen({Key? key, required this.product}) : super(key: key);
 
@@ -360,7 +360,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
               child: Text(
-                product.category ?? 'Vegetarian',
+                product.category ?? 'Unknown',
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
@@ -433,26 +433,22 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 6),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            RatingBar.builder(
-                              initialRating: product.averageRating,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize: 16 * textScaleFactor,
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {},
-                            ),
-                          ],
+                        RatingBar.builder(
+                          initialRating: product.averageRating,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 16 * textScaleFactor,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {},
                         ),
+                        SizedBox(width: 8),
                         Text(
                           product.averageRating.toStringAsFixed(1),
                           overflow: TextOverflow.ellipsis,
@@ -478,7 +474,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                width: MediaQuery.sizeOf(context).width * .285,
+                width: MediaQuery.sizeOf(context).width * 0.285,
                 padding: EdgeInsets.symmetric(horizontal: 13, vertical: 12),
                 decoration: BoxDecoration(
                   color: Color(0xFFFA4A0C),
@@ -494,7 +490,7 @@ class ProductDetailScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'N${product.price.toStringAsFixed(2)}',
+                      '\$${product.price.toStringAsFixed(2)}',
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                         fontSize: 22 * textScaleFactor,
@@ -540,8 +536,24 @@ class ProductDetailScreen extends StatelessWidget {
                   child: Text(
                     product.description.isNotEmpty
                         ? product.description
-                        : 'Our ${product.name.toLowerCase()} is the perfect blend of fresh ingredients and select herbs. Low in calories, high in nutrients, this is ideal for health-conscious food lovers.',
+                        : 'Our ${product.name.toLowerCase()} is made with fresh ingredients and select herbs. Low in calories, high in nutrients, ideal for health-conscious food lovers.',
                     overflow: TextOverflow.fade,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14 * textScaleFactor,
+                      height: 1.5,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+                Divider(height: 32),
+                _buildDetailItem(
+                  context,
+                  icon: Icons.local_dining,
+                  title: "Ingredients",
+                  child: Text(
+                    product.ingredients.isNotEmpty
+                        ? product.ingredients.join(', ')
+                        : 'No ingredients listed.',
                     style: GoogleFonts.poppins(
                       fontSize: 14 * textScaleFactor,
                       height: 1.5,
@@ -559,7 +571,7 @@ class ProductDetailScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           product.deliveryInfo ??
-                              'Delivered between Monday Aug and Thursday 20 from 8pm to 9:32 pm',
+                              'Delivered between Monday and Thursday from 8pm to 9:32 pm',
                           style: GoogleFonts.poppins(
                             fontSize: 14 * textScaleFactor,
                             height: 1.5,
@@ -590,7 +602,7 @@ class ProductDetailScreen extends StatelessWidget {
                   title: "Return Policy",
                   child: Text(
                     product.returnPolicy ??
-                        'All our foods are double checked before leaving our stores so by any case you found a broken food please contact our hotline immediately.',
+                        'All our foods are double-checked before leaving our stores. If you find an issue, please contact our hotline immediately.',
                     style: GoogleFonts.poppins(
                       fontSize: 14 * textScaleFactor,
                       height: 1.5,
@@ -655,6 +667,7 @@ class ProductDetailScreen extends StatelessWidget {
 
   Widget _buildNutritionalInfo(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       padding: EdgeInsets.all(20),
@@ -691,7 +704,7 @@ class ProductDetailScreen extends StatelessWidget {
                 "Nutritional Information",
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
-                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  fontSize: screenWidth * 0.045,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF3D3D3D),
                 ),
@@ -702,24 +715,31 @@ class ProductDetailScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildNutritionItem(context,
-                  label: "Calories",
-                  value:
-                      product.nutritionalInfo?['calories']?.toString() ?? "120",
-                  unit: "kcal"),
-              _buildNutritionItem(context,
-                  label: "Protein",
-                  value:
-                      product.nutritionalInfo?['protein']?.toString() ?? "3.5",
-                  unit: "g"),
-              _buildNutritionItem(context,
-                  label: "Carbs",
-                  value: product.nutritionalInfo?['carbs']?.toString() ?? "12",
-                  unit: "g"),
-              _buildNutritionItem(context,
-                  label: "Fat",
-                  value: product.nutritionalInfo?['fat']?.toString() ?? "2",
-                  unit: "g"),
+              _buildNutritionItem(
+                context,
+                label: "Calories",
+                value: product.nutritionalInfo?.calories.toString() ?? "120",
+                unit: "kcal",
+              ),
+              _buildNutritionItem(
+                context,
+                label: "Protein",
+                value: product.nutritionalInfo?.protein.toString() ?? "3.5",
+                unit: "g",
+              ),
+              _buildNutritionItem(
+                context,
+                label: "Carbs",
+                value:
+                    product.nutritionalInfo?.carbohydrates.toString() ?? "12",
+                unit: "g",
+              ),
+              _buildNutritionItem(
+                context,
+                label: "Fat",
+                value: product.nutritionalInfo?.fat.toString() ?? "2",
+                unit: "g",
+              ),
             ],
           ),
         ],
@@ -804,7 +824,9 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed('/home'); // Navigiert zurück zur HomeScreen
+              },
               child: Text(
                 "View all",
                 style: GoogleFonts.poppins(
@@ -817,90 +839,109 @@ class ProductDetailScreen extends StatelessWidget {
           ],
         ),
         SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          child: Row(
-            children: List.generate(
-              controller.featuredProducts.length,
-              (index) {
-                final recommendedProduct = controller.featuredProducts[index];
-                return GestureDetector(
-                  onTap: () => controller.onProductTap(recommendedProduct),
-                  child: Container(
-                    width: screenWidth * 0.4,
-                    margin: EdgeInsets.only(right: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
+        Obx(() {
+          return controller.featuredProducts.isEmpty
+              ? Center(
+                  child: Text(
+                    "No recommended products available",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14 * textScaleFactor,
+                      color: Colors.grey[600],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          ),
-                          child: Image(
-                            image: recommendedProduct.image.isNotEmpty &&
-                                    Uri.tryParse(recommendedProduct.image)
-                                            ?.hasAbsolutePath ==
-                                        true
-                                ? NetworkImage(recommendedProduct.image)
-                                : AssetImage('assets/placeholder.png')
-                                    as ImageProvider,
-                            height: 120,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              print(
-                                  'Recommended product image load error: $error');
-                              return Image.asset('assets/placeholder.png',
-                                  height: 120, fit: BoxFit.cover);
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                recommendedProduct.name,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14 * textScaleFactor,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF3D3D3D),
+                  ),
+                )
+              : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  child: Row(
+                    children: List.generate(
+                      controller.featuredProducts.length,
+                      (index) {
+                        final recommendedProduct =
+                            controller.featuredProducts[index];
+                        return GestureDetector(
+                          onTap: () =>
+                              controller.onProductTap(recommendedProduct),
+                          child: Container(
+                            width: screenWidth * 0.4,
+                            margin: EdgeInsets.only(right: 16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
                                 ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'N${recommendedProduct.price.toStringAsFixed(2)}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14 * textScaleFactor,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFFFA4A0C),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16),
+                                  ),
+                                  child: Image(
+                                    image: recommendedProduct
+                                                .image.isNotEmpty &&
+                                            Uri.tryParse(recommendedProduct
+                                                        .image)
+                                                    ?.hasAbsolutePath ==
+                                                true
+                                        ? NetworkImage(recommendedProduct.image)
+                                        : AssetImage('assets/placeholder.png')
+                                            as ImageProvider,
+                                    height: 120,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print(
+                                          'Recommended product image load error: $error');
+                                      return Image.asset(
+                                          'assets/placeholder.png',
+                                          height: 120,
+                                          fit: BoxFit.cover);
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        recommendedProduct.name,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14 * textScaleFactor,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF3D3D3D),
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        '\$${recommendedProduct.price.toStringAsFixed(2)}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14 * textScaleFactor,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFFFA4A0C),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ),
                 );
-              },
-            ),
-          ),
-        ),
+        }),
       ],
     );
   }
@@ -971,7 +1012,8 @@ class ProductDetailScreen extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  controller.addToCart(product);
+                  controller.addToCart(product,
+                      quantity: controller.quantity.value);
                   _showAddToCartAnimation(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -1032,13 +1074,11 @@ class ProductDetailScreen extends StatelessWidget {
     final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
-
     OverlayEntry entry = OverlayEntry(
       builder: (context) {
         return Container();
       },
     );
-
     entry = OverlayEntry(
       builder: (context) => Positioned(
         top: 0,

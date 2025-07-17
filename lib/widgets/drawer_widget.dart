@@ -1,4 +1,5 @@
 import 'package:delivery_app/controllers/home_controller.dart';
+import 'package:delivery_app/screens/cart_screen.dart';
 import 'package:delivery_app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,9 @@ class DrawerWidget extends StatelessWidget {
                   }, context),
                   _buildDrawerItem("Orders", "assets/orders.png", () {
                     homeController.selectedNavIndex = 2.obs;
+                  }, context),
+                  _buildDrawerItem("Card", "assets/orders.png", () {
+                    Get.to(CartScreen());
                   }, context),
                   _buildDrawerItem("Offer and Promo",
                       "assets/ic_outline-local-offer.png", () {}, context),

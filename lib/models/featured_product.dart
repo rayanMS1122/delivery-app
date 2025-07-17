@@ -14,7 +14,8 @@ class FeaturedProduct {
   final List<String> images;
   final String? deliveryInfo;
   final String? returnPolicy;
-  final Map<String, String>? nutritionalInfo;
+  final NutritionalInfo? nutritionalInfo;
+  final List<String> ingredients;
 
   FeaturedProduct({
     required this.id,
@@ -33,35 +34,45 @@ class FeaturedProduct {
     this.deliveryInfo,
     this.returnPolicy,
     this.nutritionalInfo,
+    this.ingredients = const [],
   });
 
   /// 🟩 FROM JSON
   factory FeaturedProduct.fromJson(Map<String, dynamic> json) {
     return FeaturedProduct(
-      id: json['id'] ?? json['_id'] ?? '',
-      name: json['name'] ?? '',
-      description: json['description'] ?? '',
-      category: json['category'] ?? '',
-      price: (json['price'] as num?)?.toDouble() ?? 0.0,
-      image: json['image'] ?? '',
-      preparationTime: json['preparationTime'] ?? 0,
-      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
-      ratingCount: json['ratingCount'] ?? 0,
-      restaurantId: json['restaurantId'],
-      city: json['city'],
-      isFavorite: json['isFavorite'] ?? false,
-      images: List<String>.from(json['images'] ?? []),
-      deliveryInfo: json['deliveryInfo'],
-      returnPolicy: json['returnPolicy'],
-      nutritionalInfo: (json['nutritionalInfo'] as Map?)?.map(
-        (key, value) => MapEntry(key.toString(), value.toString()),
-      ),
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? 'Unknown',
+      description: json['description']?.toString() ?? '',
+      category: json['category']?.toString() ?? 'Unknown',
+      price: (json['price'] is num ? json['price'].toDouble() : 0.0),
+      image: json['image']?.toString() ?? '',
+      preparationTime: (json['preparationTime'] is num
+          ? json['preparationTime'].toInt()
+          : 0),
+      averageRating: (json['averageRating'] is num
+          ? json['averageRating'].toDouble()
+          : 0.0),
+      ratingCount:
+          (json['ratingCount'] is num ? json['ratingCount'].toInt() : 0),
+      restaurantId: json['restaurantId']?.toString(),
+      city: json['city']?.toString(),
+      isFavorite: json['isFavorite'] == true,
+      images: (json['images'] as List<dynamic>?)?.cast<String>() ?? [],
+      deliveryInfo: json['deliveryInfo']?.toString(),
+      returnPolicy: json['returnPolicy']?.toString(),
+      nutritionalInfo: json['nutritionalInfo'] != null
+          ? NutritionalInfo.fromJson(
+              json['nutritionalInfo'] as Map<String, dynamic>)
+          : null,
+      ingredients:
+          (json['ingredients'] as List<dynamic>?)?.cast<String>() ?? [],
     );
   }
 
   /// 🟦 TO JSON
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
       'id': id,
       'name': name,
       'description': description,
@@ -77,7 +88,42 @@ class FeaturedProduct {
       'images': images,
       'deliveryInfo': deliveryInfo,
       'returnPolicy': returnPolicy,
-      'nutritionalInfo': nutritionalInfo,
+      'nutritionalInfo': nutritionalInfo?.toJson(),
+      'ingredients': ingredients,
+    };
+  }
+}
+
+/// Unterklasse für nutritionalInfo
+class NutritionalInfo {
+  final int calories;
+  final int protein;
+  final int fat;
+  final int carbohydrates;
+
+  NutritionalInfo({
+    required this.calories,
+    required this.protein,
+    required this.fat,
+    required this.carbohydrates,
+  });
+
+  factory NutritionalInfo.fromJson(Map<String, dynamic> json) {
+    return NutritionalInfo(
+      calories: (json['calories'] is num ? json['calories'].toInt() : 0),
+      protein: (json['protein'] is num ? json['protein'].toInt() : 0),
+      fat: (json['fat'] is num ? json['fat'].toInt() : 0),
+      carbohydrates:
+          (json['carbohydrates'] is num ? json['carbohydrates'].toInt() : 0),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'calories': calories,
+      'protein': protein,
+      'fat': fat,
+      'carbohydrates': carbohydrates,
     };
   }
 }
