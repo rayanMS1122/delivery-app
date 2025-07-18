@@ -19,14 +19,17 @@ class _FavoritesScreenState extends State<FavoritesScreen>
   final RxString searchQuery = ''.obs;
   final RxBool isSearching = false.obs;
   final RxBool isFilterVisible = false.obs;
+  final RxString selectedCategory = 'All'.obs;
+  final Rx<RangeValues> priceRange = const RangeValues(0, 50).obs;
+  final RxString sortBy = 'rating'.obs;
+  final RxString sortOrder = 'desc'.obs;
   final List<String> categories = [
     'All',
     'Fast Food',
     'Italian',
     'Healthy',
-    'Dessert'
+    'Dessert',
   ];
-  String selectedCategory = 'All';
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -41,7 +44,6 @@ class _FavoritesScreenState extends State<FavoritesScreen>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
     _animation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut,
@@ -62,6 +64,15 @@ class _FavoritesScreenState extends State<FavoritesScreen>
     } else {
       _animationController.reverse();
     }
+  }
+
+  void resetFilters() {
+    selectedCategory.value = 'All';
+    priceRange.value = const RangeValues(0, 50);
+    sortBy.value = 'rating';
+    sortOrder.value = 'desc';
+    searchController.clear();
+    isSearching.value = false;
   }
 
   @override
@@ -85,7 +96,11 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                   bottom: 30,
                 ),
                 decoration: BoxDecoration(
-                  color: mainColor,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFA4A0C), Color(0xFFFF6E40)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
@@ -107,9 +122,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(),
-                          const Text(
+                          Text(
                             "My Favorites",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -145,12 +160,23 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                       ),
                       child: TextField(
                         controller: searchController,
-                        onChanged: (value) =>
-                            isSearching.value = value.isNotEmpty,
-                        style: const TextStyle(fontSize: 16),
+                        onChanged: (value) {
+                          isSearching.value = value.isNotEmpty;
+                          favoritesController.fetchFavorites(
+                            searchQuery: value,
+                            category: selectedCategory.value == 'All'
+                                ? null
+                                : selectedCategory.value,
+                            minPrice: priceRange.value.start,
+                            maxPrice: priceRange.value.end,
+                            sortBy: sortBy.value,
+                            order: sortOrder.value,
+                          );
+                        },
+                        style: GoogleFonts.poppins(fontSize: 16),
                         decoration: InputDecoration(
                           hintText: "Search your favorites...",
-                          hintStyle: TextStyle(
+                          hintStyle: GoogleFonts.poppins(
                             color: Colors.grey.shade400,
                             fontSize: 16,
                           ),
@@ -175,6 +201,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                     onPressed: () {
                                       searchController.clear();
                                       isSearching.value = false;
+                                      favoritesController.fetchFavorites();
                                     },
                                   ),
                                 )
@@ -210,7 +237,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                   children: [
                     Obx(() => Text(
                           "${favoritesController.favoriteItems.length} items saved",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.grey.shade700,
@@ -224,14 +251,14 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           color: Colors.grey.shade600,
                         ),
                         const SizedBox(width: 5),
-                        Text(
-                          "Sort by rating",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
+                        Obx(() => Text(
+                              "Sort by ${sortBy.value.capitalizeFirst}",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey.shade600,
+                              ),
+                            )),
                       ],
                     ),
                   ],
@@ -255,9 +282,30 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(height: 10),
                           Text(
                             favoritesController.errorMessage.value,
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               color: Colors.grey.shade600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: favoritesController.fetchFavorites,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: mainColor,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Text(
+                              "Retry",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -270,9 +318,11 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         item.name
                             .toLowerCase()
                             .contains(searchQuery.value.toLowerCase());
-                    bool matchesCategory = selectedCategory == 'All' ||
-                        item.category == selectedCategory;
-                    return matchesSearch && matchesCategory;
+                    bool matchesCategory = selectedCategory.value == 'All' ||
+                        item.category == selectedCategory.value;
+                    bool matchesPrice = item.price >= priceRange.value.start &&
+                        item.price <= priceRange.value.end;
+                    return matchesSearch && matchesCategory && matchesPrice;
                   }).toList();
 
                   if (filteredItems.isEmpty) {
@@ -296,7 +346,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(height: 25),
                           Text(
                             "No favorites found",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.grey.shade700,
@@ -311,7 +361,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                   ? "We couldn't find any matches for '${searchQuery.value}'"
                                   : "Items you mark as favorite will appear here",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 color: Colors.grey.shade600,
                                 height: 1.5,
@@ -321,7 +371,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(height: 25),
                           ElevatedButton(
                             onPressed: () {
-                              Get.toNamed('/home'); // Adjust route as needed
+                              Get.toNamed('/home');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: mainColor,
@@ -334,9 +384,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               elevation: 5,
                               shadowColor: mainColor.withOpacity(0.5),
                             ),
-                            child: const Text(
+                            child: Text(
                               "Browse Menu",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -358,42 +408,50 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           itemCount: categories.length,
                           itemBuilder: (context, index) {
                             final category = categories[index];
-                            final isSelected = selectedCategory == category;
-
                             return GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  selectedCategory = category;
-                                });
+                                selectedCategory.value = category;
+                                favoritesController.fetchFavorites(
+                                  category: category == 'All' ? null : category,
+                                  minPrice: priceRange.value.start,
+                                  maxPrice: priceRange.value.end,
+                                  sortBy: sortBy.value,
+                                  order: sortOrder.value,
+                                );
                               },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 15),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: isSelected ? mainColor : Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: isSelected
-                                          ? mainColor.withOpacity(0.3)
-                                          : Colors.black.withOpacity(0.05),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  category,
-                                  style: TextStyle(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Colors.grey.shade700,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                              child: Obx(() {
+                                final isSelected =
+                                    selectedCategory.value == category;
+                                return Container(
+                                  margin: const EdgeInsets.only(right: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        isSelected ? mainColor : Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: isSelected
+                                            ? mainColor.withOpacity(0.3)
+                                            : Colors.black.withOpacity(0.05),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
+                                  child: Text(
+                                    category,
+                                    style: GoogleFonts.poppins(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.grey.shade700,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                );
+                              }),
                             );
                           },
                         ),
@@ -409,7 +467,8 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               item: item,
                               onRemove: () =>
                                   favoritesController.removeFavorite(item.id),
-                              onAdd: () => favoritesController.addToCart(item),
+                              onAdd: () =>
+                                  favoritesController.addFavoriteToCart(item),
                             );
                           },
                         ),
@@ -429,7 +488,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
               axisAlignment: 1,
               child: Container(
                 width: screenWidth * 0.75,
-                height: screenHeight * 0.35,
+                height: screenHeight * 0.45,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: const BorderRadius.only(
@@ -447,11 +506,11 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(20),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
                       child: Text(
                         "Filter Options",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -462,46 +521,157 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                       child: ListView(
                         padding: const EdgeInsets.all(15),
                         children: [
-                          const Text(
+                          Text(
                             "Sort By",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 10),
                           _buildFilterOption(
-                              "Price: Low to High", Icons.arrow_upward),
+                            "Price: Low to High",
+                            Icons.arrow_upward,
+                            () {
+                              sortBy.value = 'price';
+                              sortOrder.value = 'asc';
+                              favoritesController.fetchFavorites(
+                                category: selectedCategory.value == 'All'
+                                    ? null
+                                    : selectedCategory.value,
+                                minPrice: priceRange.value.start,
+                                maxPrice: priceRange.value.end,
+                                sortBy: sortBy.value,
+                                order: sortOrder.value,
+                              );
+                            },
+                          ),
                           _buildFilterOption(
-                              "Price: High to Low", Icons.arrow_downward),
-                          _buildFilterOption("Rating", Icons.star_border),
-                          _buildFilterOption("Name", Icons.sort_by_alpha),
+                            "Price: High to Low",
+                            Icons.arrow_downward,
+                            () {
+                              sortBy.value = 'price';
+                              sortOrder.value = 'desc';
+                              favoritesController.fetchFavorites(
+                                category: selectedCategory.value == 'All'
+                                    ? null
+                                    : selectedCategory.value,
+                                minPrice: priceRange.value.start,
+                                maxPrice: priceRange.value.end,
+                                sortBy: sortBy.value,
+                                order: sortOrder.value,
+                              );
+                            },
+                          ),
+                          _buildFilterOption(
+                            "Rating",
+                            Icons.star_border,
+                            () {
+                              sortBy.value = 'averageRating';
+                              sortOrder.value = 'desc';
+                              favoritesController.fetchFavorites(
+                                category: selectedCategory.value == 'All'
+                                    ? null
+                                    : selectedCategory.value,
+                                minPrice: priceRange.value.start,
+                                maxPrice: priceRange.value.end,
+                                sortBy: sortBy.value,
+                                order: sortOrder.value,
+                              );
+                            },
+                          ),
+                          _buildFilterOption(
+                            "Name",
+                            Icons.sort_by_alpha,
+                            () {
+                              sortBy.value = 'name';
+                              sortOrder.value = 'asc';
+                              favoritesController.fetchFavorites(
+                                category: selectedCategory.value == 'All'
+                                    ? null
+                                    : selectedCategory.value,
+                                minPrice: priceRange.value.start,
+                                maxPrice: priceRange.value.end,
+                                sortBy: sortBy.value,
+                                order: sortOrder.value,
+                              );
+                            },
+                          ),
                           const SizedBox(height: 20),
-                          const Text(
+                          Text(
                             "Price Range",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 15),
-                          SliderTheme(
-                            data: SliderThemeData(
-                              activeTrackColor: mainColor,
-                              inactiveTrackColor: Colors.grey.shade200,
-                              thumbColor: mainColor,
-                              overlayColor: mainColor.withOpacity(0.2),
-                            ),
-                            child: RangeSlider(
-                              values: const RangeValues(5, 20),
-                              min: 0,
-                              max: 30,
-                              labels: const RangeLabels('', ''),
-                              onChanged: (values) {
-                                // Implement price range filtering if needed
-                              },
-                            ),
-                          ),
+                          Obx(() => Column(
+                                children: [
+                                  SliderTheme(
+                                    data: SliderThemeData(
+                                      activeTrackColor: mainColor,
+                                      inactiveTrackColor: Colors.grey.shade200,
+                                      thumbColor: mainColor,
+                                      overlayColor: mainColor.withOpacity(0.2),
+                                      valueIndicatorColor: mainColor,
+                                      valueIndicatorTextStyle:
+                                          GoogleFonts.poppins(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    child: RangeSlider(
+                                      values: priceRange.value,
+                                      min: 0,
+                                      max: 50,
+                                      divisions: 50,
+                                      labels: RangeLabels(
+                                        '\$${priceRange.value.start.toStringAsFixed(0)}',
+                                        '\$${priceRange.value.end.toStringAsFixed(0)}',
+                                      ),
+                                      onChanged: (values) {
+                                        priceRange.value = values;
+                                      },
+                                      onChangeEnd: (values) {
+                                        favoritesController.fetchFavorites(
+                                          category:
+                                              selectedCategory.value == 'All'
+                                                  ? null
+                                                  : selectedCategory.value,
+                                          minPrice: values.start,
+                                          maxPrice: values.end,
+                                          sortBy: sortBy.value,
+                                          order: sortOrder.value,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '\$${priceRange.value.start.toStringAsFixed(0)}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                        Text(
+                                          '\$${priceRange.value.end.toStringAsFixed(0)}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
                         ],
                       ),
                     ),
@@ -511,7 +681,11 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: toggleFilter,
+                              onPressed: () {
+                                resetFilters();
+                                favoritesController.fetchFavorites();
+                                toggleFilter();
+                              },
                               style: OutlinedButton.styleFrom(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 12),
@@ -522,7 +696,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                               ),
                               child: Text(
                                 "Reset",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: mainColor,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -532,7 +706,18 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(width: 10),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: toggleFilter,
+                              onPressed: () {
+                                favoritesController.fetchFavorites(
+                                  category: selectedCategory.value == 'All'
+                                      ? null
+                                      : selectedCategory.value,
+                                  minPrice: priceRange.value.start,
+                                  maxPrice: priceRange.value.end,
+                                  sortBy: sortBy.value,
+                                  order: sortOrder.value,
+                                );
+                                toggleFilter();
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: mainColor,
                                 padding:
@@ -541,9 +726,9 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                               ),
-                              child: const Text(
+                              child: Text(
                                 "Apply",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -563,27 +748,24 @@ class _FavoritesScreenState extends State<FavoritesScreen>
     );
   }
 
-  Widget _buildFilterOption(String title, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Radio(
-            value: title,
-            groupValue: "",
-            onChanged: (value) {},
-            activeColor: const Color(0xFFFA4A0C),
-          ),
-          Icon(icon, size: 20, color: Colors.grey.shade600),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.grey.shade700,
+  Widget _buildFilterOption(String title, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: Colors.grey.shade600),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                color: Colors.grey.shade700,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -604,6 +786,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color mainColor = Color(0xFFFA4A0C);
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -624,8 +807,7 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              Get.toNamed('/product-detail',
-                  arguments: item); // Adjust route as needed
+              Get.toNamed('/product-detail', arguments: item);
             },
             child: Column(
               children: [
@@ -635,10 +817,23 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                       width: double.infinity,
                       height: 140,
                       color: Colors.grey.shade100,
-                      child: item.image.isNotEmpty
+                      child: item.image.isNotEmpty &&
+                              Uri.tryParse(item.image)?.hasAbsolutePath == true
                           ? Image.network(
                               item.image,
                               fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: progress.expectedTotalBytes != null
+                                        ? progress.cumulativeBytesLoaded /
+                                            progress.expectedTotalBytes!
+                                        : null,
+                                    color: mainColor,
+                                  ),
+                                );
+                              },
                               errorBuilder: (context, error, stackTrace) =>
                                   Icon(
                                 Icons.restaurant,
@@ -663,9 +858,9 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          item.category,
-                          style: TextStyle(
-                            fontSize: 12,
+                          item.category ?? 'Unknown',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12 * textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade800,
                           ),
@@ -714,8 +909,8 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               item.name,
-                              style: const TextStyle(
-                                fontSize: 18,
+                              style: GoogleFonts.poppins(
+                                fontSize: 18 * textScaleFactor,
                                 fontWeight: FontWeight.bold,
                               ),
                               maxLines: 1,
@@ -738,9 +933,9 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  item.averageRating.toString(),
-                                  style: TextStyle(
-                                    fontSize: 13,
+                                  item.averageRating.toStringAsFixed(1),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 13 * textScaleFactor,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey.shade800,
                                   ),
@@ -755,14 +950,16 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.location_on,
-                            size: 16,
+                            size: 16 * textScaleFactor,
                             color: Colors.grey.shade500,
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            item.restaurantId.toString(),
-                            style: TextStyle(
-                              fontSize: 14,
+                            item.restaurantName ??
+                                item.restaurantId ??
+                                'Unknown',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14 * textScaleFactor,
                               color: Colors.grey.shade600,
                             ),
                           ),
@@ -774,8 +971,8 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                         children: [
                           Text(
                             "\$${item.price.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18 * textScaleFactor,
                               fontWeight: FontWeight.bold,
                               color: mainColor,
                             ),
@@ -794,9 +991,9 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
                               ),
                             ),
                             icon: const Icon(Icons.add_shopping_cart, size: 18),
-                            label: const Text(
+                            label: Text(
                               "Add",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

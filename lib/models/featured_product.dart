@@ -5,10 +5,11 @@ class FeaturedProduct {
   final String category;
   final double price;
   final String image;
-  final int preparationTime;
+  final int? preparationTime; // Made optional
   final double averageRating;
   final int ratingCount;
   final String? restaurantId;
+  final String? restaurantName; // Added
   final String? city;
   bool isFavorite;
   final List<String> images;
@@ -24,10 +25,11 @@ class FeaturedProduct {
     required this.category,
     required this.price,
     required this.image,
-    required this.preparationTime,
+    this.preparationTime,
     required this.averageRating,
     required this.ratingCount,
     this.restaurantId,
+    this.restaurantName,
     this.city,
     this.isFavorite = false,
     this.images = const [],
@@ -48,13 +50,14 @@ class FeaturedProduct {
       image: json['image']?.toString() ?? '',
       preparationTime: (json['preparationTime'] is num
           ? json['preparationTime'].toInt()
-          : 0),
+          : null),
       averageRating: (json['averageRating'] is num
           ? json['averageRating'].toDouble()
           : 0.0),
       ratingCount:
           (json['ratingCount'] is num ? json['ratingCount'].toInt() : 0),
       restaurantId: json['restaurantId']?.toString(),
+      restaurantName: json['restaurantName']?.toString(),
       city: json['city']?.toString(),
       isFavorite: json['isFavorite'] == true,
       images: (json['images'] as List<dynamic>?)?.cast<String>() ?? [],
@@ -83,6 +86,7 @@ class FeaturedProduct {
       'averageRating': averageRating,
       'ratingCount': ratingCount,
       'restaurantId': restaurantId,
+      'restaurantName': restaurantName,
       'city': city,
       'isFavorite': isFavorite,
       'images': images,
@@ -94,7 +98,6 @@ class FeaturedProduct {
   }
 }
 
-/// Unterklasse für nutritionalInfo
 class NutritionalInfo {
   final int calories;
   final int protein;

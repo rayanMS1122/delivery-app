@@ -6,8 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class EditableProfileScreen extends StatelessWidget {
   EditableProfileScreen({Key? key}) : super(key: key);
-  final controller = Get.put(ProfileController());
-  // Define brand colors
+  final controller = Get.find<ProfileController>();
   static const Color primaryColor = Color(0xFFFF460A);
   static const Color scaffoldBackgroundColor = Colors.white;
 
@@ -88,7 +87,8 @@ class EditableProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: controller.resetForm, // Changed to resetForm
+                    onPressed: controller
+                        .fetchUserProfile, // Changed to fetchUserProfile
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
                       foregroundColor: Colors.white,
@@ -116,42 +116,38 @@ class EditableProfileScreen extends StatelessWidget {
 
         return CustomScrollView(
           slivers: [
-            // Profile Header with Image
             SliverToBoxAdapter(
               child: Container(
                 color: primaryColor,
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    // Profile Image Section
                     Center(
                       child: Stack(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
-                            child: GetBuilder<ProfileController>(
-                              builder: (_) => CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.grey[200],
-                                backgroundImage:
-                                    controller.profileImagePath?.value != null
-                                        ? NetworkImage(
-                                            controller.profileImagePath!.value)
-                                        : null,
-                                child:
-                                    controller.profileImagePath?.value == null
-                                        ? Icon(
-                                            Icons.person_rounded,
-                                            size: 70,
-                                            color: Colors.grey[400],
-                                          )
-                                        : null,
-                              ),
-                            ),
+                            child: Obx(() => CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.grey[200],
+                                  backgroundImage: controller
+                                          .profileImagePath.value.isNotEmpty
+                                      ? NetworkImage(
+                                          controller.profileImagePath.value)
+                                      : null,
+                                  child:
+                                      controller.profileImagePath.value.isEmpty
+                                          ? Icon(
+                                              Icons.person_rounded,
+                                              size: 70,
+                                              color: Colors.grey[400],
+                                            )
+                                          : null,
+                                )),
                           ),
                           Positioned(
                             bottom: 0,
@@ -194,7 +190,6 @@ class EditableProfileScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // User Name Display
                     Obx(() => Text(
                           controller.fullName.value.isNotEmpty
                               ? controller.fullName.value
@@ -205,7 +200,6 @@ class EditableProfileScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                         )),
-                    // User Email Display
                     Obx(() => Text(
                           controller.email.value.isNotEmpty
                               ? controller.email.value
@@ -220,8 +214,6 @@ class EditableProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Profile Content
             SliverToBoxAdapter(
               child: Transform.translate(
                 offset: const Offset(0, -20),
@@ -242,21 +234,18 @@ class EditableProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Personal Information Section
                       sectionHeader(
                         context: context,
                         title: 'Personal Information',
                         icon: Icons.person_outline_rounded,
                       ),
                       const SizedBox(height: 16),
-
                       buildTextField(
                         controller: controller.nameController,
                         label: 'Full Name',
                         icon: Icons.person_rounded,
                         readOnly: !controller.isEditing.value,
                       ),
-
                       buildTextField(
                         controller: controller.emailController,
                         label: 'Email Address',
@@ -264,7 +253,6 @@ class EditableProfileScreen extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         readOnly: !controller.isEditing.value,
                       ),
-
                       buildTextField(
                         controller: controller.phoneController,
                         label: 'Phone Number',
@@ -272,17 +260,13 @@ class EditableProfileScreen extends StatelessWidget {
                         keyboardType: TextInputType.phone,
                         readOnly: !controller.isEditing.value,
                       ),
-
                       const SizedBox(height: 30),
-
-                      // Address Information Section
                       sectionHeader(
                         context: context,
                         title: 'Address Information',
                         icon: Icons.location_on_outlined,
                       ),
                       const SizedBox(height: 16),
-
                       buildTextField(
                         controller: controller.homeAddressController,
                         label: 'Home Address',
@@ -290,7 +274,6 @@ class EditableProfileScreen extends StatelessWidget {
                         maxLines: 2,
                         readOnly: !controller.isEditing.value,
                       ),
-
                       buildTextField(
                         controller: controller.workAddressController,
                         label: 'Work Address',
@@ -298,17 +281,13 @@ class EditableProfileScreen extends StatelessWidget {
                         maxLines: 2,
                         readOnly: !controller.isEditing.value,
                       ),
-
                       const SizedBox(height: 30),
-
-                      // Payment Methods Section
                       sectionHeader(
                         context: context,
                         title: 'Payment Methods',
                         icon: Icons.payment_outlined,
                       ),
                       const SizedBox(height: 16),
-
                       buildPaymentMethodTile(
                         context: context,
                         title: 'Credit Card',
@@ -323,7 +302,6 @@ class EditableProfileScreen extends StatelessWidget {
                               }
                             : null,
                       ),
-
                       buildPaymentMethodTile(
                         context: context,
                         title: 'Bank Transfer',
@@ -338,7 +316,6 @@ class EditableProfileScreen extends StatelessWidget {
                               }
                             : null,
                       ),
-
                       buildPaymentMethodTile(
                         context: context,
                         title: 'PayPal',
@@ -353,10 +330,7 @@ class EditableProfileScreen extends StatelessWidget {
                               }
                             : null,
                       ),
-
                       const SizedBox(height: 30),
-
-                      // Action Buttons
                       if (controller.isEditing.value) ...[
                         Row(
                           children: [
@@ -409,7 +383,6 @@ class EditableProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ],
-
                       const SizedBox(height: 30),
                     ],
                   ),

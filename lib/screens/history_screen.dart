@@ -1,5 +1,6 @@
 import 'package:delivery_app/controllers/history_controller.dart';
 import 'package:delivery_app/screens/order_screen.dart';
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +38,14 @@ class HistoryScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Custom App Bar with Title
-                    _buildAppBar(responsiveValues),
+                    CustomAppBar(
+                      iconSize: 32,
+                      onBackPressed: () {
+                        Get.back();
+                      },
+                      title: "Order History",
+                      titleStyle: TextStyle(),
+                    ),
 
                     SizedBox(height: responsiveValues.largeSpacing),
 
@@ -61,98 +69,6 @@ class HistoryScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // Custom App Bar
-  Widget _buildAppBar(ResponsiveValues rv) {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // App Title with Search and Filter Options
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Back Button (if needed)
-              Container(),
-
-              // Title
-              Text(
-                "Order History",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: rv.titleFontSize,
-                  letterSpacing: 0.5,
-                ),
-              ),
-
-              // Filter Icon
-              Container(
-                padding: EdgeInsets.all(rv.smallPadding / 2),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(rv.borderRadius),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.filter_list,
-                  size: rv.iconSize * 0.8,
-                  color: const Color(0xFFFA4A0C),
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: rv.spacing),
-
-          // Search Bar
-          Container(
-            height: rv.inputHeight,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(rv.borderRadius),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: TextField(
-              style: TextStyle(
-                fontSize: rv.normalFontSize,
-              ),
-              decoration: InputDecoration(
-                hintText: "Search for orders...",
-                hintStyle: TextStyle(
-                  color: Colors.black38,
-                  fontSize: rv.normalFontSize,
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.black38,
-                  size: rv.iconSize,
-                ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: rv.smallPadding,
-                  horizontal: rv.padding,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -19,7 +19,7 @@ class ProductDetailScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-    controller.isFavorite.value = product.isFavorite;
+    // controller.isFavorite.value = product.isFavorite;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
