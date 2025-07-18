@@ -52,8 +52,8 @@ class AllScreen extends StatelessWidget {
                     _buildScreenTile(context, 'Order Screen', OrderScreen()),
                     _buildScreenTile(
                         context, 'Search Screen', AdvancedSearchScreen()),
-                    _buildScreenTile(context, 'Editable Profile Screen',
-                        EditableProfileScreen()),
+                    _buildScreenTile(
+                        context, 'User Profile Screen', UserProfileScreen()),
                     _buildScreenTile(
                         context,
                         'Product Detail Screen',

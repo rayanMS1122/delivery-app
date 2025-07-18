@@ -1,5 +1,6 @@
 import 'package:delivery_app/controllers/home_controller.dart';
 import 'package:delivery_app/controllers/product_controller.dart';
+import 'package:delivery_app/controllers/profile_controller.dart';
 import 'package:delivery_app/models/featured_product.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
 import 'package:delivery_app/widgets/bottom_navigation.dart';
@@ -92,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
                 case 1:
                   return FavoritesScreen();
                 case 2:
-                  return EditableProfileScreen();
+                  return UserProfileScreen();
                 case 3:
                   return HistoryScreen();
                 default:
