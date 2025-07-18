@@ -1,6 +1,7 @@
 import 'package:delivery_app/controllers/login_controller.dart';
 import 'package:delivery_app/screens/authentication/register.dart';
 import 'package:delivery_app/screens/forgot_password_screen.dart';
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -52,18 +53,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     // Back button
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back_ios,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => Get.back(),
-                        ),
-                      ),
+                    CustomAppBar(
+                      iconSize: 32,
+                      onBackPressed: () {
+                        Get.back();
+                      },
+                      title: "",
+                      iconColor: Colors.white,
+                      titleStyle: TextStyle(),
                     ),
                     const SizedBox(height: 20),
 

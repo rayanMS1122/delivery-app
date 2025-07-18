@@ -1,9 +1,11 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:animated_button/animated_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -82,40 +84,17 @@ class _PaymentScreenState extends State<PaymentScreen>
   }
 
   Widget _buildAppBar() {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(Icons.arrow_back_ios, color: Colors.black),
-            ),
-          ),
-          Spacer(),
-          Text(
-            'Payment',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Spacer(),
-          SizedBox(width: 44),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CustomAppBar(
+        title: "Payment",
+        iconColor: const Color(0xFF333333),
+        onBackPressed: () => Get.back(),
+        titleStyle: GoogleFonts.poppins(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        iconSize: 24,
       ),
     );
   }

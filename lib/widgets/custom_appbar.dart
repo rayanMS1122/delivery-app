@@ -4,13 +4,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback onBackPressed;
   final TextStyle titleStyle;
+  final Color iconColor;
 
   const CustomAppBar(
       {Key? key,
       required this.title,
       required this.onBackPressed,
       required this.titleStyle,
-      required int iconSize})
+      required int iconSize,
+      required this.iconColor})
       : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: Image.asset(
           "assets/chevron-left.png",
           scale: 30,
+          color: iconColor,
         ),
         onPressed: onBackPressed,
       ),

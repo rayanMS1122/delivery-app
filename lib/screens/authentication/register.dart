@@ -1,7 +1,9 @@
 import 'package:delivery_app/controllers/signup_controller.dart';
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -36,7 +38,20 @@ class SignupScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildAppBar(context, responsiveValues),
+                  // _buildAppBar(context, responsiveValues),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomAppBar(
+                      title: "",
+                      iconColor: Colors.white,
+                      onBackPressed: () => Get.back(),
+                      titleStyle: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      iconSize: 24,
+                    ),
+                  ),
                   _buildTopSection(context, responsiveValues),
                   _buildFormSection(context, responsiveValues),
                   _buildBottomSection(responsiveValues),

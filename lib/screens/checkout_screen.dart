@@ -55,6 +55,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               children: [
                 SizedBox(height: screenHeight * 0.02),
                 CustomAppBar(
+                  iconColor: const Color(0xFF333333),
                   title: "Checkout",
                   onBackPressed: () => Get.back(),
                   titleStyle: GoogleFonts.poppins(

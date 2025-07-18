@@ -44,6 +44,7 @@ class HistoryScreen extends StatelessWidget {
                         Get.back();
                       },
                       title: "Order History",
+                      iconColor: Colors.black,
                       titleStyle: TextStyle(),
                     ),
 

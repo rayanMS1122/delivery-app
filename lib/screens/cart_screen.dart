@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
                 // Custom AppBar
                 CustomAppBar(
                   title: "Cart",
+                  iconColor: const Color(0xFF333333),
                   onBackPressed: () => Get.back(),
                   titleStyle: GoogleFonts.poppins(
                     fontSize: 20 * textScaleFactor,

@@ -1,5 +1,6 @@
 import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:delivery_app/models/featured_product.dart';
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -58,96 +59,15 @@ class ProductDetailScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      leading: Padding(
-        padding: EdgeInsets.only(left: screenWidth * 0.04),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded, size: screenWidth * 0.05),
-            color: Color(0xFF3D3D3D),
-            onPressed: () => Get.back(),
-          ),
-        ),
+    return CustomAppBar(
+      title: "",
+      iconColor: const Color(0xFF333333),
+      onBackPressed: () => Get.back(),
+      titleStyle: GoogleFonts.poppins(
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
       ),
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: screenWidth * 0.04),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.share_rounded, size: screenWidth * 0.05),
-                  color: Color(0xFF3D3D3D),
-                  onPressed: () {
-                    Get.snackbar(
-                      "Share",
-                      "Sharing ${product.name} with friends",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.black87,
-                      colorText: Colors.white,
-                    );
-                  },
-                ),
-              ),
-              SizedBox(width: screenWidth * 0.03),
-              Obx(() {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      product.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      size: screenWidth * 0.05,
-                    ),
-                    color: product.isFavorite ? Colors.red : Color(0xFF3D3D3D),
-                    onPressed: () {
-                      controller.toggleFavorite(product);
-                      if (product.isFavorite) {
-                        _showFavoriteAnimation(context);
-                      }
-                    },
-                  ),
-                );
-              }),
-            ],
-          ),
-        ),
-      ],
+      iconSize: 24,
     );
   }
 
@@ -227,12 +147,12 @@ class ProductDetailScreen extends StatelessWidget {
                                         Uri.tryParse(image)?.hasAbsolutePath ==
                                             true
                                     ? NetworkImage(image)
-                                    : AssetImage('assets/placeholder.png')
+                                    : AssetImage('assets/Mask Group.png')
                                         as ImageProvider,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   print('Product image load error: $error');
-                                  return Image.asset('assets/placeholder.png',
+                                  return Image.asset('assets/Mask Group.png',
                                       fit: BoxFit.cover);
                                 },
                               );
@@ -244,12 +164,12 @@ class ProductDetailScreen extends StatelessWidget {
                                             ?.hasAbsolutePath ==
                                         true
                                 ? NetworkImage(product.image)
-                                : AssetImage('assets/placeholder.png')
+                                : AssetImage('assets/Mask Group.png')
                                     as ImageProvider,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               print('Product image load error: $error');
-                              return Image.asset('assets/placeholder.png',
+                              return Image.asset('assets/Mask Group.png',
                                   fit: BoxFit.cover);
                             },
                           ),

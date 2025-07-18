@@ -94,6 +94,7 @@ class MyOffersScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF333333),
                               ),
+                              iconColor: const Color(0xFF333333),
                               iconSize: isTablet ? 28 : 24,
                             ),
 

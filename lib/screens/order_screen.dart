@@ -1,6 +1,8 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 
@@ -68,64 +70,17 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Custom App Bar with elevated design
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () => Get.back(),
-                            borderRadius: BorderRadius.circular(15),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    blurRadius: 10,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                Icons.arrow_back_ios_rounded,
-                                color: Color(0xFF3D3D3D),
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "My Orders",
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
-                              color: Color(0xFF3D3D3D),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              Icons.filter_list_rounded,
-                              color: Color(0xFF3D3D3D),
-                              size: 20,
-                            ),
-                          ),
-                        ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomAppBar(
+                        title: "My Order",
+                        iconColor: const Color(0xFF333333),
+                        onBackPressed: () => Get.back(),
+                        titleStyle: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        iconSize: 24,
                       ),
                     ),
 

@@ -1,6 +1,9 @@
+import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
+
+import 'package:google_fonts/google_fonts.dart';
 
 class AdvancedSearchScreen extends StatelessWidget {
   final SearchController _controller = Get.put(SearchController());
@@ -35,8 +38,19 @@ class AdvancedSearchScreen extends StatelessWidget {
                   slivers: [
                     // App Bar
                     SliverToBoxAdapter(
-                      child: _buildAppBar(
-                          context, constraints, safeAreaTop, horizontalPadding),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomAppBar(
+                          title: "Search",
+                          iconColor: const Color(0xFF333333),
+                          onBackPressed: () => Get.back(),
+                          titleStyle: GoogleFonts.poppins(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          iconSize: 24,
+                        ),
+                      ),
                     ),
 
                     // Search Bar
