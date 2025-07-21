@@ -1,5 +1,6 @@
 import 'package:delivery_app/controllers/product_controller.dart';
 import 'package:delivery_app/models/featured_product.dart';
+import 'package:delivery_app/screens/home_screen.dart';
 import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -745,7 +746,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Get.toNamed('/home'); // Navigiert zurück zur HomeScreen
+                Get.to(HomeScreen()); // Navigiert zurück zur HomeScreen
               },
               child: Text(
                 "View all",

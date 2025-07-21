@@ -568,7 +568,7 @@ class CartController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        Get.toNamed('/order-confirmation');
+        Get.to('/order-confirmation');
       } else {
         String errorMsg = 'Failed to place order';
         try {

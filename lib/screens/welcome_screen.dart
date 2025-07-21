@@ -129,9 +129,10 @@ class WelcomeScreen extends StatelessWidget {
 
                     // Main image
                     Image.asset(
-                      "assets/charakter_icons.png",
+                      "assets/ChatGPT Image 19. Juli 2025, 15_28_27.png",
                       width: 400,
                       height: 400,
+                      // color: Colors.grey,
                       fit: BoxFit.contain,
                     ),
 
@@ -141,13 +142,14 @@ class WelcomeScreen extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: Container(
-                        height: 100,
+                        height: 140,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.white.withOpacity(0),
+                              // Colors.white.withOpacity(.7),
                               Colors.white,
                             ],
                           ),
@@ -159,7 +161,7 @@ class WelcomeScreen extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: Container(
-                        height: 150,
+                        height: 100,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,

@@ -11,10 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart'; // For GetX
 
-void main() async {
-  Get.put(HomeController());
+void main() {
   Get.put(ProfileController());
   Get.put(CartController());
+  Get.put(HomeController());
+
   Get.put(ProductController());
   runApp(const MyApp());
 }
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: lightTheme, // Apply the custom theme
-          home: AllScreen(), // Set the initial screen
+          // home: LoginScreen(), // Set the initial screen
+          home: AllScreen(),
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
           builder: (context, child) {

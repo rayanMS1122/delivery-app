@@ -1,5 +1,7 @@
 import 'package:delivery_app/controllers/favorites_controller.dart';
 import 'package:delivery_app/models/featured_product.dart';
+import 'package:delivery_app/screens/home_screen.dart';
+import 'package:delivery_app/screens/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -371,7 +373,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
                           const SizedBox(height: 25),
                           ElevatedButton(
                             onPressed: () {
-                              Get.toNamed('/home');
+                              Get.to(HomeScreen());
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: mainColor,
@@ -807,7 +809,18 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              Get.toNamed('/product-detail', arguments: item);
+              Get.to(
+                  ProductDetailScreen(
+                      product: FeaturedProduct(
+                          id: "id",
+                          name: "name",
+                          description: "description",
+                          category: "category",
+                          price: 2,
+                          image: "image",
+                          averageRating: 2,
+                          ratingCount: 22)),
+                  arguments: item);
             },
             child: Column(
               children: [

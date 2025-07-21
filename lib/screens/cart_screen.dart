@@ -1,4 +1,7 @@
 import 'package:delivery_app/controllers/cart_controller.dart';
+import 'package:delivery_app/controllers/home_controller.dart';
+import 'package:delivery_app/screens/home_screen.dart';
+import 'package:delivery_app/screens/payment_screen.dart';
 import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:delivery_app/widgets/swipeable_car_ittem.dart';
 import 'package:flutter/material.dart';
@@ -244,7 +247,7 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              Get.toNamed('/home');
+              Get.to(HomeScreen());
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: mainColor,
@@ -389,7 +392,7 @@ class _CartScreenState extends State<CartScreen> {
               );
               return;
             }
-            Get.toNamed('/payment', arguments: {
+            Get.to(PaymentScreen(), arguments: {
               'subtotal': controller.calculateSubtotal(),
               'deliveryFee': 2.99,
             });

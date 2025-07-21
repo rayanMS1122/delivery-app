@@ -1,4 +1,6 @@
 import 'package:delivery_app/controllers/cart_controller.dart';
+import 'package:delivery_app/controllers/home_controller.dart';
+import 'package:delivery_app/screens/home_screen.dart';
 import 'package:delivery_app/widgets/custom_appbar.dart';
 import 'package:delivery_app/widgets/swipeable_car_ittem.dart';
 import 'package:flutter/material.dart';
@@ -415,7 +417,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () => Get.toNamed('/home'),
+            onPressed: () => Get.to(HomeScreen()),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFA4A0C),
               foregroundColor: Colors.white,
