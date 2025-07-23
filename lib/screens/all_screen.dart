@@ -57,22 +57,22 @@ class AllScreen extends StatelessWidget {
                     _buildScreenTile(
                         context,
                         'Product Detail Screen',
-                        ProductDetailScreen(
-                          product: FeaturedProduct(
-                            category: "",
-                            averageRating: 88,
-                            description: "",
-                            id: "",
-                            image: "",
-                            name: "",
-                            preparationTime: 2,
-                            price: 2,
-                            ratingCount: 2,
-                            city: "",
-                            deliveryInfo: "",
-                            images: [],
-                          ),
-                        )),
+                        AdvancedProductDetailScreen(
+                            // product: FeaturedProduct(
+                            //   category: "",
+                            //   averageRating: 88,
+                            //   description: "",
+                            //   id: "",
+                            //   image: "",
+                            //   name: "",
+                            //   preparationTime: 2,
+                            //   price: 2,
+                            //   ratingCount: 2,
+                            //   city: "",
+                            //   deliveryInfo: "",
+                            //   images: [],
+                            // ),
+                            )),
                     _buildScreenTile(
                         context, 'Checkout Screen', CheckoutScreen()),
                     _buildScreenTile(context, 'Cart Screen', CartScreen()),

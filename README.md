@@ -1,16 +1,31 @@
-# delivery_app
+## 🖼️ Screens & UI Previews
 
-A new Flutter project.
+ 
 
-## Getting Started
+| Screen File | Screenshot | Description |
+|-------------|------------|-------------|
+| `welcome_screen.dart` | ![Welcome](assets/screenshots/welcom_screen.png) | App launch / intro screen |
+| `login_screen.dart` | ![Login](assets/screenshots/login_scren.png) | User login UI |
+| `home_screen.dart` | ![Home](assets/screenshots/home_screen.png) | Main landing page with product list |
+| `product_detail_screen.dart` | ![Details](assets/screenshots/details_screen.png) | Detailed product view |
+| `cart_screen.dart` | *(Not available)* | Shopping cart view |
+| `checkout_screen.dart` | ![Checkout](assets/screenshots/checkout_screen.png) | Confirm and pay for orders |
+| `payment_screen.dart` | ![Payment](assets/screenshots/payment_screeen.png) | Choose and confirm payment method |
+| `payment_screen_2.dart` | ![Payment 2](assets/screenshots/payment_screen_2.png) | Alternate payment screen layout |
+| `order_screen.dart` | ![Orders](assets/screenshots/order_screen.png) | Shows user orders |
+| `favorites_screen.dart` | ![Favorites](assets/screenshots/fav_screen.png) | Favorite items view |
+| `history_screen.dart` | ![History](assets/screenshots/history_screen.png) | Past order/activity history |
+| `search_screen.dart` | ![Search](assets/screenshots/search_sccreen.png) | Search UI |
+| `offers_screen.dart` | ![Offers](assets/screenshots/offers_screen.png) | Current promotions or discounts |
+| `no_internet_screen.dart` | ![Offline](assets/screenshots/no_internet_screen.png) | Shown when network is down |
+| `profile_screen.dart` | ![Profile](assets/screenshots/profile_screen.png) | User profile view/edit |
+| `password_change.dart` | ![Change Password](assets/screenshots/change_password_screen.png) | Change password screen |
+| `forgot_password_screen.dart` | *(Not available)* | Forgot password functionality |
+| `all_screen.dart` | *(Not available)* | Possibly a combined dashboard or general screen |
+| `account_screen.dart` | *(Not available)* | Basic user account screen |
+| `authentication/` | *(Not applicable)* | Contains login/sign-up flows |
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+ 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

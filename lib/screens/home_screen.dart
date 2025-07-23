@@ -237,13 +237,16 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Text(
-                          "Delicious\nfood for you",
-                          style: GoogleFonts.poppins(
-                            fontSize: getResponsiveFontSize(context, 34),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                            height: 1.2,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 22.0),
+                          child: Text(
+                            "Delicious\nfood for you",
+                            style: GoogleFonts.poppins(
+                              fontSize: getResponsiveFontSize(context, 34),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ),

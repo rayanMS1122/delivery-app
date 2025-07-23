@@ -810,16 +810,17 @@ class RedesignedFavoriteItemCard extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Get.to(
-                  ProductDetailScreen(
-                      product: FeaturedProduct(
-                          id: "id",
-                          name: "name",
-                          description: "description",
-                          category: "category",
-                          price: 2,
-                          image: "image",
-                          averageRating: 2,
-                          ratingCount: 22)),
+                  AdvancedProductDetailScreen(
+                      // product: FeaturedProduct(
+                      //     id: "id",
+                      //     name: "name",
+                      //     description: "description",
+                      //     category: "category",
+                      //     price: 2,
+                      //     image: "image",
+                      //     averageRating: 2,
+                      //     ratingCount: 22)),
+                      ),
                   arguments: item);
             },
             child: Column(

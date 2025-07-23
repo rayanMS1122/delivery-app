@@ -132,7 +132,7 @@ class ProductController extends GetxController {
 
   void onProductTap(FeaturedProduct product) {
     if (product.id.isNotEmpty) {
-      Get.to(() => ProductDetailScreen(product: product));
+      // Get.to(() => ProductDetailScreen(product: product));
     } else {
       Get.snackbar(
         'Error',
