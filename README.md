@@ -20,10 +20,7 @@
 | `no_internet_screen.dart` | ![Offline](assets/screenshots/no_internet_screen.png) | Shown when network is down |
 | `profile_screen.dart` | ![Profile](assets/screenshots/profile_screen.png) | User profile view/edit |
 | `password_change.dart` | ![Change Password](assets/screenshots/change_password_screen.png) | Change password screen |
-| `forgot_password_screen.dart` | *(Not available)* | Forgot password functionality |
-| `all_screen.dart` | *(Not available)* | Possibly a combined dashboard or general screen |
-| `account_screen.dart` | *(Not available)* | Basic user account screen |
-| `authentication/` | *(Not applicable)* | Contains login/sign-up flows |
+ 
 
 ---
 
